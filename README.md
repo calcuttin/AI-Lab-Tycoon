@@ -1,134 +1,162 @@
 # AI Lab Tycoon
 
-A web-based tycoon game modeled after Game Dev Tycoon, where you run an AI lab competing with satirical versions of real AI companies. Build your research empire, hire employees, develop AI projects, and compete in the market!
+A satirical tycoon game where you build an AI startup in Silicon Valley. Inspired by Game Dev Tycoon and the HBO series *Silicon Valley*, you'll hire engineers, ship AI products, outmaneuver competitors, and chase the dream of AGI — all while burning through venture capital.
+
+Built with React, TypeScript, Zustand, and Tailwind CSS. Runs entirely in the browser.
+
+---
+
+## Screenshots
+
+> **To add screenshots:** Take screenshots of the game and save them to the `screenshots/` folder, then uncomment the image references below.
+
+<!--
+![Intro Panorama](screenshots/intro.gif)
+*HBO Silicon Valley-style parallax flyover intro*
+
+![Title Screen](screenshots/title-screen.png)
+*Title screen with neon cityscape*
+
+![Game Screen](screenshots/game-screen.png)
+*Main gameplay — manage projects, research, and your team*
+
+![Market View](screenshots/market-view.png)
+*Compete against satirical AI companies*
+
+![Research Tree](screenshots/research-tree.png)
+*Unlock technologies from Transformers to AGI*
+-->
+
+---
 
 ## Features
 
-### Core Gameplay
-- **Research System**: Unlock new technologies through a research tree
-- **Project Development**: Create AI projects with different complexities and requirements
-- **Employee Management**: Hire and manage a team with different skills and roles
-- **Office Upgrades**: Improve your workspace to boost productivity
-- **Market Competition**: Compete against satirical AI lab competitors
-- **Time Management**: Control game speed (pause, 1x, 2x, 4x)
+### HBO Silicon Valley-Style Intro
+A continuous parallax flyover panorama scrolls through the history of Silicon Valley — from Hewlett Packard's garage through the dot-com boom to the AI era. Watch PETS.COM and THERANOS crumble, spot the VINE logo in a dumpster, and read billboards like *"SERIES F: $10B (PRE-REVENUE)"* before the camera zooms into your tiny lab.
 
-### Game Systems
+### Core Gameplay Loop
+- **Hire your team** — Start with nothing and recruit engineers, researchers, designers, and managers
+- **Ship AI products** — Build chatbots, image generators, code copilots, agent systems, and chase AGI
+- **Research new tech** — Unlock a branching research tree from basic transformers to artificial general intelligence
+- **Upgrade your office** — Add server racks, coffee machines, nap pods, and meeting rooms
+- **Outcompete rivals** — Cortex, Nexus, Hooli, and more vie for market share with dynamic AI behavior
 
-#### Research Tree
-- Start with basic transformer research
-- Unlock advanced technologies like RLHF, Multimodal AI, Agent Systems, and AGI
-- Each research unlocks new project types and further research paths
+### Systems
+| System | Details |
+|--------|---------|
+| **Projects** | 7+ project types with varying complexity, team requirements, and revenue potential |
+| **Employees** | 5 roles, 4 skill axes, morale tracking, trait system, training |
+| **Research** | Branching tech tree with prerequisites and unlock chains |
+| **Office** | Room placement, capacity limits, amenity bonuses |
+| **Market** | Dynamic competitors with news feed, market share tracking, reputation |
+| **Contracts** | Client contracts with deadlines and bonus payouts |
+| **Policies** | Company-wide policies that affect morale, productivity, and costs |
+| **Achievements** | 20+ achievements for milestones and secret discoveries |
+| **Statistics** | Revenue, morale, and reputation history with sparkline charts |
+| **Events** | Random story events with character dialogue and branching choices |
 
-#### Projects
-- **Basic Chatbot**: Your first project - simple and affordable
-- **ChatGPT Clone #47**: Advanced chatbot requiring transformer research
-- **Stable Diffusion But Better**: Image generation with multimodal tech
-- **Code Copilot That Actually Works**: Complex code assistant
-- **GPT-Vision**: Vision models for image understanding
-- **AutoGPT but Actually Good**: Revolutionary agent systems
-- **AGI (We Promise This Time)**: The ultimate project
+### Visual Polish
+- Pixel art aesthetic with "Press Start 2P" font
+- Procedural Web Audio API sound effects
+- Particle effects for achievements and milestones
+- Animated sparkline charts for tracking stats over time
+- Keyboard shortcuts for all major actions
+- Tutorial overlay for new players
+- Auto-save with localStorage persistence
 
-#### Employees
-- **Roles**: Researcher, Engineer, Designer, Manager, Intern
-- **Skills**: Research, Development, Creativity, Management
-- **Traits**: Various personality traits affect performance
-- **Morale**: Keep employees happy to maintain productivity
+---
 
-#### Office Upgrades
-- **Computers**: Faster development speed
-- **Coffee Machines**: Boost employee morale
-- **Server Racks**: Increase research efficiency
-- **Meeting Rooms**: Improve team collaboration
-- **Nap Pods**: Reduce employee burnout
-
-#### Competitors
-- **Cortex Systems**: "We'll make AGI safe... eventually"
-- **Ethos AI**: "Constitutional AI experts"
-- **Nexus Intelligence**: "We solve games, not problems"
-- **Collective Labs**: "Open source everything... except the good stuff"
-- **OmniCorp Research**: "We have 50 AI products, pick one"
-
-## Getting Started
-
-### Prerequisites
-- Node.js 18+ and npm
-
-### Installation
+## Quick Start
 
 ```bash
 # Install dependencies
 npm install
 
-# Start development server
+# Start dev server
 npm run dev
 
-# Build for production
-npm run build
+# Run tests
+npm test
 
-# Preview production build
-npm run preview
+# Production build
+npm run build
 ```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+---
 
 ## How to Play
 
-1. **Start Research**: Begin with "Transformer Basics" to unlock your first advanced project type
-2. **Hire Employees**: Build a team to work on projects
-3. **Start Projects**: Choose from unlocked project types and assign team members
-4. **Complete Projects**: Finished projects generate revenue and reputation
-5. **Upgrade Office**: Improve your workspace to boost efficiency
-6. **Compete**: Watch your market share grow as you release successful products
+1. **Hire employees** — Visit the TEAM tab to recruit your first engineers and researchers
+2. **Start a project** — Go to PROJECTS, pick an AI product type, and assign your team
+3. **Unpause the game** — Press SPACE or click the play button to start the clock
+4. **Research new tech** — Spend money on the RESEARCH tree to unlock better project types
+5. **Upgrade your office** — Buy amenities to boost morale and productivity
+6. **Watch the market** — Track competitors, read industry news, and grow your reputation
+7. **Complete contracts** — Take on client work for guaranteed income
+8. **Chase AGI** — The ultimate goal. Good luck.
 
-## Game Mechanics
+### Keyboard Shortcuts
+| Key | Action |
+|-----|--------|
+| `Space` | Pause / Unpause |
+| `1-4` | Set game speed |
+| `P` | Projects |
+| `R` | Research |
+| `T` | Team |
+| `O` | Office |
+| `M` | Market |
 
-### Money Management
-- Start with $10,000
-- Projects cost money to start
-- Employees require monthly salaries
-- Office rent is due monthly
-- Completed projects generate revenue based on quality and market appeal
+---
 
-### Project Development
-- Projects progress daily based on team development skills
-- Assign employees to projects to speed up development
-- Team size affects progress rate
-- Quality and market appeal determine final revenue
+## Competitors
 
-### Research
-- Research costs money and time
-- Complete research to unlock new project types
-- Research prerequisites must be completed first
-- Some research unlocks multiple new technologies
+| Company | Personality | Catchphrase |
+|---------|------------|-------------|
+| **Cortex Systems** | Safety-focused | "We'll make AGI safe... eventually" |
+| **Ethos AI** | Constitutional | "Constitutional AI experts" |
+| **Nexus Intelligence** | Game-solving | "We solve games, not problems" |
+| **Collective Labs** | Open source | "Open source everything... except the good stuff" |
+| **OmniCorp Research** | Product spam | "We have 50 AI products, pick one" |
 
-## Technology Stack
+Competitors dynamically launch products, secure funding, suffer data breaches, and poach talent — all reported in the in-game Industry News feed.
 
-- **React 18** - UI framework
-- **TypeScript** - Type safety
-- **Vite** - Build tool
-- **Zustand** - State management
-- **Tailwind CSS** - Styling
+---
 
-## Development
+## Tech Stack
+
+| Technology | Purpose |
+|-----------|---------|
+| React 19 | UI framework |
+| TypeScript 5.9 | Type safety |
+| Zustand 5 | State management |
+| Vite 7 | Build tool & dev server |
+| Tailwind CSS 4 | Styling |
+| Vitest | Testing |
+| Web Audio API | Procedural sound effects |
 
 ### Project Structure
 ```
 src/
-├── components/     # React components
-├── store/          # Zustand state management
-├── systems/        # Game systems (time, etc.)
-├── data/           # Game data (projects, research, etc.)
-└── utils/          # Utility functions
+  components/    # 25+ React components (game panels, modals, overlays)
+  store/         # Zustand game state with save/load persistence
+  systems/       # Time system, audio engine
+  data/          # Game data (projects, research, events, characters, achievements)
+  hooks/         # Custom React hooks (team assignment)
 ```
 
-## Future Enhancements
+---
 
-- Save/Load functionality
-- Random events system
-- More detailed competitor AI
-- Project reviews and ratings
-- Market trends and events
-- More office sizes and upgrades
-- Employee training system
-- Achievement system
+## Easter Eggs
+
+The game is packed with Silicon Valley references. A few hints:
+- Watch the intro carefully for collapsing buildings
+- Check the dumpsters
+- Read every billboard
+- Some story events feature familiar characters
+
+---
 
 ## License
 
