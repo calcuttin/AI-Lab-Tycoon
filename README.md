@@ -8,7 +8,7 @@ Built with React, TypeScript, Zustand, and Tailwind CSS. Runs entirely in the br
 
 ## Screenshots
 
-![Game Screenshot](screenshots/Screenshot%202026-02-25%20at%2010.02.19%20PM.png)
+![Game Screenshot](Title.png)
 
 ---
 
