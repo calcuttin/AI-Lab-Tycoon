@@ -8,24 +8,7 @@ Built with React, TypeScript, Zustand, and Tailwind CSS. Runs entirely in the br
 
 ## Screenshots
 
-> **To add screenshots:** Take screenshots of the game and save them to the `screenshots/` folder, then uncomment the image references below.
-
-<!--
-![Intro Panorama](screenshots/intro.gif)
-*HBO Silicon Valley-style parallax flyover intro*
-
-![Title Screen](screenshots/title-screen.png)
-*Title screen with neon cityscape*
-
-![Game Screen](screenshots/game-screen.png)
-*Main gameplay — manage projects, research, and your team*
-
-![Market View](screenshots/market-view.png)
-*Compete against satirical AI companies*
-
-![Research Tree](screenshots/research-tree.png)
-*Unlock technologies from Transformers to AGI*
--->
+![Game Screenshot](screenshots/Screenshot%202026-02-25%20at%2010.02.19%20PM.png)
 
 ---
 
