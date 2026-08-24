@@ -450,6 +450,37 @@ describe('gameStore', () => {
     expect(useGameStore.getState().triggeredStoryMilestones).toEqual(['first-steps']);
   });
 
+  it('silently backfills progress when loading a legacy save', () => {
+    useGameStore.setState({ money: 500_000, reputation: 50 });
+    useGameStore.getState().saveGame();
+    const legacySave = JSON.parse(localStorage.getItem('aiLabTycoonSave')!);
+    delete legacySave.unlockedAchievements;
+    delete legacySave.triggeredStoryMilestones;
+    legacySave.version = '1.0';
+    localStorage.setItem('aiLabTycoonSave', JSON.stringify(legacySave));
+
+    useGameStore.getState().loadGame();
+    const state = useGameStore.getState();
+
+    expect(state.money).toBe(500_000);
+    expect(state.unlockedAchievements).toContain('500k');
+    expect(state.triggeredStoryMilestones).toContain('half-million');
+    expect(state.triggeredStoryMilestones).toContain('reputation-50');
+  });
+
+  it('preserves achievement progress across prestige resets', () => {
+    useGameStore.setState({
+      unlockedAchievements: ['100k'],
+      totalProjectsCompleted: 10,
+      daysPlayed: 30,
+      totalRevenueEver: 100_000,
+    });
+
+    useGameStore.getState().prestigeReset();
+
+    expect(useGameStore.getState().unlockedAchievements).toContain('100k');
+  });
+
   it('creates a monthly report when the month rolls over', () => {
     useGameStore.setState({
       currentDate: new Date(2024, 0, 31),

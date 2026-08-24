@@ -9,6 +9,8 @@ import { type RoomTypeId, getRoomTypeById, officeGridSizes, type OfficeSizeType,
 import { type InstalledUpgrade, type OfficeSizeId, getUpgradeById, calculateTotalEffects, getLayoutById } from '../data/officeLayouts';
 import { playSound } from '../systems/audio';
 import { getInitialContracts, type Contract } from '../data/contracts';
+import { achievements } from '../data/achievements';
+import { storyMilestones } from '../data/characters';
 
 // Helper function to calculate slot-based upgrade bonuses
 export function calculateUpgradeBonuses(installedUpgrades: InstalledUpgrade[]): {
@@ -2062,6 +2064,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       prestigeLevel: newPrestige,
       legacyPoints: newLegacy,
       money: Math.floor(100000 * bonusMultiplier),
+      unlockedAchievements: state.unlockedAchievements,
       dailyChallenge: generateDailyChallenge(0),
       weeklyChallenge: generateWeeklyChallenge(0),
     });
@@ -2188,6 +2191,32 @@ export const useGameStore = create<GameState>((set, get) => ({
         dailyLogs: data.dailyLogs ?? [],
         monthlyReport: data.monthlyReport ?? null,
       });
+
+      const loadedState = get();
+      if (!Array.isArray(data.unlockedAchievements)) {
+        set({
+          unlockedAchievements: achievements
+            .filter((achievement) => isAchievementUnlocked(achievement.id, loadedState))
+            .map((achievement) => achievement.id),
+        });
+      }
+      if (!Array.isArray(data.triggeredStoryMilestones)) {
+        set({
+          triggeredStoryMilestones: storyMilestones
+            .filter((milestone) => {
+              const { type, value } = milestone.triggerCondition;
+              if (type === 'money') return loadedState.money >= value;
+              if (type === 'reputation') return loadedState.reputation >= value;
+              if (type === 'employees') return loadedState.employees.length >= value;
+              if (type === 'projects') return loadedState.totalProjectsCompleted >= value;
+              if (type === 'research') {
+                return loadedState.researchNodes.filter((node) => node.completed).length >= value;
+              }
+              return false;
+            })
+            .map((milestone) => milestone.id),
+        });
+      }
       
       return true;
     } catch (error) {
