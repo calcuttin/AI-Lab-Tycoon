@@ -7,17 +7,20 @@ function App() {
   const [gameStarted, setGameStarted] = useState(false);
   const loadGame = useGameStore((state) => state.loadGame);
 
-  const handleStartGame = () => {
-    // Try to load saved game; only start fresh if no save exists
-    const loaded = loadGame();
-    if (!loaded) {
-      useGameStore.getState().initializeGame();
-    }
+  const handleNewGame = () => {
+    localStorage.removeItem('aiLabTycoonSave');
+    useGameStore.getState().initializeGame();
     setGameStarted(true);
   };
 
+  const handleContinue = () => {
+    if (loadGame()) {
+      setGameStarted(true);
+    }
+  };
+
   if (!gameStarted) {
-    return <TitleScreen onStartGame={handleStartGame} />;
+    return <TitleScreen onNewGame={handleNewGame} onContinue={handleContinue} />;
   }
 
   return <GameScreen />;

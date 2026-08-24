@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 
 interface TitleScreenProps {
-  onStartGame: () => void;
+  onNewGame: () => void;
+  onContinue: () => void;
 }
 
 /* ─── HBO Silicon Valley–style continuous panorama flyover ───
@@ -91,7 +92,7 @@ const eraLabels = [
 // The total camera travel distance
 const CAMERA_TRAVEL = PANORAMA_WIDTH - 800;
 
-export default function TitleScreen({ onStartGame }: TitleScreenProps) {
+export default function TitleScreen({ onNewGame, onContinue }: TitleScreenProps) {
   const [phase, setPhase] = useState<'opening' | 'title' | 'menu'>('opening');
   const [titleVisible, setTitleVisible] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(false);
@@ -782,7 +783,7 @@ export default function TitleScreen({ onStartGame }: TitleScreenProps) {
           }}
         >
           <button
-            onClick={onStartGame}
+            onClick={onNewGame}
             style={{
               padding: '20px 52px', fontSize: 16, fontWeight: 'bold',
               fontFamily: "'Press Start 2P', 'Courier New', monospace",
@@ -797,7 +798,13 @@ export default function TitleScreen({ onStartGame }: TitleScreenProps) {
             NEW GAME
           </button>
           <button
-            onClick={() => { const saved = localStorage.getItem('aiLabTycoonSave'); if (saved) { onStartGame(); } else { alert('No saved game found!'); } }}
+            onClick={() => {
+              if (localStorage.getItem('aiLabTycoonSave')) {
+                onContinue();
+              } else {
+                alert('No saved game found!');
+              }
+            }}
             style={{
               padding: '16px 40px', fontSize: 12, fontWeight: 'bold',
               fontFamily: "'Press Start 2P', 'Courier New', monospace",
