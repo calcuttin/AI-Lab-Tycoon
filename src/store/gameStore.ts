@@ -8,6 +8,7 @@ import { generateDailyChallenge, generateWeeklyChallenge, type Challenge, type C
 import { type RoomTypeId, getRoomTypeById, officeGridSizes, type OfficeSizeType, type RoomEffects } from '../data/roomTypes';
 import { type InstalledUpgrade, type OfficeSizeId, getUpgradeById, calculateTotalEffects, getLayoutById } from '../data/officeLayouts';
 import { playSound } from '../systems/audio';
+import { getInitialContracts, type Contract } from '../data/contracts';
 
 // Helper function to calculate slot-based upgrade bonuses
 export function calculateUpgradeBonuses(installedUpgrades: InstalledUpgrade[]): {
@@ -248,6 +249,35 @@ type NotificationPayload = {
   type: 'success' | 'info' | 'warning' | 'error';
   duration: number;
 };
+
+export function updateContractsForDay(
+  contracts: Contract[],
+  newDaysPlayed: number,
+): { contracts: Contract[]; completedCount: number; revenue: number } {
+  let completedCount = 0;
+  let revenue = 0;
+
+  const updatedContracts = contracts.map((contract) => {
+    if (contract.status !== 'active' || contract.acceptedOnDay == null) return contract;
+
+    const elapsedDays = newDaysPlayed - contract.acceptedOnDay;
+    if (elapsedDays > contract.deadline) {
+      return { ...contract, status: 'failed' as const };
+    }
+
+    const progress = contract.progress + 1;
+    if (progress >= contract.workRequired) {
+      completedCount += 1;
+      revenue += contract.reward;
+      return { ...contract, progress, status: 'completed' as const };
+    }
+
+    return { ...contract, progress };
+  });
+
+  return { contracts: updatedContracts, completedCount, revenue };
+}
+
 export function computeCombinedBonuses(roomBonuses: RoomEffects, slotBonuses: SlotBonuses): CombinedBonuses {
   return {
     productivityBonus: (slotBonuses.productivity || 0) + (roomBonuses.productivityBonus || 0),
@@ -760,6 +790,7 @@ export interface GameState {
   office: Office;
   competitors: Competitor[];
   shippedProducts: ShippedProduct[];
+  contracts: Contract[];
   policy: 'balanced' | 'crunch' | 'wellness';
   
   // Unlocked content
@@ -834,8 +865,7 @@ export interface GameState {
   claimStoryMilestone: (milestoneId: string, money: number, reputation: number) => boolean;
   dismissMonthlyReport: () => void;
   trainEmployee: (employeeId: string, skill: keyof Employee['skills']) => void;
-  shipProduct: (projectName: string, dailyRevenue: number) => void;
-  completeContract: () => void;
+  acceptContract: (contractId: string) => boolean;
   addLegacyPoints: (amount: number) => void;
   prestigeReset: () => void;
   initializeGame: () => void;
@@ -1121,6 +1151,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
   competitors: initialCompetitors,
   shippedProducts: [],
+  contracts: getInitialContracts(),
   policy: 'balanced',
   unlockedTechnologies: [],
   unlockedProjectTypes: ['chatbot-basic'],
@@ -1198,7 +1229,34 @@ export const useGameStore = create<GameState>((set, get) => ({
       })
       .map((type) => type.id);
     
-    const financeResult = calculateDailyFinance(state, newDate, revenue);
+    const newDaysPlayed = state.daysPlayed + 1;
+    const contractResult = updateContractsForDay(state.contracts, newDaysPlayed);
+    const newProducts = completedProjects.map((project) => ({
+      id: `product-${project.id}`,
+      name: project.name,
+      dailyRevenue: Math.max(
+        25,
+        Math.floor((project.quality * project.marketAppeal) / 2),
+      ),
+      unlockedAt: newDate.toISOString(),
+    }));
+    const dailyChallengeProgress = {
+      ...state.dailyChallengeProgress,
+      ship_products: (state.dailyChallengeProgress.ship_products ?? 0) + newProducts.length,
+      complete_contracts:
+        (state.dailyChallengeProgress.complete_contracts ?? 0) + contractResult.completedCount,
+    };
+    const weeklyChallengeProgress = {
+      ...state.weeklyChallengeProgress,
+      ship_products: (state.weeklyChallengeProgress.ship_products ?? 0) + newProducts.length,
+      complete_contracts:
+        (state.weeklyChallengeProgress.complete_contracts ?? 0) + contractResult.completedCount,
+    };
+    const financeResult = calculateDailyFinance(
+      state,
+      newDate,
+      revenue + contractResult.revenue,
+    );
     const { totalRevenue, dailyExpenses, newMoney } = financeResult;
     
     // Update employee morale based on office upgrades and rooms
@@ -1220,15 +1278,14 @@ export const useGameStore = create<GameState>((set, get) => ({
     const uniqueUnlockedTech = Array.from(new Set(updatedUnlockedTech));
     
     // Challenge progress (today's activity)
-    const newDaysPlayed = state.daysPlayed + 1;
     const avgMorale = updatedEmployees.length > 0
       ? updatedEmployees.reduce((s, e) => s + e.morale, 0) / updatedEmployees.length
       : 0;
     const challengeUpdate = updateChallengesForDay({
       dailyChallenge: state.dailyChallenge,
       weeklyChallenge: state.weeklyChallenge,
-      dailyChallengeProgress: state.dailyChallengeProgress,
-      weeklyChallengeProgress: state.weeklyChallengeProgress,
+      dailyChallengeProgress,
+      weeklyChallengeProgress,
       daysPlayed: state.daysPlayed,
       completedProjects: completedProjects.length,
       totalRevenue,
@@ -1293,7 +1350,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     const isMonthlyRollover = newDate.getDate() === 1 && state.dailyLogs.length > 0;
     const monthlyReport = isMonthlyRollover
       ? {
-          date: newDate.toISOString(),
+          date: state.dailyLogs[0].date,
           revenue: state.dailyLogs.reduce((sum, log) => sum + log.revenue, 0),
           expenses: state.dailyLogs.reduce((sum, log) => sum + log.expenses, 0),
           projectsCompleted: state.dailyLogs.reduce((sum, log) => sum + log.projectsCompleted, 0),
@@ -1325,7 +1382,10 @@ export const useGameStore = create<GameState>((set, get) => ({
       companyPhase: nextPhase,
       competitors: normalizedCompetitors,
       competitorNews: newCompetitorNews,
+      contracts: contractResult.contracts,
+      shippedProducts: [...state.shippedProducts, ...newProducts],
       legacyPoints: state.legacyPoints + challengeLegacy,
+      totalContractsCompleted: state.totalContractsCompleted + contractResult.completedCount,
       totalDailyChallengesCompleted: state.totalDailyChallengesCompleted + (dailyCompleted ? 1 : 0),
       totalWeeklyChallengesCompleted: state.totalWeeklyChallengesCompleted + (weeklyCompleted ? 1 : 0),
       revenueHistory: [...state.revenueHistory, totalRevenue].slice(-30),
@@ -1952,32 +2012,37 @@ export const useGameStore = create<GameState>((set, get) => ({
     }
   },
   
-  shipProduct: (projectName, dailyRevenue) => {
+  acceptContract: (contractId) => {
     const state = get();
-    const product: ShippedProduct = {
-      id: `product-${Date.now()}`,
-      name: projectName,
-      dailyRevenue: Math.floor(dailyRevenue),
-      unlockedAt: state.currentDate.toISOString(),
-    };
-    const shipCount = (state.dailyChallengeProgress.ship_products ?? 0) + 1;
-    const weekShipCount = (state.weeklyChallengeProgress.ship_products ?? 0) + 1;
+    const contract = state.contracts.find((candidate) => candidate.id === contractId);
+    if (
+      !contract ||
+      contract.status !== 'available' ||
+      state.contracts.some((candidate) => candidate.status === 'active')
+    ) return false;
+
+    const skills = state.employees.reduce(
+      (totals, employee) => ({
+        development: totals.development + employee.skills.development,
+        research: totals.research + employee.skills.research,
+        creativity: totals.creativity + employee.skills.creativity,
+      }),
+      { development: 0, research: 0, creativity: 0 },
+    );
+    const meetsRequirements =
+      skills.development >= contract.requiredSkills.development &&
+      skills.research >= contract.requiredSkills.research &&
+      skills.creativity >= contract.requiredSkills.creativity;
+    if (!meetsRequirements) return false;
+
     set({
-      shippedProducts: [...state.shippedProducts, product],
-      dailyChallengeProgress: { ...state.dailyChallengeProgress, ship_products: shipCount },
-      weeklyChallengeProgress: { ...state.weeklyChallengeProgress, ship_products: weekShipCount },
+      contracts: state.contracts.map((candidate) =>
+        candidate.id === contractId
+          ? { ...candidate, status: 'active', acceptedOnDay: state.daysPlayed, progress: 0 }
+          : candidate
+      ),
     });
-  },
-  
-  completeContract: () => {
-    const state = get();
-    const contractCount = (state.dailyChallengeProgress.complete_contracts ?? 0) + 1;
-    const weekContractCount = (state.weeklyChallengeProgress.complete_contracts ?? 0) + 1;
-    set({
-      totalContractsCompleted: state.totalContractsCompleted + 1,
-      dailyChallengeProgress: { ...state.dailyChallengeProgress, complete_contracts: contractCount },
-      weeklyChallengeProgress: { ...state.weeklyChallengeProgress, complete_contracts: weekContractCount },
-    });
+    return true;
   },
   
   addLegacyPoints: (amount) => set((state) => ({ legacyPoints: state.legacyPoints + amount })),
@@ -2026,6 +2091,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       totalDailyChallengesCompleted: state.totalDailyChallengesCompleted,
       totalWeeklyChallengesCompleted: state.totalWeeklyChallengesCompleted,
       shippedProducts: state.shippedProducts,
+      contracts: state.contracts,
       fundingRound: state.fundingRound,
       companyPhase: state.companyPhase,
       dailyChallenge: state.dailyChallenge,
@@ -2093,6 +2159,7 @@ export const useGameStore = create<GameState>((set, get) => ({
         activeEvent: null,
         totalProjectsCompleted: data.totalProjectsCompleted ?? 0,
         shippedProducts: data.shippedProducts ?? [],
+        contracts: data.contracts ?? getInitialContracts(),
         fundingRound: data.fundingRound ?? 'none',
         companyPhase: data.companyPhase ?? 'startup',
         dailyChallenge: data.dailyChallenge ?? generateDailyChallenge(daysPlayed),
@@ -2156,6 +2223,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       },
       competitors: initialCompetitors,
       shippedProducts: [],
+      contracts: getInitialContracts(),
       policy: 'balanced',
       unlockedTechnologies: [],
       unlockedProjectTypes: ['chatbot-basic'],

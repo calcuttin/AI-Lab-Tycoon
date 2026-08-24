@@ -10,12 +10,14 @@ import {
   isAchievementUnlocked,
   evolveCompetitors,
   pickRandomEvent,
+  updateContractsForDay,
   updateChallengesForDay,
   useGameStore,
   type Employee,
   type Project,
   type ResearchNode,
 } from './gameStore';
+import { getInitialContracts } from '../data/contracts';
 
 describe('gameStore', () => {
   beforeEach(() => {
@@ -389,7 +391,15 @@ describe('gameStore', () => {
   });
 
   it('applies combined event effects atomically', () => {
-    const employee = useGameStore.getState().employees[0];
+    const employee: Employee = {
+      id: 'event-employee',
+      name: 'Event Employee',
+      role: 'engineer',
+      skills: { research: 1, development: 1, creativity: 1, management: 1 },
+      salary: 1000,
+      morale: 50,
+      traits: [],
+    };
     useGameStore.setState({
       money: 100,
       employees: [employee],
@@ -468,5 +478,26 @@ describe('gameStore', () => {
 
   it('evaluates room achievements from live office state', () => {
     expect(isAchievementUnlocked('first-room', useGameStore.getState())).toBe(true);
+  });
+
+  it('requires contract work before awarding its payout', () => {
+    const [contract] = getInitialContracts();
+    const activeContract = {
+      ...contract,
+      status: 'active' as const,
+      acceptedOnDay: 0,
+    };
+
+    const firstDay = updateContractsForDay([activeContract], 1);
+    expect(firstDay.contracts[0].status).toBe('active');
+    expect(firstDay.revenue).toBe(0);
+
+    const finalDay = updateContractsForDay(
+      [{ ...activeContract, progress: contract.workRequired - 1 }],
+      contract.workRequired,
+    );
+    expect(finalDay.contracts[0].status).toBe('completed');
+    expect(finalDay.revenue).toBe(contract.reward);
+    expect(finalDay.completedCount).toBe(1);
   });
 });
