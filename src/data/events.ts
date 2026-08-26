@@ -1,32 +1,34 @@
-const getSaveData = () => {
-  try {
-    return JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}');
-  } catch {
-    return {};
-  }
-};
+export interface EventGameState {
+  money: number;
+  reputation: number;
+  employees: unknown[];
+  projects: unknown[];
+  researchNodes: Array<{ completed?: boolean }>;
+  office: { size: string };
+  totalProjectsCompleted: number;
+  eventHistory: string[];
+}
 
-const getOfficeSize = () => getSaveData().office?.size || 'hacker_den';
-const getEmployeeCount = () => (getSaveData().employees || []).length;
-const getProjectCount = () => (getSaveData().projects || []).length;
-const getMoney = () => getSaveData().money || 0;
-const getReputation = () => getSaveData().reputation || 0;
-const getTotalProjectsCompleted = () => getSaveData().totalProjectsCompleted || 0;
-const getCompletedResearchCount = () =>
-  (getSaveData().researchNodes || []).filter((node: { completed?: boolean }) => node.completed).length;
-const getEventHistory = () => getSaveData().eventHistory || [];
-const hasSeenEvent = (id: string) => getEventHistory().includes(id);
+const getOfficeSize = (state: EventGameState) => state.office.size;
+const getEmployeeCount = (state: EventGameState) => state.employees.length;
+const getProjectCount = (state: EventGameState) => state.projects.length;
+const getMoney = (state: EventGameState) => state.money;
+const getReputation = (state: EventGameState) => state.reputation;
+const getTotalProjectsCompleted = (state: EventGameState) => state.totalProjectsCompleted;
+const getCompletedResearchCount = (state: EventGameState) =>
+  state.researchNodes.filter((node) => node.completed).length;
+const hasSeenEvent = (state: EventGameState, id: string) => state.eventHistory.includes(id);
 
-const isEarlyStage = () => getOfficeSize() === 'hacker_den';
-const isMidStage = () => ['small', 'medium'].includes(getOfficeSize());
-const isLateStage = () => ['large', 'campus'].includes(getOfficeSize());
+const isEarlyStage = (state: EventGameState) => getOfficeSize(state) === 'hacker_den';
+const isMidStage = (state: EventGameState) => ['small', 'medium'].includes(getOfficeSize(state));
+const isLateStage = (state: EventGameState) => ['large', 'campus'].includes(getOfficeSize(state));
 
 export interface GameEvent {
   id: string;
   title: string;
   description: string;
   probability: number;
-  triggerCondition?: () => boolean;
+  triggerCondition?: (state: EventGameState) => boolean;
   choices: {
     id: string;
     label: string;
@@ -50,7 +52,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "A flashy billionaire with a car that has doors that go 'like this' wants to invest. He's offering $50,000 but wants 10% of your company (reputation hit).",
     probability: 0.15,
-    triggerCondition: () => isEarlyStage() && getMoney() < 200000,
+    triggerCondition: (state) => isEarlyStage(state) && getMoney(state) < 200000,
     choices: [
       {
         id: 'accept',
@@ -72,7 +74,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Your lead architect wants to open-source your core algorithm. 'It's the right thing to do,' he says, barely hiding his disdain for proprietary software.",
     probability: 0.1,
-    triggerCondition: () => getCompletedResearchCount() >= 1,
+    triggerCondition: (state) => getCompletedResearchCount(state) >= 1,
     choices: [
       {
         id: 'accept',
@@ -94,7 +96,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Your AI accidentally tweeted something controversial. Monica from Raviga is calling. The press is outside. Gavin Belson is laughing somewhere.",
     probability: 0.08,
-    triggerCondition: () => getReputation() >= 30,
+    triggerCondition: (state) => getReputation(state) >= 30,
     choices: [
       {
         id: 'apologize',
@@ -122,7 +124,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Gavin Belson is offering your best engineers double their salary. 'It's business,' his assistant says with a smirk.",
     probability: 0.1,
-    triggerCondition: () => getEmployeeCount() >= 6,
+    triggerCondition: (state) => getEmployeeCount(state) >= 6,
     choices: [
       {
         id: 'match-offer',
@@ -150,7 +152,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Dinesh can't believe it - his code is famous! Your product demo has 10 million views. VCs are calling.",
     probability: 0.05,
-    triggerCondition: () => getTotalProjectsCompleted() >= 1,
+    triggerCondition: (state) => getTotalProjectsCompleted(state) >= 1,
     choices: [
       {
         id: 'capitalize',
@@ -172,7 +174,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "You've been invited to present at TechCrunch Disrupt! Erik Bachmann insists on coaching you. Do you accept?",
     probability: 0.12,
-    triggerCondition: () => isMidStage() && getReputation() >= 10,
+    triggerCondition: (state) => isMidStage(state) && getReputation(state) >= 10,
     choices: [
       {
         id: 'present',
@@ -200,7 +202,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "OmniCorp wants to acquire your lab for $500,000. Jared thinks it's too low. Monica thinks you should counter.",
     probability: 0.08,
-    triggerCondition: () => isLateStage() && getMoney() >= 250000,
+    triggerCondition: (state) => isLateStage(state) && getMoney(state) >= 250000,
     choices: [
       {
         id: 'accept',
@@ -228,7 +230,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Gilfoyle's 'optimal cooling solution' failed. Your server room is smoking. He's blaming Dinesh.",
     probability: 0.1,
-    triggerCondition: () => getCompletedResearchCount() >= 2,
+    triggerCondition: (state) => getCompletedResearchCount(state) >= 2,
     choices: [
       {
         id: 'cloud',
@@ -250,7 +252,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "The coffee machine is dead. Productivity has dropped 50%. Jared is distributing herbal tea, but no one is happy.",
     probability: 0.15,
-    triggerCondition: () => getEmployeeCount() >= 3,
+    triggerCondition: (state) => getEmployeeCount(state) >= 3,
     choices: [
       {
         id: 'premium',
@@ -278,7 +280,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "A mysterious LLC claims you're violating their patent on 'using computers to do stuff.' Their lawyers want $100,000.",
     probability: 0.08,
-    triggerCondition: () => getReputation() >= 20,
+    triggerCondition: (state) => getReputation(state) >= 20,
     choices: [
       {
         id: 'settle',
@@ -306,7 +308,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Dinesh and Gilfoyle are fighting over whose algorithm is better. Productivity has halted. They're both threatening to quit.",
     probability: 0.12,
-    triggerCondition: () => getEmployeeCount() >= 4,
+    triggerCondition: (state) => getEmployeeCount(state) >= 4,
     choices: [
       {
         id: 'dinesh',
@@ -334,7 +336,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Russ Hanneman has invited you to his exclusive 'Three Comma Club' party. It costs $10,000 to attend, but the networking could be valuable.",
     probability: 0.06,
-    triggerCondition: () => getMoney() >= 150000,
+    triggerCondition: (state) => getMoney(state) >= 150000,
     choices: [
       {
         id: 'attend',
@@ -356,7 +358,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Erik Bachmann has a 'revolutionary' idea: AI-powered blockchain NFTs for the metaverse. He wants you to pivot.",
     probability: 0.1,
-    triggerCondition: () => isEarlyStage() || isMidStage(),
+    triggerCondition: (state) => isEarlyStage(state) || isMidStage(state),
     choices: [
       {
         id: 'humor',
@@ -384,7 +386,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "A three-letter agency wants your AI for 'national security purposes.' The money is good, but... ethics?",
     probability: 0.07,
-    triggerCondition: () => isLateStage() && getReputation() >= 40,
+    triggerCondition: (state) => isLateStage(state) && getReputation(state) >= 40,
     choices: [
       {
         id: 'accept',
@@ -406,7 +408,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Jared is crying in the server room again. He says he's 'never felt more alive' and wants to organize a team retreat.",
     probability: 0.1,
-    triggerCondition: () => getEmployeeCount() >= 5,
+    triggerCondition: (state) => getEmployeeCount(state) >= 5,
     choices: [
       {
         id: 'retreat',
@@ -434,7 +436,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Your team is showing signs of burnout. Long hours, missed deadlines, and morale is dropping. Jared suggests mandatory time off.",
     probability: 0.12,
-    triggerCondition: () => getEmployeeCount() >= 8,
+    triggerCondition: (state) => getEmployeeCount(state) >= 8,
     choices: [
       {
         id: 'time-off',
@@ -462,7 +464,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Hooli just launched a product suspiciously similar to yours. Gavin Belson is on TV claiming they 'innovated first.'",
     probability: 0.09,
-    triggerCondition: () => getTotalProjectsCompleted() >= 3,
+    triggerCondition: (state) => getTotalProjectsCompleted(state) >= 3,
     choices: [
       {
         id: 'sue',
@@ -490,7 +492,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "TechCrunch wants to interview you about your AI lab. It's free publicity, but you'll need to prepare.",
     probability: 0.11,
-    triggerCondition: () => getReputation() >= 15,
+    triggerCondition: (state) => getReputation(state) >= 15,
     choices: [
       {
         id: 'accept',
@@ -518,7 +520,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "You're leaving the hacker den. The landlord wants a longer lease and a security deposit.",
     probability: 0.09,
-    triggerCondition: () => getOfficeSize() === 'small' && !hasSeenEvent('first-lease'),
+    triggerCondition: (state) => getOfficeSize(state) === 'small' && !hasSeenEvent(state, 'first-lease'),
     choices: [
       {
         id: 'sign',
@@ -546,7 +548,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'Your small office has a cramped IT closet. It hums ominously at night.',
     probability: 0.1,
-    triggerCondition: () => getOfficeSize() === 'small' && !hasSeenEvent('it-closet'),
+    triggerCondition: (state) => getOfficeSize(state) === 'small' && !hasSeenEvent(state, 'it-closet'),
     choices: [
       {
         id: 'upgrade-ventilation',
@@ -568,7 +570,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "Jared wants to hire an ops manager now that you're mid-size.",
     probability: 0.08,
-    triggerCondition: () => getOfficeSize() === 'medium' && !hasSeenEvent('ops-manager'),
+    triggerCondition: (state) => getOfficeSize(state) === 'medium' && !hasSeenEvent(state, 'ops-manager'),
     choices: [
       {
         id: 'hire',
@@ -590,7 +592,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "A big client requests a security audit before signing a mid-tier deal.",
     probability: 0.1,
-    triggerCondition: () => getOfficeSize() === 'medium' && getReputation() >= 20,
+    triggerCondition: (state) => getOfficeSize(state) === 'medium' && getReputation(state) >= 20,
     choices: [
       {
         id: 'audit',
@@ -612,7 +614,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "A Fortune 500 wants enterprise features now that you're in a large office.",
     probability: 0.09,
-    triggerCondition: () => getOfficeSize() === 'large' && getTotalProjectsCompleted() >= 3,
+    triggerCondition: (state) => getOfficeSize(state) === 'large' && getTotalProjectsCompleted(state) >= 3,
     choices: [
       {
         id: 'accept',
@@ -634,7 +636,7 @@ export const gameEvents: GameEvent[] = [
     description:
       "New regulations require a compliance team. Welcome to the big leagues.",
     probability: 0.08,
-    triggerCondition: () => getOfficeSize() === 'large' && getReputation() >= 35,
+    triggerCondition: (state) => getOfficeSize(state) === 'large' && getReputation(state) >= 35,
     choices: [
       {
         id: 'hire',
@@ -656,7 +658,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'Your campus grand opening is here. Press, investors, and competitors are watching.',
     probability: 0.07,
-    triggerCondition: () => getOfficeSize() === 'campus' && !hasSeenEvent('campus-launch'),
+    triggerCondition: (state) => getOfficeSize(state) === 'campus' && !hasSeenEvent(state, 'campus-launch'),
     choices: [
       {
         id: 'big-launch',
@@ -678,7 +680,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'Your campus traffic is out of control. The city wants a solution.',
     probability: 0.07,
-    triggerCondition: () => getOfficeSize() === 'campus' && getEmployeeCount() >= 15,
+    triggerCondition: (state) => getOfficeSize(state) === 'campus' && getEmployeeCount(state) >= 15,
     choices: [
       {
         id: 'shuttle',
@@ -700,7 +702,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'An accelerator invites you to demo now that you have real momentum.',
     probability: 0.08,
-    triggerCondition: () => isEarlyStage() && getProjectCount() >= 1 && !hasSeenEvent('demo-day'),
+    triggerCondition: (state) => isEarlyStage(state) && getProjectCount(state) >= 1 && !hasSeenEvent(state, 'demo-day'),
     choices: [
       {
         id: 'pitch',
@@ -722,7 +724,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'A consumer brand wants to slap your AI badge on their product.',
     probability: 0.07,
-    triggerCondition: () => isMidStage() && getReputation() >= 20 && !hasSeenEvent('brand-partnership'),
+    triggerCondition: (state) => isMidStage(state) && getReputation(state) >= 20 && !hasSeenEvent(state, 'brand-partnership'),
     choices: [
       {
         id: 'accept',
@@ -744,7 +746,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'Investors want a board seat in exchange for growth capital.',
     probability: 0.06,
-    triggerCondition: () => isMidStage() && getMoney() >= 150000 && !hasSeenEvent('board-seat'),
+    triggerCondition: (state) => isMidStage(state) && getMoney(state) >= 150000 && !hasSeenEvent(state, 'board-seat'),
     choices: [
       {
         id: 'accept',
@@ -766,7 +768,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'The press is speculating about an IPO. The hype is real.',
     probability: 0.05,
-    triggerCondition: () => isLateStage() && getReputation() >= 60 && !hasSeenEvent('ipo-rumor'),
+    triggerCondition: (state) => isLateStage(state) && getReputation(state) >= 60 && !hasSeenEvent(state, 'ipo-rumor'),
     choices: [
       {
         id: 'embrace',
@@ -788,7 +790,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'You are nominated for a major industry award in your category.',
     probability: 0.06,
-    triggerCondition: () => isLateStage() && getTotalProjectsCompleted() >= 5 && !hasSeenEvent('industry-award'),
+    triggerCondition: (state) => isLateStage(state) && getTotalProjectsCompleted(state) >= 5 && !hasSeenEvent(state, 'industry-award'),
     choices: [
       {
         id: 'campaign',
@@ -810,7 +812,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'A global GPU shortage slows training and drives up compute costs.',
     probability: 0.08,
-    triggerCondition: () => isMidStage() && !hasSeenEvent('gpu-shortage'),
+    triggerCondition: (state) => isMidStage(state) && !hasSeenEvent(state, 'gpu-shortage'),
     choices: [
       {
         id: 'pay-premium',
@@ -832,7 +834,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'New export controls restrict access to advanced chips.',
     probability: 0.06,
-    triggerCondition: () => isLateStage() && getCompletedResearchCount() >= 3 && !hasSeenEvent('export-controls'),
+    triggerCondition: (state) => isLateStage(state) && getCompletedResearchCount(state) >= 3 && !hasSeenEvent(state, 'export-controls'),
     choices: [
       {
         id: 'domestic',
@@ -854,7 +856,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'A new open-source model sets a surprising benchmark.',
     probability: 0.07,
-    triggerCondition: () => getCompletedResearchCount() >= 2 && !hasSeenEvent('open-source-sota'),
+    triggerCondition: (state) => getCompletedResearchCount(state) >= 2 && !hasSeenEvent(state, 'open-source-sota'),
     choices: [
       {
         id: 'adopt',
@@ -876,7 +878,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'A dataset used in training is found to contain sensitive data.',
     probability: 0.06,
-    triggerCondition: () => getReputation() >= 20 && !hasSeenEvent('data-leak'),
+    triggerCondition: (state) => getReputation(state) >= 20 && !hasSeenEvent(state, 'data-leak'),
     choices: [
       {
         id: 'purge',
@@ -898,7 +900,7 @@ export const gameEvents: GameEvent[] = [
     description:
       'New AI regulations require transparency reports.',
     probability: 0.06,
-    triggerCondition: () => isLateStage() && getReputation() >= 30 && !hasSeenEvent('regulatory-update'),
+    triggerCondition: (state) => isLateStage(state) && getReputation(state) >= 30 && !hasSeenEvent(state, 'regulatory-update'),
     choices: [
       {
         id: 'comply',

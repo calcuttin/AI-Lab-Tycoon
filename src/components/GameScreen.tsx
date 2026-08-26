@@ -22,6 +22,7 @@ import EmployeeTraining from './EmployeeTraining';
 import PoliciesPanel from './PoliciesPanel';
 import ContractsPanel from './ContractsPanel';
 import TutorialOverlay from './TutorialOverlay';
+import AchievementTracker from './AchievementTracker';
 
 export type View = 'projects' | 'research' | 'employees' | 'office' | 'market' | 'milestones' | 'statistics' | 'training' | 'policies' | 'contracts' | 'achievements';
 
@@ -115,6 +116,7 @@ export default function GameScreen() {
       </div>
       <EventModal />
       <StoryNotification />
+      <AchievementTracker />
       <NotificationToast />
       <ParticleEffects />
       <DailyReport />

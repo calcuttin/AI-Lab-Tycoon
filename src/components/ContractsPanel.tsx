@@ -1,60 +1,11 @@
-import { useState } from 'react';
 import { useGameStore } from '../store/gameStore';
-
-interface Contract {
-  id: string;
-  client: string;
-  title: string;
-  description: string;
-  reward: number;
-  deadline: number;
-  requiredSkills: {
-    development: number;
-    research: number;
-    creativity: number;
-  };
-  status: 'available' | 'active' | 'completed';
-}
-
-const availableContracts: Contract[] = [
-  {
-    id: 'contract-1',
-    client: 'TechCorp',
-    title: 'Build Enterprise Chatbot',
-    description: 'A corporate client needs a custom chatbot for customer service.',
-    reward: 25000,
-    deadline: 60,
-    requiredSkills: { development: 5, research: 2, creativity: 3 },
-    status: 'available',
-  },
-  {
-    id: 'contract-2',
-    client: 'StartupXYZ',
-    title: 'AI-Powered Analytics Dashboard',
-    description: 'Help a startup build an AI analytics tool.',
-    reward: 15000,
-    deadline: 45,
-    requiredSkills: { development: 4, research: 3, creativity: 4 },
-    status: 'available',
-  },
-  {
-    id: 'contract-3',
-    client: 'Research Institute',
-    title: 'ML Model for Data Analysis',
-    description: 'Academic research project requiring advanced ML capabilities.',
-    reward: 35000,
-    deadline: 90,
-    requiredSkills: { development: 3, research: 7, creativity: 2 },
-    status: 'available',
-  },
-];
+import type { Contract } from '../data/contracts';
 
 export default function ContractsPanel() {
   const employees = useGameStore((state) => state.employees);
-  const addMoney = useGameStore((state) => state.addMoney);
-  const completeContract = useGameStore((state) => state.completeContract);
-  const [contracts, setContracts] = useState<Contract[]>(availableContracts);
-  const [activeContract, setActiveContract] = useState<Contract | null>(null);
+  const contracts = useGameStore((state) => state.contracts);
+  const acceptContract = useGameStore((state) => state.acceptContract);
+  const activeContract = contracts.find((contract) => contract.status === 'active') ?? null;
 
   const canAcceptContract = (contract: Contract) => {
     const totalDev = employees.reduce((sum, e) => sum + e.skills.development, 0);
@@ -69,25 +20,7 @@ export default function ContractsPanel() {
   };
 
   const handleAcceptContract = (contractId: string) => {
-    const contract = contracts.find(c => c.id === contractId);
-    if (!contract || !canAcceptContract(contract)) return;
-
-    setContracts(prev => prev.map(c => 
-      c.id === contractId ? { ...c, status: 'active' as const } : c
-    ));
-    setActiveContract(contract);
-  };
-
-  const handleCompleteContract = (contractId: string) => {
-    const contract = contracts.find(c => c.id === contractId);
-    if (!contract) return;
-
-    addMoney(contract.reward);
-    completeContract();
-    setContracts(prev => prev.map(c => 
-      c.id === contractId ? { ...c, status: 'completed' as const } : c
-    ));
-    setActiveContract(null);
+    acceptContract(contractId);
   };
 
   return (
@@ -117,20 +50,20 @@ export default function ContractsPanel() {
               ${activeContract.reward.toLocaleString()}
             </div>
           </div>
-          <button
-            onClick={() => handleCompleteContract(activeContract.id)}
-            className="w-full py-3 rounded transition-all hover:scale-[1.02]"
+          <div
+            className="w-full py-3 rounded"
             style={{
-              background: 'linear-gradient(180deg, #22c55e 0%, #16a34a 100%)',
-              border: '4px solid #15803d',
+              background: '#0c1222',
+              border: '4px solid #475569',
               boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
               fontSize: 9,
               fontWeight: 'bold',
-              color: '#fff',
+              color: '#f59e0b',
+              textAlign: 'center',
             }}
           >
-            COMPLETE CONTRACT
-          </button>
+            WORK IN PROGRESS: {activeContract.progress} / {activeContract.workRequired} DAYS
+          </div>
         </div>
       )}
 
@@ -139,7 +72,7 @@ export default function ContractsPanel() {
         {contracts
           .filter(c => c.status === 'available')
           .map((contract) => {
-            const canAccept = canAcceptContract(contract);
+            const canAccept = canAcceptContract(contract) && !activeContract;
             return (
               <div
                 key={contract.id}

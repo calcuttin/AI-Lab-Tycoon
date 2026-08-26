@@ -2,12 +2,15 @@ import { create } from 'zustand';
 import { projectTypes } from '../data/projectTypes';
 import { gameEvents } from '../data/events';
 import { getInitialEmployees } from '../data/initialTeam';
-import type { GameEvent } from '../data/events';
+import type { EventGameState, GameEvent } from '../data/events';
 import { companyPhases, type CompanyPhaseId } from '../data/milestones';
 import { generateDailyChallenge, generateWeeklyChallenge, type Challenge, type ChallengeGoalType } from '../data/challenges';
 import { type RoomTypeId, getRoomTypeById, officeGridSizes, type OfficeSizeType, type RoomEffects } from '../data/roomTypes';
 import { type InstalledUpgrade, type OfficeSizeId, getUpgradeById, calculateTotalEffects, getLayoutById } from '../data/officeLayouts';
 import { playSound } from '../systems/audio';
+import { getInitialContracts, type Contract } from '../data/contracts';
+import { achievements } from '../data/achievements';
+import { storyMilestones } from '../data/characters';
 
 // Helper function to calculate slot-based upgrade bonuses
 export function calculateUpgradeBonuses(installedUpgrades: InstalledUpgrade[]): {
@@ -164,6 +167,14 @@ export interface ShippedProduct {
   unlockedAt: string;
 }
 
+export interface DailyLog {
+  date: string;
+  revenue: number;
+  expenses: number;
+  projectsCompleted: number;
+  events: string[];
+}
+
 export type FundingRound = 'none' | 'seed' | 'series_a' | 'series_b' | 'series_c' | 'ipo';
 
 type ProjectUpdateResult = {
@@ -240,6 +251,35 @@ type NotificationPayload = {
   type: 'success' | 'info' | 'warning' | 'error';
   duration: number;
 };
+
+export function updateContractsForDay(
+  contracts: Contract[],
+  newDaysPlayed: number,
+): { contracts: Contract[]; completedCount: number; revenue: number } {
+  let completedCount = 0;
+  let revenue = 0;
+
+  const updatedContracts = contracts.map((contract) => {
+    if (contract.status !== 'active' || contract.acceptedOnDay == null) return contract;
+
+    const elapsedDays = newDaysPlayed - contract.acceptedOnDay;
+    if (elapsedDays > contract.deadline) {
+      return { ...contract, status: 'failed' as const };
+    }
+
+    const progress = contract.progress + 1;
+    if (progress >= contract.workRequired) {
+      completedCount += 1;
+      revenue += contract.reward;
+      return { ...contract, progress, status: 'completed' as const };
+    }
+
+    return { ...contract, progress };
+  });
+
+  return { contracts: updatedContracts, completedCount, revenue };
+}
+
 export function computeCombinedBonuses(roomBonuses: RoomEffects, slotBonuses: SlotBonuses): CombinedBonuses {
   return {
     productivityBonus: (slotBonuses.productivity || 0) + (roomBonuses.productivityBonus || 0),
@@ -492,6 +532,7 @@ export function pickRandomEvent(
   activeEvent: GameEvent | null,
   eventHistory: string[],
   availableEvents: GameEvent[],
+  state: EventGameState,
   rng: () => number = Math.random,
 ): RandomEventResult {
   if (activeEvent) return { eventTriggered: false, event: null };
@@ -499,7 +540,7 @@ export function pickRandomEvent(
 
   const candidates = availableEvents.filter(e =>
     !eventHistory.includes(e.id) &&
-    (!e.triggerCondition || e.triggerCondition())
+    (!e.triggerCondition || e.triggerCondition(state))
   );
   if (candidates.length === 0) return { eventTriggered: false, event: null };
 
@@ -733,7 +774,7 @@ export function updateResearchForDay(
   return { researchNodes: unlockedResearch, newlyCompletedResearch };
 }
 
-interface GameState {
+export interface GameState {
   // Core resources
   money: number;
   reputation: number;
@@ -751,6 +792,7 @@ interface GameState {
   office: Office;
   competitors: Competitor[];
   shippedProducts: ShippedProduct[];
+  contracts: Contract[];
   policy: 'balanced' | 'crunch' | 'wellness';
   
   // Unlocked content
@@ -789,6 +831,10 @@ interface GameState {
   moraleHistory: number[];
   reputationHistory: number[];
   competitorNews: CompetitorNewsItem[];
+  unlockedAchievements: string[];
+  triggeredStoryMilestones: string[];
+  dailyLogs: DailyLog[];
+  monthlyReport: DailyLog | null;
 
   // Actions
   setGameSpeed: (speed: 0 | 1 | 2 | 4) => void;
@@ -817,14 +863,69 @@ interface GameState {
   removeSlotUpgrade: (slotId: string) => void;
   triggerEvent: (event: GameEvent) => void;
   handleEventChoice: (eventId: string, choiceId: string) => void;
+  unlockAchievement: (achievementId: string) => boolean;
+  claimStoryMilestone: (milestoneId: string, money: number, reputation: number) => boolean;
+  dismissMonthlyReport: () => void;
   trainEmployee: (employeeId: string, skill: keyof Employee['skills']) => void;
-  shipProduct: (projectName: string, dailyRevenue: number) => void;
-  completeContract: () => void;
+  acceptContract: (contractId: string) => boolean;
   addLegacyPoints: (amount: number) => void;
   prestigeReset: () => void;
   initializeGame: () => void;
   saveGame: () => void;
   loadGame: () => boolean;
+}
+
+export function isAchievementUnlocked(id: string, state: GameState): boolean {
+  const rooms = state.office.rooms;
+  const roomTypes = new Set(rooms.map((room) => room.typeId));
+
+  switch (id) {
+    case 'first-hire': return state.employees.length >= 1;
+    case 'first-project': return state.projects.length >= 1;
+    case 'first-completion': return state.totalProjectsCompleted >= 1;
+    case '100k': return state.money >= 100_000;
+    case '500k': return state.money >= 500_000;
+    case 'millionaire': return state.money >= 1_000_000;
+    case 'team-5': return state.employees.length >= 5;
+    case 'team-10': return state.employees.length >= 10;
+    case 'reputation-50': return state.reputation >= 50;
+    case 'reputation-100': return state.reputation >= 100;
+    case 'research-first': return state.researchNodes.some((node) => node.completed);
+    case 'office-upgrade': return state.office.size !== 'hacker_den';
+    case 'contract-master': return state.totalContractsCompleted >= 5;
+    case 'training-expert': return state.totalTrainingsDone >= 10;
+    case 'research-master':
+      return state.researchNodes.length > 0 && state.researchNodes.every((node) => node.completed);
+    case 'team-leader': return state.employees.length >= 20;
+    case 'first-product': return state.shippedProducts.length >= 1;
+    case 'five-products': return state.shippedProducts.length >= 5;
+    case 'daily-challenge': return state.totalDailyChallengesCompleted >= 1;
+    case 'weekly-challenge': return state.totalWeeklyChallengesCompleted >= 1;
+    case 'phase-growth': return state.companyPhase !== 'startup';
+    case 'phase-unicorn': return ['unicorn', 'empire', 'legend'].includes(state.companyPhase);
+    case 'phase-legend': return state.companyPhase === 'legend';
+    case 'days-30': return state.daysPlayed >= 30;
+    case 'days-100': return state.daysPlayed >= 100;
+    case 'projects-50': return state.totalProjectsCompleted >= 50;
+    case 'revenue-1m': return state.totalRevenueEver >= 1_000_000;
+    case 'prestige': return state.prestigeLevel >= 1;
+    case 'legacy-100': return state.legacyPoints >= 100;
+    case 'first-room': return rooms.length >= 1;
+    case 'rooms-5': return rooms.length >= 5;
+    case 'rooms-10': return rooms.length >= 10;
+    case 'rooms-20': return rooms.length >= 20;
+    case 'room-upgrade': return rooms.some((room) => room.level >= 2);
+    case 'room-max-level': return rooms.some((room) => room.level >= 3);
+    case 'room-dev-pit': return roomTypes.has('dev_pit');
+    case 'room-server': return roomTypes.has('server_room');
+    case 'room-gym': return roomTypes.has('gym');
+    case 'room-exec': return roomTypes.has('exec_office');
+    case 'room-game': return roomTypes.has('game_room');
+    case 'room-variety': return roomTypes.size >= 5;
+    case 'room-all-types': return roomTypes.size >= 13;
+    case 'campus-full': return state.office.size === 'campus' && rooms.length >= 20;
+    default: return false;
+  }
 }
 
 const initialDate = new Date(2024, 0, 1);
@@ -1052,6 +1153,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
   competitors: initialCompetitors,
   shippedProducts: [],
+  contracts: getInitialContracts(),
   policy: 'balanced',
   unlockedTechnologies: [],
   unlockedProjectTypes: ['chatbot-basic'],
@@ -1080,6 +1182,10 @@ export const useGameStore = create<GameState>((set, get) => ({
   moraleHistory: [],
   reputationHistory: [],
   competitorNews: [],
+  unlockedAchievements: [],
+  triggeredStoryMilestones: [],
+  dailyLogs: [],
+  monthlyReport: null,
 
   // Actions
   setGameSpeed: (speed) => set({ gameSpeed: speed, isPaused: speed === 0 }),
@@ -1125,8 +1231,35 @@ export const useGameStore = create<GameState>((set, get) => ({
       })
       .map((type) => type.id);
     
-    const financeResult = calculateDailyFinance(state, newDate, revenue);
-    const { totalRevenue, newMoney } = financeResult;
+    const newDaysPlayed = state.daysPlayed + 1;
+    const contractResult = updateContractsForDay(state.contracts, newDaysPlayed);
+    const newProducts = completedProjects.map((project) => ({
+      id: `product-${project.id}`,
+      name: project.name,
+      dailyRevenue: Math.max(
+        25,
+        Math.floor((project.quality * project.marketAppeal) / 2),
+      ),
+      unlockedAt: newDate.toISOString(),
+    }));
+    const dailyChallengeProgress = {
+      ...state.dailyChallengeProgress,
+      ship_products: (state.dailyChallengeProgress.ship_products ?? 0) + newProducts.length,
+      complete_contracts:
+        (state.dailyChallengeProgress.complete_contracts ?? 0) + contractResult.completedCount,
+    };
+    const weeklyChallengeProgress = {
+      ...state.weeklyChallengeProgress,
+      ship_products: (state.weeklyChallengeProgress.ship_products ?? 0) + newProducts.length,
+      complete_contracts:
+        (state.weeklyChallengeProgress.complete_contracts ?? 0) + contractResult.completedCount,
+    };
+    const financeResult = calculateDailyFinance(
+      state,
+      newDate,
+      revenue + contractResult.revenue,
+    );
+    const { totalRevenue, dailyExpenses, newMoney } = financeResult;
     
     // Update employee morale based on office upgrades and rooms
     const rng = Math.random;
@@ -1147,15 +1280,14 @@ export const useGameStore = create<GameState>((set, get) => ({
     const uniqueUnlockedTech = Array.from(new Set(updatedUnlockedTech));
     
     // Challenge progress (today's activity)
-    const newDaysPlayed = state.daysPlayed + 1;
     const avgMorale = updatedEmployees.length > 0
       ? updatedEmployees.reduce((s, e) => s + e.morale, 0) / updatedEmployees.length
       : 0;
     const challengeUpdate = updateChallengesForDay({
       dailyChallenge: state.dailyChallenge,
       weeklyChallenge: state.weeklyChallenge,
-      dailyChallengeProgress: state.dailyChallengeProgress,
-      weeklyChallengeProgress: state.weeklyChallengeProgress,
+      dailyChallengeProgress,
+      weeklyChallengeProgress,
       daysPlayed: state.daysPlayed,
       completedProjects: completedProjects.length,
       totalRevenue,
@@ -1210,6 +1342,24 @@ export const useGameStore = create<GameState>((set, get) => ({
     const competitorResult = evolveCompetitors(state.competitors, newDaysPlayed, rng);
     const normalizedCompetitors = competitorResult.competitors;
     const newCompetitorNews = [...competitorResult.news, ...state.competitorNews].slice(0, 20);
+    const dailyLog: DailyLog = {
+      date: newDate.toISOString(),
+      revenue: totalRevenue,
+      expenses: dailyExpenses,
+      projectsCompleted: completedProjects.length,
+      events: [],
+    };
+    const isMonthlyRollover = newDate.getDate() === 1 && state.dailyLogs.length > 0;
+    const monthlyReport = isMonthlyRollover
+      ? {
+          date: state.dailyLogs[0].date,
+          revenue: state.dailyLogs.reduce((sum, log) => sum + log.revenue, 0),
+          expenses: state.dailyLogs.reduce((sum, log) => sum + log.expenses, 0),
+          projectsCompleted: state.dailyLogs.reduce((sum, log) => sum + log.projectsCompleted, 0),
+          events: state.dailyLogs.flatMap((log) => log.events),
+        }
+      : state.monthlyReport;
+    const dailyLogs = isMonthlyRollover ? [dailyLog] : [...state.dailyLogs, dailyLog];
     
     set({
       currentDate: newDate,
@@ -1234,12 +1384,17 @@ export const useGameStore = create<GameState>((set, get) => ({
       companyPhase: nextPhase,
       competitors: normalizedCompetitors,
       competitorNews: newCompetitorNews,
+      contracts: contractResult.contracts,
+      shippedProducts: [...state.shippedProducts, ...newProducts],
       legacyPoints: state.legacyPoints + challengeLegacy,
+      totalContractsCompleted: state.totalContractsCompleted + contractResult.completedCount,
       totalDailyChallengesCompleted: state.totalDailyChallengesCompleted + (dailyCompleted ? 1 : 0),
       totalWeeklyChallengesCompleted: state.totalWeeklyChallengesCompleted + (weeklyCompleted ? 1 : 0),
       revenueHistory: [...state.revenueHistory, totalRevenue].slice(-30),
       moraleHistory: [...state.moraleHistory, updatedEmployees.length > 0 ? updatedEmployees.reduce((s, e) => s + e.morale, 0) / updatedEmployees.length : 0].slice(-30),
       reputationHistory: [...state.reputationHistory, newReputation].slice(-30),
+      dailyLogs,
+      monthlyReport,
     });
     
     // Show notification for completed projects
@@ -1276,6 +1431,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       updatedState.activeEvent,
       updatedState.eventHistory,
       gameEvents,
+      updatedState,
       rng
     );
     if (randomEvent.eventTriggered && randomEvent.event) {
@@ -1753,7 +1909,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     const state = get();
     if (state.activeEvent) return; // Don't trigger if event already active
     
-    if (event.triggerCondition && !event.triggerCondition()) return;
+    if (event.triggerCondition && !event.triggerCondition(state)) return;
     
     set({ activeEvent: event });
   },
@@ -1766,41 +1922,56 @@ export const useGameStore = create<GameState>((set, get) => ({
     const choice = event.choices.find(c => c.id === choiceId);
     if (!choice) return;
     
-    // Apply effects
-    if (choice.effects.money) {
-      state.addMoney(choice.effects.money);
-    }
-    if (choice.effects.reputation) {
-      state.addReputation(choice.effects.reputation);
-    }
-    if (choice.effects.researchPoints) {
-      set({ researchPoints: state.researchPoints + choice.effects.researchPoints });
-    }
-    if (choice.effects.unlockTech) {
-      set({ unlockedTechnologies: [...state.unlockedTechnologies, ...choice.effects.unlockTech] });
-    }
-    if (choice.effects.unlockProject) {
-      set({ unlockedProjectTypes: [...state.unlockedProjectTypes, ...choice.effects.unlockProject] });
-    }
-    if (choice.effects.fireEmployee && state.employees.length > 0) {
-      const randomEmployee = state.employees[Math.floor(Math.random() * state.employees.length)];
-      state.removeEmployee(randomEmployee.id);
-    }
-    if (choice.effects.boostMorale) {
-      // Boost morale for all employees
-      const updatedEmployees = state.employees.map(emp => ({
-        ...emp,
-        morale: Math.max(0, Math.min(100, emp.morale + choice.effects.boostMorale!)),
-      }));
-      set({ employees: updatedEmployees });
-    }
-    
-    // Close event and add to history
-    set({
+    const firedEmployeeId = choice.effects.fireEmployee && state.employees.length > 0
+      ? state.employees[Math.floor(Math.random() * state.employees.length)].id
+      : null;
+    const remainingEmployees = firedEmployeeId
+      ? state.employees.filter((employee) => employee.id !== firedEmployeeId)
+      : state.employees;
+    const employees = choice.effects.boostMorale
+      ? remainingEmployees.map((employee) => ({
+          ...employee,
+          morale: Math.max(0, Math.min(100, employee.morale + choice.effects.boostMorale!)),
+        }))
+      : remainingEmployees;
+
+    set((current) => ({
+      money: current.money + (choice.effects.money ?? 0),
+      reputation: current.reputation + (choice.effects.reputation ?? 0),
+      researchPoints: current.researchPoints + (choice.effects.researchPoints ?? 0),
+      unlockedTechnologies: Array.from(new Set([
+        ...current.unlockedTechnologies,
+        ...(choice.effects.unlockTech ?? []),
+      ])),
+      unlockedProjectTypes: Array.from(new Set([
+        ...current.unlockedProjectTypes,
+        ...(choice.effects.unlockProject ?? []),
+      ])),
+      employees,
       activeEvent: null,
-      eventHistory: [...state.eventHistory, eventId],
-    });
+      eventHistory: Array.from(new Set([...current.eventHistory, eventId])),
+    }));
   },
+
+  unlockAchievement: (achievementId) => {
+    if (get().unlockedAchievements.includes(achievementId)) return false;
+    set((current) => ({
+      unlockedAchievements: [...current.unlockedAchievements, achievementId],
+    }));
+    return true;
+  },
+
+  claimStoryMilestone: (milestoneId, money, reputation) => {
+    if (get().triggeredStoryMilestones.includes(milestoneId)) return false;
+    set((current) => ({
+      triggeredStoryMilestones: [...current.triggeredStoryMilestones, milestoneId],
+      money: current.money + money,
+      reputation: current.reputation + reputation,
+    }));
+    return true;
+  },
+
+  dismissMonthlyReport: () => set({ monthlyReport: null }),
   
   trainEmployee: (employeeId, skill) => {
     const state = get();
@@ -1843,32 +2014,37 @@ export const useGameStore = create<GameState>((set, get) => ({
     }
   },
   
-  shipProduct: (projectName, dailyRevenue) => {
+  acceptContract: (contractId) => {
     const state = get();
-    const product: ShippedProduct = {
-      id: `product-${Date.now()}`,
-      name: projectName,
-      dailyRevenue: Math.floor(dailyRevenue),
-      unlockedAt: state.currentDate.toISOString(),
-    };
-    const shipCount = (state.dailyChallengeProgress.ship_products ?? 0) + 1;
-    const weekShipCount = (state.weeklyChallengeProgress.ship_products ?? 0) + 1;
+    const contract = state.contracts.find((candidate) => candidate.id === contractId);
+    if (
+      !contract ||
+      contract.status !== 'available' ||
+      state.contracts.some((candidate) => candidate.status === 'active')
+    ) return false;
+
+    const skills = state.employees.reduce(
+      (totals, employee) => ({
+        development: totals.development + employee.skills.development,
+        research: totals.research + employee.skills.research,
+        creativity: totals.creativity + employee.skills.creativity,
+      }),
+      { development: 0, research: 0, creativity: 0 },
+    );
+    const meetsRequirements =
+      skills.development >= contract.requiredSkills.development &&
+      skills.research >= contract.requiredSkills.research &&
+      skills.creativity >= contract.requiredSkills.creativity;
+    if (!meetsRequirements) return false;
+
     set({
-      shippedProducts: [...state.shippedProducts, product],
-      dailyChallengeProgress: { ...state.dailyChallengeProgress, ship_products: shipCount },
-      weeklyChallengeProgress: { ...state.weeklyChallengeProgress, ship_products: weekShipCount },
+      contracts: state.contracts.map((candidate) =>
+        candidate.id === contractId
+          ? { ...candidate, status: 'active', acceptedOnDay: state.daysPlayed, progress: 0 }
+          : candidate
+      ),
     });
-  },
-  
-  completeContract: () => {
-    const state = get();
-    const contractCount = (state.dailyChallengeProgress.complete_contracts ?? 0) + 1;
-    const weekContractCount = (state.weeklyChallengeProgress.complete_contracts ?? 0) + 1;
-    set({
-      totalContractsCompleted: state.totalContractsCompleted + 1,
-      dailyChallengeProgress: { ...state.dailyChallengeProgress, complete_contracts: contractCount },
-      weeklyChallengeProgress: { ...state.weeklyChallengeProgress, complete_contracts: weekContractCount },
-    });
+    return true;
   },
   
   addLegacyPoints: (amount) => set((state) => ({ legacyPoints: state.legacyPoints + amount })),
@@ -1888,6 +2064,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       prestigeLevel: newPrestige,
       legacyPoints: newLegacy,
       money: Math.floor(100000 * bonusMultiplier),
+      unlockedAchievements: state.unlockedAchievements,
       dailyChallenge: generateDailyChallenge(0),
       weeklyChallenge: generateWeeklyChallenge(0),
     });
@@ -1917,6 +2094,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       totalDailyChallengesCompleted: state.totalDailyChallengesCompleted,
       totalWeeklyChallengesCompleted: state.totalWeeklyChallengesCompleted,
       shippedProducts: state.shippedProducts,
+      contracts: state.contracts,
       fundingRound: state.fundingRound,
       companyPhase: state.companyPhase,
       dailyChallenge: state.dailyChallenge,
@@ -1933,7 +2111,14 @@ export const useGameStore = create<GameState>((set, get) => ({
       revenueHistory: state.revenueHistory,
       moraleHistory: state.moraleHistory,
       reputationHistory: state.reputationHistory,
-      version: '1.0',
+      competitorNews: state.competitorNews,
+      revenueThisDay: state.revenueThisDay,
+      projectsCompletedThisDay: state.projectsCompletedThisDay,
+      unlockedAchievements: state.unlockedAchievements,
+      triggeredStoryMilestones: state.triggeredStoryMilestones,
+      dailyLogs: state.dailyLogs,
+      monthlyReport: state.monthlyReport,
+      version: '1.1',
     };
     localStorage.setItem('aiLabTycoonSave', JSON.stringify(saveData));
   },
@@ -1977,6 +2162,7 @@ export const useGameStore = create<GameState>((set, get) => ({
         activeEvent: null,
         totalProjectsCompleted: data.totalProjectsCompleted ?? 0,
         shippedProducts: data.shippedProducts ?? [],
+        contracts: data.contracts ?? getInitialContracts(),
         fundingRound: data.fundingRound ?? 'none',
         companyPhase: data.companyPhase ?? 'startup',
         dailyChallenge: data.dailyChallenge ?? generateDailyChallenge(daysPlayed),
@@ -2000,7 +2186,37 @@ export const useGameStore = create<GameState>((set, get) => ({
         moraleHistory: data.moraleHistory ?? [],
         reputationHistory: data.reputationHistory ?? [],
         competitorNews: data.competitorNews ?? [],
+        unlockedAchievements: data.unlockedAchievements ?? [],
+        triggeredStoryMilestones: data.triggeredStoryMilestones ?? [],
+        dailyLogs: data.dailyLogs ?? [],
+        monthlyReport: data.monthlyReport ?? null,
       });
+
+      const loadedState = get();
+      if (!Array.isArray(data.unlockedAchievements)) {
+        set({
+          unlockedAchievements: achievements
+            .filter((achievement) => isAchievementUnlocked(achievement.id, loadedState))
+            .map((achievement) => achievement.id),
+        });
+      }
+      if (!Array.isArray(data.triggeredStoryMilestones)) {
+        set({
+          triggeredStoryMilestones: storyMilestones
+            .filter((milestone) => {
+              const { type, value } = milestone.triggerCondition;
+              if (type === 'money') return loadedState.money >= value;
+              if (type === 'reputation') return loadedState.reputation >= value;
+              if (type === 'employees') return loadedState.employees.length >= value;
+              if (type === 'projects') return loadedState.totalProjectsCompleted >= value;
+              if (type === 'research') {
+                return loadedState.researchNodes.filter((node) => node.completed).length >= value;
+              }
+              return false;
+            })
+            .map((milestone) => milestone.id),
+        });
+      }
       
       return true;
     } catch (error) {
@@ -2036,6 +2252,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       },
       competitors: initialCompetitors,
       shippedProducts: [],
+      contracts: getInitialContracts(),
       policy: 'balanced',
       unlockedTechnologies: [],
       unlockedProjectTypes: ['chatbot-basic'],
@@ -2064,6 +2281,10 @@ export const useGameStore = create<GameState>((set, get) => ({
       moraleHistory: [],
       reputationHistory: [],
       competitorNews: [],
+      unlockedAchievements: [],
+      triggeredStoryMilestones: [],
+      dailyLogs: [],
+      monthlyReport: null,
     });
   },
 }));

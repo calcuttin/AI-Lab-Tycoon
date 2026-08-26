@@ -7,10 +7,9 @@ export default function StoryNotification() {
   const money = useGameStore((state) => state.money);
   const reputation = useGameStore((state) => state.reputation);
   const employees = useGameStore((state) => state.employees);
-  const addMoney = useGameStore((state) => state.addMoney);
-  const addReputation = useGameStore((state) => state.addReputation);
+  const triggeredMilestones = useGameStore((state) => state.triggeredStoryMilestones);
+  const claimStoryMilestone = useGameStore((state) => state.claimStoryMilestone);
 
-  const [triggeredMilestones, setTriggeredMilestones] = useState<string[]>([]);
   const [activeMilestone, setActiveMilestone] = useState<StoryMilestone | null>(null);
   const [showNotification, setShowNotification] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -38,20 +37,19 @@ export default function StoryNotification() {
       }
 
       if (shouldTrigger) {
-        setTriggeredMilestones((prev) => [...prev, milestone.id]);
+        const claimed = claimStoryMilestone(
+          milestone.id,
+          milestone.reward?.money ?? 0,
+          milestone.reward?.reputation ?? 0,
+        );
+        if (!claimed) continue;
         setActiveMilestone(milestone);
         setShowNotification(true);
         setTimeout(() => setIsVisible(true), 50);
-
-        // Apply rewards
-        if (milestone.reward) {
-          if (milestone.reward.money) addMoney(milestone.reward.money);
-          if (milestone.reward.reputation) addReputation(milestone.reward.reputation);
-        }
         break;
       }
     }
-  }, [money, reputation, employees.length, triggeredMilestones, addMoney, addReputation]);
+  }, [money, reputation, employees.length, triggeredMilestones, claimStoryMilestone]);
 
   const handleDismiss = () => {
     setIsVisible(false);

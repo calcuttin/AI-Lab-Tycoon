@@ -1,47 +1,15 @@
-import { useEffect, useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 
-interface DailyLog {
-  date: Date;
-  revenue: number;
-  expenses: number;
-  projectsCompleted: number;
-  events: string[];
-}
-
 export default function DailyReport() {
-  const currentDate = useGameStore((state) => state.currentDate);
   const employees = useGameStore((state) => state.employees);
-  const [logs, setLogs] = useState<DailyLog[]>([]);
-  const [showReport, setShowReport] = useState(false);
-  const [todayLog, setTodayLog] = useState<DailyLog | null>(null);
-
-  useEffect(() => {
-    // Check if it's a new day (month change triggers report)
-    const dayOfMonth = currentDate.getDate();
-    if (dayOfMonth === 1 && logs.length > 0) {
-      // Generate monthly report
-      const monthlyRevenue = logs.reduce((sum, log) => sum + log.revenue, 0);
-      const monthlyExpenses = logs.reduce((sum, log) => sum + log.expenses, 0);
-      const totalCompleted = logs.reduce((sum, log) => sum + log.projectsCompleted, 0);
-      
-      setTodayLog({
-        date: currentDate,
-        revenue: monthlyRevenue,
-        expenses: monthlyExpenses,
-        projectsCompleted: totalCompleted,
-        events: logs.flatMap(log => log.events),
-      });
-      setShowReport(true);
-      setLogs([]); // Reset for new month
-    }
-  }, [currentDate, logs]);
+  const todayLog = useGameStore((state) => state.monthlyReport);
+  const dismissMonthlyReport = useGameStore((state) => state.dismissMonthlyReport);
 
   const handleClose = () => {
-    setShowReport(false);
+    dismissMonthlyReport();
   };
 
-  if (!showReport || !todayLog) return null;
+  if (!todayLog) return null;
 
   const netIncome = todayLog.revenue - todayLog.expenses;
 
@@ -80,7 +48,7 @@ export default function DailyReport() {
               textShadow: '4px 4px 0 rgba(0,0,0,0.4)',
             }}
           >
-            {todayLog.date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toUpperCase()}
+            {new Date(todayLog.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toUpperCase()}
           </h2>
         </div>
 

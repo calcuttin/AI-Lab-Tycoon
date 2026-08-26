@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { companyPhases } from '../data/milestones';
 import type { ChallengeGoalType } from '../data/challenges';
@@ -24,10 +23,6 @@ export default function MilestonesPanel() {
   const prestigeLevel = useGameStore((state) => state.prestigeLevel);
   const legacyPoints = useGameStore((state) => state.legacyPoints);
   const prestigeReset = useGameStore((state) => state.prestigeReset);
-  const shipProduct = useGameStore((state) => state.shipProduct);
-
-  const [newProductName, setNewProductName] = useState('');
-  const [newProductRevenue, setNewProductRevenue] = useState('500');
 
   const safePhaseId = companyPhase && companyPhases.some((p) => p.id === companyPhase) ? companyPhase : 'startup';
   const phaseIndex = Math.max(0, companyPhases.findIndex((p) => p.id === safePhaseId));
@@ -35,15 +30,6 @@ export default function MilestonesPanel() {
   const nextPhase = phaseIndex >= 0 && phaseIndex < companyPhases.length - 1 ? companyPhases[phaseIndex + 1] : null;
   const completedResearch = Array.isArray(researchNodes) ? researchNodes.filter((n) => n?.completed).length : 0;
   const req = nextPhase?.requirement ?? {};
-
-  const handleShipProduct = () => {
-    const revenue = parseInt(newProductRevenue, 10);
-    if (newProductName.trim() && !isNaN(revenue) && revenue > 0) {
-      shipProduct(newProductName.trim(), revenue);
-      setNewProductName('');
-      setNewProductRevenue('500');
-    }
-  };
 
   const dailyProg = dailyChallenge ? Number(dailyChallengeProgress?.[dailyChallenge.goalType] ?? 0) : 0;
   const weeklyProg = weeklyChallenge ? Number(weeklyChallengeProgress?.[weeklyChallenge.goalType] ?? 0) : 0;
@@ -207,51 +193,8 @@ export default function MilestonesPanel() {
             ))}
           </ul>
         )}
-        <div className="flex gap-2 flex-wrap items-center">
-          <input
-            type="text"
-            placeholder="Product name"
-            value={newProductName}
-            onChange={(e) => setNewProductName(e.target.value)}
-            className="px-3 py-2 rounded border-2 flex-1 min-w-[120px]"
-            style={{
-              background: '#0c1222',
-              borderColor: '#475569',
-              color: '#fff',
-              fontFamily: 'var(--font-pixel)',
-              fontSize: 10,
-            }}
-          />
-          <input
-            type="number"
-            placeholder="Daily $"
-            value={newProductRevenue}
-            onChange={(e) => setNewProductRevenue(e.target.value)}
-            min={1}
-            className="px-3 py-2 rounded border-2 w-24"
-            style={{
-              background: '#0c1222',
-              borderColor: '#475569',
-              color: '#fff',
-              fontFamily: 'var(--font-pixel)',
-              fontSize: 10,
-            }}
-          />
-          <button
-            type="button"
-            onClick={handleShipProduct}
-            className="px-4 py-2 rounded font-bold transition-all hover:scale-[1.02]"
-            style={{
-              background: 'linear-gradient(180deg, #22c55e 0%, #16a34a 100%)',
-              border: '3px solid #15803d',
-              color: '#fff',
-              fontFamily: 'var(--font-pixel)',
-              fontSize: 9,
-              boxShadow: '3px 3px 0 rgba(0,0,0,0.3)',
-            }}
-          >
-            SHIP PRODUCT
-          </button>
+        <div style={{ fontSize: 8, color: '#94a3b8' }}>
+          Completed projects become products automatically. Daily revenue is based on project quality and market appeal.
         </div>
       </div>
 

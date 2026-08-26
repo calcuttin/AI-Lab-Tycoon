@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 
 interface TitleScreenProps {
-  onStartGame: () => void;
+  onNewGame: () => void;
+  onContinue: () => void;
 }
 
 /* ─── HBO Silicon Valley–style continuous panorama flyover ───
@@ -91,7 +92,8 @@ const eraLabels = [
 // The total camera travel distance
 const CAMERA_TRAVEL = PANORAMA_WIDTH - 800;
 
-export default function TitleScreen({ onStartGame }: TitleScreenProps) {
+export default function TitleScreen({ onNewGame, onContinue }: TitleScreenProps) {
+  const [hasSavedGame] = useState(() => Boolean(localStorage.getItem('aiLabTycoonSave')));
   const [phase, setPhase] = useState<'opening' | 'title' | 'menu'>('opening');
   const [titleVisible, setTitleVisible] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(false);
@@ -782,7 +784,7 @@ export default function TitleScreen({ onStartGame }: TitleScreenProps) {
           }}
         >
           <button
-            onClick={onStartGame}
+            onClick={onNewGame}
             style={{
               padding: '20px 52px', fontSize: 16, fontWeight: 'bold',
               fontFamily: "'Press Start 2P', 'Courier New', monospace",
@@ -796,20 +798,22 @@ export default function TitleScreen({ onStartGame }: TitleScreenProps) {
           >
             NEW GAME
           </button>
-          <button
-            onClick={() => { const saved = localStorage.getItem('aiLabTycoonSave'); if (saved) { onStartGame(); } else { alert('No saved game found!'); } }}
-            style={{
-              padding: '16px 40px', fontSize: 12, fontWeight: 'bold',
-              fontFamily: "'Press Start 2P', 'Courier New', monospace",
-              background: 'linear-gradient(180deg, #334155 0%, #1e293b 100%)',
-              color: '#94a3b8', border: '5px solid #475569', borderRadius: 10,
-              boxShadow: '5px 5px 0 #0f172a', cursor: 'pointer', transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.borderColor = '#64748b'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.borderColor = '#475569'; }}
-          >
-            CONTINUE
-          </button>
+          {hasSavedGame && (
+            <button
+              onClick={onContinue}
+              style={{
+                padding: '16px 40px', fontSize: 12, fontWeight: 'bold',
+                fontFamily: "'Press Start 2P', 'Courier New', monospace",
+                background: 'linear-gradient(180deg, #334155 0%, #1e293b 100%)',
+                color: '#94a3b8', border: '5px solid #475569', borderRadius: 10,
+                boxShadow: '5px 5px 0 #0f172a', cursor: 'pointer', transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.borderColor = '#64748b'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.borderColor = '#475569'; }}
+            >
+              CONTINUE
+            </button>
+          )}
         </div>
       )}
 

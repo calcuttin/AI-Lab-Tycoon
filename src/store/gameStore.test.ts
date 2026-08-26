@@ -7,14 +7,17 @@ import {
   getChallengeNotifications,
   getPhaseNotification,
   getProjectCompletionNotifications,
+  isAchievementUnlocked,
   evolveCompetitors,
   pickRandomEvent,
+  updateContractsForDay,
   updateChallengesForDay,
   useGameStore,
   type Employee,
   type Project,
   type ResearchNode,
 } from './gameStore';
+import { getInitialContracts } from '../data/contracts';
 
 describe('gameStore', () => {
   beforeEach(() => {
@@ -265,6 +268,7 @@ describe('gameStore', () => {
           choices: [],
         },
       ],
+      useGameStore.getState(),
       () => 0
     );
     expect(result.eventTriggered).toBe(true);
@@ -364,5 +368,167 @@ describe('gameStore', () => {
     ];
     const result = evolveCompetitors(competitors, 1, () => 1);
     expect(result.competitors[0].marketShare).toBeGreaterThan(competitors[0].marketShare);
+  });
+
+  it('evaluates event conditions against live state', () => {
+    useGameStore.setState({ money: 250_000 });
+    const result = pickRandomEvent(
+      null,
+      [],
+      [{
+        id: 'live-state-event',
+        title: 'Live state',
+        description: 'Uses the current store state',
+        probability: 1,
+        triggerCondition: (state) => state.money >= 200_000,
+        choices: [],
+      }],
+      useGameStore.getState(),
+      () => 0,
+    );
+
+    expect(result.event?.id).toBe('live-state-event');
+  });
+
+  it('applies combined event effects atomically', () => {
+    const employee: Employee = {
+      id: 'event-employee',
+      name: 'Event Employee',
+      role: 'engineer',
+      skills: { research: 1, development: 1, creativity: 1, management: 1 },
+      salary: 1000,
+      morale: 50,
+      traits: [],
+    };
+    useGameStore.setState({
+      money: 100,
+      employees: [employee],
+      activeEvent: {
+        id: 'combined-effects',
+        title: 'Combined effects',
+        description: 'Fires and boosts in one choice',
+        probability: 1,
+        choices: [{
+          id: 'choose',
+          label: 'Choose',
+          effects: {
+            money: 50,
+            fireEmployee: true,
+            boostMorale: 10,
+            unlockTech: ['tech-a'],
+            unlockProject: ['project-a'],
+          },
+        }],
+      },
+    });
+
+    useGameStore.getState().handleEventChoice('combined-effects', 'choose');
+    const state = useGameStore.getState();
+
+    expect(state.money).toBe(150);
+    expect(state.employees).toEqual([]);
+    expect(state.unlockedTechnologies).toContain('tech-a');
+    expect(state.unlockedProjectTypes).toContain('project-a');
+    expect(state.eventHistory).toContain('combined-effects');
+    expect(state.activeEvent).toBeNull();
+  });
+
+  it('persists achievement and story milestone progress', () => {
+    useGameStore.setState({
+      unlockedAchievements: ['100k'],
+      triggeredStoryMilestones: ['first-steps'],
+    });
+    useGameStore.getState().saveGame();
+    useGameStore.setState({
+      unlockedAchievements: [],
+      triggeredStoryMilestones: [],
+    });
+
+    useGameStore.getState().loadGame();
+
+    expect(useGameStore.getState().unlockedAchievements).toEqual(['100k']);
+    expect(useGameStore.getState().triggeredStoryMilestones).toEqual(['first-steps']);
+  });
+
+  it('silently backfills progress when loading a legacy save', () => {
+    useGameStore.setState({ money: 500_000, reputation: 50 });
+    useGameStore.getState().saveGame();
+    const legacySave = JSON.parse(localStorage.getItem('aiLabTycoonSave')!);
+    delete legacySave.unlockedAchievements;
+    delete legacySave.triggeredStoryMilestones;
+    legacySave.version = '1.0';
+    localStorage.setItem('aiLabTycoonSave', JSON.stringify(legacySave));
+
+    useGameStore.getState().loadGame();
+    const state = useGameStore.getState();
+
+    expect(state.money).toBe(500_000);
+    expect(state.unlockedAchievements).toContain('500k');
+    expect(state.triggeredStoryMilestones).toContain('half-million');
+    expect(state.triggeredStoryMilestones).toContain('reputation-50');
+  });
+
+  it('preserves achievement progress across prestige resets', () => {
+    useGameStore.setState({
+      unlockedAchievements: ['100k'],
+      totalProjectsCompleted: 10,
+      daysPlayed: 30,
+      totalRevenueEver: 100_000,
+    });
+
+    useGameStore.getState().prestigeReset();
+
+    expect(useGameStore.getState().unlockedAchievements).toContain('100k');
+  });
+
+  it('creates a monthly report when the month rolls over', () => {
+    useGameStore.setState({
+      currentDate: new Date(2024, 0, 31),
+      isPaused: false,
+      projects: [],
+      dailyLogs: [{
+        date: new Date(2024, 0, 31).toISOString(),
+        revenue: 400,
+        expenses: 100,
+        projectsCompleted: 2,
+        events: ['event-a'],
+      }],
+    });
+
+    useGameStore.getState().advanceDay();
+    const report = useGameStore.getState().monthlyReport;
+
+    expect(report).toMatchObject({
+      revenue: 400,
+      expenses: 100,
+      projectsCompleted: 2,
+      events: ['event-a'],
+    });
+    expect(useGameStore.getState().dailyLogs).toHaveLength(1);
+  });
+
+  it('evaluates room achievements from live office state', () => {
+    expect(isAchievementUnlocked('first-room', useGameStore.getState())).toBe(true);
+  });
+
+  it('requires contract work before awarding its payout', () => {
+    const [contract] = getInitialContracts();
+    const activeContract = {
+      ...contract,
+      status: 'active' as const,
+      acceptedOnDay: 0,
+    };
+
+    const firstDay = updateContractsForDay([activeContract], 1);
+    expect(firstDay.contracts[0].status).toBe('active');
+    expect(firstDay.revenue).toBe(0);
+
+    const finalDay = updateContractsForDay(
+      [{ ...activeContract, progress: contract.workRequired - 1 }],
+      contract.workRequired,
+    );
+    expect(finalDay.contracts[0].status).toBe('completed');
+    expect(finalDay.revenue).toBe(contract.reward);
+    expect(finalDay.completedCount).toBe(1);
   });
 });
