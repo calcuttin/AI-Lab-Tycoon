@@ -8,6 +8,9 @@ import { generateDailyChallenge, generateWeeklyChallenge, type Challenge, type C
 import { type RoomTypeId, getRoomTypeById, officeGridSizes, type OfficeSizeType, type RoomEffects } from '../data/roomTypes';
 import { type InstalledUpgrade, type OfficeSizeId, getUpgradeById, calculateTotalEffects, getLayoutById } from '../data/officeLayouts';
 import { playSound } from '../systems/audio';
+import { emitNotification, showNotification, triggerParticleEffect } from '../systems/feedback';
+import { computeProjectDailyProgress } from './projectProgress';
+import { BALANCE } from '../data/balance';
 import { getInitialContracts, type Contract } from '../data/contracts';
 import { achievements } from '../data/achievements';
 import { storyMilestones } from '../data/characters';
@@ -191,7 +194,7 @@ type ResearchUpdateResult = {
   newlyCompletedResearch: string[];
 };
 
-type CombinedBonuses = {
+export type CombinedBonuses = {
   productivityBonus: number;
   moraleBonus: number;
   researchBonus: number;
@@ -280,13 +283,13 @@ export function updateContractsForDay(
   return { contracts: updatedContracts, completedCount, revenue };
 }
 
-export function computeCombinedBonuses(roomBonuses: RoomEffects, slotBonuses: SlotBonuses): CombinedBonuses {
+export function computeCombinedBonuses(_roomBonuses: RoomEffects, slotBonuses: SlotBonuses): CombinedBonuses {
   return {
-    productivityBonus: (slotBonuses.productivity || 0) + (roomBonuses.productivityBonus || 0),
-    moraleBonus: (slotBonuses.morale || 0) + (roomBonuses.moraleBonus || 0),
-    researchBonus: (slotBonuses.research || 0) + (roomBonuses.researchBonus || 0),
-    reputationBonus: (slotBonuses.reputation || 0) + (roomBonuses.reputationBonus || 0),
-    burnoutReduction: Math.min(0.8, (slotBonuses.burnoutReduction || 0) + (roomBonuses.burnoutReduction || 0)),
+    productivityBonus: slotBonuses.productivity || 0,
+    moraleBonus: slotBonuses.morale || 0,
+    researchBonus: slotBonuses.research || 0,
+    reputationBonus: slotBonuses.reputation || 0,
+    burnoutReduction: Math.min(0.8, slotBonuses.burnoutReduction || 0),
   };
 }
 
@@ -611,58 +614,21 @@ export function updateProjectsForDay(
   const updatedProjects = state.projects
     .map(project => {
       const team = state.employees.filter(e => project.team.includes(e.id));
-      if (team.length === 0) return project; // No progress without team
+      if (team.length === 0) return project;
 
-      // Calculate team effectiveness
-      const totalDevSkill = team.reduce((sum, e) => sum + e.skills.development, 0);
-      const totalResSkill = team.reduce((sum, e) => sum + e.skills.research, 0);
-      const totalCreSkill = team.reduce((sum, e) => sum + e.skills.creativity, 0);
+      const progressPreview = computeProjectDailyProgress(
+        project,
+        team,
+        state.policy,
+        state.office.upgrades.computers,
+        combinedBonuses,
+        roomBonuses,
+      );
+      const progressGain = progressPreview.dailyProgress;
+      const qualityIncrease = progressPreview.qualityPerDay;
+
       const totalMgmtSkill = team.reduce((sum, e) => sum + e.skills.management, 0);
-      const avgMorale = team.reduce((sum, e) => sum + e.morale, 0) / team.length;
       const avgMgmt = totalMgmtSkill / team.length;
-
-      // Base progress from development + management (management reduces drag)
-      const baseOutput = totalDevSkill * 0.7 + totalMgmtSkill * 0.3;
-      let progressGain = Math.max(1, Math.floor(baseOutput / team.length));
-
-      // Morale bonus (high morale = faster work)
-      const moraleMultiplier = 0.5 + (avgMorale / 100) * 0.5; // 0.5x to 1.0x
-      progressGain = Math.floor(progressGain * moraleMultiplier);
-
-      // Policy effects
-      const policyProgressMultiplier =
-        state.policy === 'crunch' ? 1.2 : state.policy === 'wellness' ? 0.9 : 1;
-      progressGain = Math.floor(progressGain * policyProgressMultiplier);
-
-      // Low morale penalty
-      if (avgMorale < 40) {
-        progressGain = Math.max(1, Math.floor(progressGain * 0.85));
-      }
-
-      // Office upgrade bonuses
-      const computerBonus = state.office.upgrades.computers * 0.1; // 10% per level
-      progressGain = Math.floor(progressGain * (1 + computerBonus));
-
-      // Office upgrade productivity bonus (combined from rooms and slot upgrades)
-      if (combinedBonuses.productivityBonus) {
-        progressGain = Math.floor(progressGain * (1 + combinedBonuses.productivityBonus));
-      }
-
-      // Room teamwork bonus (improves team efficiency)
-      if (roomBonuses.teamworkBonus && team.length > 1) {
-        progressGain = Math.floor(progressGain * (1 + roomBonuses.teamworkBonus));
-      }
-
-      // Research skill helps with complex projects
-      if (project.complexity === 'complex' || project.complexity === 'revolutionary') {
-        const researchBonus = Math.floor(totalResSkill / team.length / 2);
-        progressGain += researchBonus;
-      }
-
-      // Creativity + research improves quality over time
-      const creativityBonus = totalCreSkill / team.length;
-      const researchQualityBonus = totalResSkill / team.length;
-      const qualityIncrease = Math.min(0.12, (creativityBonus + researchQualityBonus * 0.6) / 120);
 
       const newProgress = Math.min(project.progress + progressGain, project.maxProgress);
       const newQuality = Math.min(10, project.quality + qualityIncrease);
@@ -693,13 +659,16 @@ export function updateProjectsForDay(
         });
 
         // Enhanced revenue calculation
-        const baseRevenue = project.marketAppeal * 1000;
+        const baseRevenue = project.marketAppeal * BALANCE.projectRevenue.baseMultiplier;
         const qualityMultiplier = newQuality / 10;
-        const teamSizeBonus = 1 + (team.length * 0.05); // 5% per team member
+        const teamSizeBonus = 1 + (team.length * BALANCE.projectRevenue.teamSizeBonusPerMember);
         revenue += Math.floor(baseRevenue * qualityMultiplier * teamSizeBonus);
 
-        // Enhanced reputation gain
-        reputationGain += Math.floor(newQuality * 2 + project.marketAppeal + (team.length * 0.5));
+        reputationGain += Math.floor(
+          newQuality * BALANCE.projectRevenue.reputationPerQuality
+          + project.marketAppeal * BALANCE.projectRevenue.reputationPerAppeal
+          + (team.length * BALANCE.projectRevenue.reputationPerTeamMember),
+        );
 
         // Unlock new project types based on complexity
         if (project.complexity === 'revolutionary' && !state.unlockedProjectTypes.includes('agi')) {
@@ -878,6 +847,8 @@ export interface GameState {
 export function isAchievementUnlocked(id: string, state: GameState): boolean {
   const rooms = state.office.rooms;
   const roomTypes = new Set(rooms.map((room) => room.typeId));
+  const installedUpgrades = state.office.installedUpgrades ?? [];
+  const upgradeIds = new Set(installedUpgrades.map((upgrade) => upgrade.upgradeId));
 
   switch (id) {
     case 'first-hire': return state.employees.length >= 1;
@@ -910,20 +881,20 @@ export function isAchievementUnlocked(id: string, state: GameState): boolean {
     case 'revenue-1m': return state.totalRevenueEver >= 1_000_000;
     case 'prestige': return state.prestigeLevel >= 1;
     case 'legacy-100': return state.legacyPoints >= 100;
-    case 'first-room': return rooms.length >= 1;
-    case 'rooms-5': return rooms.length >= 5;
-    case 'rooms-10': return rooms.length >= 10;
-    case 'rooms-20': return rooms.length >= 20;
-    case 'room-upgrade': return rooms.some((room) => room.level >= 2);
-    case 'room-max-level': return rooms.some((room) => room.level >= 3);
-    case 'room-dev-pit': return roomTypes.has('dev_pit');
-    case 'room-server': return roomTypes.has('server_room');
-    case 'room-gym': return roomTypes.has('gym');
-    case 'room-exec': return roomTypes.has('exec_office');
-    case 'room-game': return roomTypes.has('game_room');
-    case 'room-variety': return roomTypes.size >= 5;
-    case 'room-all-types': return roomTypes.size >= 13;
-    case 'campus-full': return state.office.size === 'campus' && rooms.length >= 20;
+    case 'first-room': return installedUpgrades.length >= 1;
+    case 'rooms-5': return installedUpgrades.length >= 5;
+    case 'rooms-10': return installedUpgrades.length >= 10;
+    case 'rooms-20': return installedUpgrades.length >= 20;
+    case 'room-upgrade': return installedUpgrades.some((upgrade) => upgrade.level >= 2);
+    case 'room-max-level': return installedUpgrades.some((upgrade) => upgrade.level >= 3);
+    case 'room-dev-pit': return upgradeIds.has('basic_desks') || roomTypes.has('dev_pit');
+    case 'room-server': return upgradeIds.has('server_room') || upgradeIds.has('server_closet') || roomTypes.has('server_room');
+    case 'room-gym': return upgradeIds.has('gym_corner') || upgradeIds.has('full_gym') || roomTypes.has('gym');
+    case 'room-exec': return upgradeIds.has('exec_office') || roomTypes.has('exec_office');
+    case 'room-game': return upgradeIds.has('game_corner') || roomTypes.has('game_room');
+    case 'room-variety': return new Set(installedUpgrades.map((upgrade) => upgrade.upgradeId)).size >= 5;
+    case 'room-all-types': return new Set(installedUpgrades.map((upgrade) => upgrade.upgradeId)).size >= 8;
+    case 'campus-full': return state.office.size === 'campus' && installedUpgrades.length >= 8;
     default: return false;
   }
 }
@@ -1237,8 +1208,8 @@ export const useGameStore = create<GameState>((set, get) => ({
       id: `product-${project.id}`,
       name: project.name,
       dailyRevenue: Math.max(
-        25,
-        Math.floor((project.quality * project.marketAppeal) / 2),
+        BALANCE.passiveIncome.minDailyRevenue,
+        Math.floor((project.quality * project.marketAppeal) / BALANCE.passiveIncome.qualityAppealDivisor),
       ),
       unlockedAt: newDate.toISOString(),
     }));
@@ -1313,7 +1284,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       state.weeklyChallenge
     );
     challengeNotifications.forEach((detail) => {
-      window.dispatchEvent(new CustomEvent('showNotification', { detail }));
+      emitNotification(detail);
     });
     
     // Company phase check (reputation from phase reward added to challengeRep below)
@@ -1332,7 +1303,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     const phaseRepBonus = phaseTransition.phaseRepBonus;
     const phaseNotification = getPhaseNotification(phaseTransition.phaseName);
     if (phaseNotification) {
-      window.dispatchEvent(new CustomEvent('showNotification', { detail: phaseNotification }));
+      emitNotification(phaseNotification);
     }
     // Add room reputation bonus
     const roomReputationGain = combinedBonuses.reputationBonus ?? 0;
@@ -1401,28 +1372,22 @@ export const useGameStore = create<GameState>((set, get) => ({
     if (completedProjects.length > 0) {
       const projectNotifications = getProjectCompletionNotifications(completedProjects);
       projectNotifications.forEach((detail) => {
-        window.dispatchEvent(new CustomEvent('showNotification', { detail }));
+        emitNotification(detail);
       });
       // Trigger celebration particle effects and audio
-      window.dispatchEvent(new CustomEvent('particleEffect', {
-        detail: { type: 'celebration', x: window.innerWidth / 2, y: window.innerHeight / 3 },
-      }));
+      triggerParticleEffect('celebration', window.innerWidth / 2, window.innerHeight / 3);
       playSound('success');
     }
 
     // Sound & particles for challenge completion
     if (dailyCompleted || weeklyCompleted) {
-      window.dispatchEvent(new CustomEvent('particleEffect', {
-        detail: { type: 'reputation', x: window.innerWidth / 2, y: 50 },
-      }));
+      triggerParticleEffect('reputation', window.innerWidth / 2, 50);
       playSound('levelup');
     }
 
     // Money particles when revenue is positive
     if (totalRevenue > 0) {
-      window.dispatchEvent(new CustomEvent('particleEffect', {
-        detail: { type: 'money', x: 200, y: 30 },
-      }));
+      triggerParticleEffect('money', 200, 30);
     }
     
     // Check for random events (only if no active event)
@@ -1437,6 +1402,8 @@ export const useGameStore = create<GameState>((set, get) => ({
     if (randomEvent.eventTriggered && randomEvent.event) {
       updatedState.triggerEvent(randomEvent.event);
     }
+
+    get().saveGame();
   },
   
   addMoney: (amount) => set((state) => ({ money: state.money + amount })),
@@ -1592,9 +1559,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     
     // Check if player can afford it
     if (state.money < roomType.baseCost) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: `Not enough money! Need $${roomType.baseCost.toLocaleString()}`, type: 'error' },
-      }));
+      showNotification(`Not enough money! Need $${roomType.baseCost.toLocaleString()}`, 'error');
       return false;
     }
     
@@ -1607,18 +1572,14 @@ export const useGameStore = create<GameState>((set, get) => ({
         return currentSizeIndex >= reqIndex;
       });
       if (!meetsSize) {
-        window.dispatchEvent(new CustomEvent('showNotification', {
-          detail: { message: `Requires ${roomType.requirements.officeSize[0]} office or larger`, type: 'error' },
-        }));
+        showNotification(`Requires ${roomType.requirements.officeSize[0]} office or larger`, 'error');
         return false;
       }
     }
     
     // Check employee requirement
     if (roomType.requirements?.minEmployees && state.employees.length < roomType.requirements.minEmployees) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: `Requires at least ${roomType.requirements.minEmployees} employees`, type: 'error' },
-      }));
+      showNotification(`Requires at least ${roomType.requirements.minEmployees} employees`, 'error');
       return false;
     }
     
@@ -1626,9 +1587,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     if (roomType.maxPerOffice) {
       const existingCount = state.office.rooms.filter(r => r.typeId === typeId).length;
       if (existingCount >= roomType.maxPerOffice) {
-        window.dispatchEvent(new CustomEvent('showNotification', {
-          detail: { message: `Maximum ${roomType.maxPerOffice} ${roomType.name}(s) per office`, type: 'error' },
-        }));
+        showNotification(`Maximum ${roomType.maxPerOffice} ${roomType.name}(s) per office`, 'error');
         return false;
       }
     }
@@ -1637,9 +1596,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     if (gridX < 0 || gridY < 0 ||
         gridX + roomType.size.width > state.office.gridWidth ||
         gridY + roomType.size.height > state.office.gridHeight) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: 'Room does not fit in that location', type: 'error' },
-      }));
+      showNotification('Room does not fit in that location', 'error');
       return false;
     }
     
@@ -1658,9 +1615,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     for (let dx = 0; dx < roomType.size.width; dx++) {
       for (let dy = 0; dy < roomType.size.height; dy++) {
         if (occupiedCells.has(`${gridX + dx},${gridY + dy}`)) {
-          window.dispatchEvent(new CustomEvent('showNotification', {
-            detail: { message: 'Space is already occupied', type: 'error' },
-          }));
+          showNotification('Space is already occupied', 'error');
           return false;
         }
       }
@@ -1684,9 +1639,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       },
     }));
     
-    window.dispatchEvent(new CustomEvent('showNotification', {
-      detail: { message: `${roomType.name} placed!`, type: 'success' },
-    }));
+    showNotification(`${roomType.name} placed!`, 'success');
     
     return true;
   },
@@ -1707,9 +1660,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       },
     }));
     
-    window.dispatchEvent(new CustomEvent('showNotification', {
-      detail: { message: `Room removed. Refunded $${refund.toLocaleString()}`, type: 'info' },
-    }));
+    showNotification(`Room removed. Refunded $${refund.toLocaleString()}`, 'info');
   },
   
   upgradeRoom: (roomId) => {
@@ -1719,24 +1670,18 @@ export const useGameStore = create<GameState>((set, get) => ({
     
     const roomType = getRoomTypeById(room.typeId);
     if (!roomType || !roomType.upgradable) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: 'This room cannot be upgraded', type: 'error' },
-      }));
+      showNotification('This room cannot be upgraded', 'error');
       return false;
     }
     
     if (room.level >= 3) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: 'Room is already at maximum level', type: 'error' },
-      }));
+      showNotification('Room is already at maximum level', 'error');
       return false;
     }
     
     const upgradeCost = Math.floor(roomType.baseCost * (room.level * 0.75));
     if (state.money < upgradeCost) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: `Not enough money! Need $${upgradeCost.toLocaleString()}`, type: 'error' },
-      }));
+      showNotification(`Not enough money! Need $${upgradeCost.toLocaleString()}`, 'error');
       return false;
     }
     
@@ -1750,9 +1695,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       },
     }));
     
-    window.dispatchEvent(new CustomEvent('showNotification', {
-      detail: { message: `${roomType.name} upgraded to level ${room.level + 1}!`, type: 'success' },
-    }));
+    showNotification(`${roomType.name} upgraded to level ${room.level + 1}!`, 'success');
     
     return true;
   },
@@ -1765,42 +1708,32 @@ export const useGameStore = create<GameState>((set, get) => ({
     
     const slot = layout.slots.find(s => s.id === slotId);
     if (!slot) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: 'Invalid slot', type: 'error' },
-      }));
+      showNotification('Invalid slot', 'error');
       return false;
     }
     
     const upgrade = getUpgradeById(upgradeId);
     if (!upgrade) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: 'Invalid upgrade', type: 'error' },
-      }));
+      showNotification('Invalid upgrade', 'error');
       return false;
     }
     
     // Check if slot type matches
     if (upgrade.slotType !== slot.type) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: `This upgrade doesn't fit in a ${slot.type} slot`, type: 'error' },
-      }));
+      showNotification(`This upgrade doesn't fit in a ${slot.type} slot`, 'error');
       return false;
     }
     
     // Check if already installed in this slot
     const existingUpgrade = state.office.installedUpgrades.find(u => u.slotId === slotId);
     if (existingUpgrade) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: 'Slot already has an upgrade. Remove it first.', type: 'error' },
-      }));
+      showNotification('Slot already has an upgrade. Remove it first.', 'error');
       return false;
     }
     
     // Check cost
     if (state.money < upgrade.cost) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: `Not enough money! Need $${upgrade.cost.toLocaleString()}`, type: 'error' },
-      }));
+      showNotification(`Not enough money! Need $${upgrade.cost.toLocaleString()}`, 'error');
       return false;
     }
     
@@ -1810,9 +1743,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       const currentIndex = sizeOrder.indexOf(state.office.size);
       const requiredIndex = Math.min(...upgrade.requiresOffice.map(s => sizeOrder.indexOf(s)));
       if (currentIndex < requiredIndex) {
-        window.dispatchEvent(new CustomEvent('showNotification', {
-          detail: { message: `Requires ${upgrade.requiresOffice[0]} office or larger`, type: 'error' },
-        }));
+        showNotification(`Requires ${upgrade.requiresOffice[0]} office or larger`, 'error');
         return false;
       }
     }
@@ -1832,9 +1763,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       },
     }));
     
-    window.dispatchEvent(new CustomEvent('showNotification', {
-      detail: { message: `${upgrade.name} installed!`, type: 'success' },
-    }));
+    showNotification(`${upgrade.name} installed!`, 'success');
     
     return true;
   },
@@ -1843,9 +1772,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     const state = get();
     const installed = state.office.installedUpgrades.find(u => u.slotId === slotId);
     if (!installed) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: 'No upgrade installed in this slot', type: 'error' },
-      }));
+      showNotification('No upgrade installed in this slot', 'error');
       return false;
     }
     
@@ -1853,17 +1780,13 @@ export const useGameStore = create<GameState>((set, get) => ({
     if (!upgrade) return false;
     
     if (installed.level >= upgrade.maxLevel) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: 'Already at maximum level', type: 'error' },
-      }));
+      showNotification('Already at maximum level', 'error');
       return false;
     }
     
     const upgradeCost = Math.floor(upgrade.cost * (installed.level * 0.6));
     if (state.money < upgradeCost) {
-      window.dispatchEvent(new CustomEvent('showNotification', {
-        detail: { message: `Not enough money! Need $${upgradeCost.toLocaleString()}`, type: 'error' },
-      }));
+      showNotification(`Not enough money! Need $${upgradeCost.toLocaleString()}`, 'error');
       return false;
     }
     
@@ -1877,9 +1800,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       },
     }));
     
-    window.dispatchEvent(new CustomEvent('showNotification', {
-      detail: { message: `${upgrade.name} upgraded to level ${installed.level + 1}!`, type: 'success' },
-    }));
+    showNotification(`${upgrade.name} upgraded to level ${installed.level + 1}!`, 'success');
     
     return true;
   },
@@ -1900,9 +1821,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       },
     }));
     
-    window.dispatchEvent(new CustomEvent('showNotification', {
-      detail: { message: `Upgrade removed. Refunded $${refund.toLocaleString()}`, type: 'info' },
-    }));
+    showNotification(`Upgrade removed. Refunded $${refund.toLocaleString()}`, 'info');
   },
   
   triggerEvent: (event) => {
@@ -2068,9 +1987,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       dailyChallenge: generateDailyChallenge(0),
       weeklyChallenge: generateWeeklyChallenge(0),
     });
-    window.dispatchEvent(new CustomEvent('showNotification', {
-      detail: { message: `🔄 Prestige! +${legacyGain} Legacy. New run with ${Math.floor((bonusMultiplier - 1) * 100)}% cash bonus.`, type: 'success', duration: 6000 },
-    }));
+    showNotification(`🔄 Prestige! +${legacyGain} Legacy. New run with ${Math.floor((bonusMultiplier - 1) * 100)}% cash bonus.`, 'success', 6000);
   },
   
   saveGame: () => {
@@ -2118,7 +2035,8 @@ export const useGameStore = create<GameState>((set, get) => ({
       triggeredStoryMilestones: state.triggeredStoryMilestones,
       dailyLogs: state.dailyLogs,
       monthlyReport: state.monthlyReport,
-      version: '1.1',
+      version: '1.2',
+      savedAt: new Date().toISOString(),
     };
     localStorage.setItem('aiLabTycoonSave', JSON.stringify(saveData));
   },
@@ -2144,10 +2062,8 @@ export const useGameStore = create<GameState>((set, get) => ({
           size: data.office?.size ?? 'hacker_den',
           upgrades: data.office?.upgrades ?? { computers: 0, coffeeMachines: 0, serverRacks: 0, meetingRooms: 0, napPods: 0 },
           rent: data.office?.rent ?? 500,
-          // Backward compatibility: add rooms if missing
-          rooms: data.office?.rooms ?? [
-            { id: 'room-1', typeId: 'dev_pit' as RoomTypeId, gridX: 0, gridY: 0, level: 1, condition: 100 },
-          ],
+          // Legacy grid rooms are preserved for old saves but no longer seeded by default.
+          rooms: data.office?.rooms ?? [],
           gridWidth: data.office?.gridWidth ?? officeGridSizes[(data.office?.size ?? 'hacker_den') as OfficeSizeType].width,
           gridHeight: data.office?.gridHeight ?? officeGridSizes[(data.office?.size ?? 'hacker_den') as OfficeSizeType].height,
           // Backward compatibility: add installedUpgrades if missing
@@ -2241,9 +2157,7 @@ export const useGameStore = create<GameState>((set, get) => ({
         size: 'hacker_den',
         upgrades: { computers: 0, coffeeMachines: 0, serverRacks: 0, meetingRooms: 0, napPods: 0 },
         rent: 500,
-        rooms: [
-          { id: 'room-1', typeId: 'dev_pit', gridX: 0, gridY: 0, level: 1, condition: 100 },
-        ],
+        rooms: [],
         gridWidth: officeGridSizes.hacker_den.width,
         gridHeight: officeGridSizes.hacker_den.height,
         installedUpgrades: [

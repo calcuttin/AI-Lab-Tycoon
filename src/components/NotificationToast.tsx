@@ -1,38 +1,21 @@
 import { useEffect, useState } from 'react';
+import { subscribeToNotifications, type NotificationPayload } from '../systems/feedback';
 
-interface Notification {
+interface Notification extends NotificationPayload {
   id: string;
-  message: string;
-  type: 'success' | 'info' | 'warning' | 'error';
-  duration?: number;
 }
-
-let notificationIdCounter = 0;
 
 export default function NotificationToast() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   useEffect(() => {
-    // Listen for custom notification events
-    const handleNotification = (e: CustomEvent<Omit<Notification, 'id'>>) => {
-      const notification: Notification = {
-        id: `notif-${notificationIdCounter++}`,
-        ...e.detail,
-        duration: e.detail.duration || 3000,
-      };
-      
+    return subscribeToNotifications((notification) => {
       setNotifications((prev) => [...prev, notification]);
-      
-      setTimeout(() => {
-        setNotifications((prev) => prev.filter((n) => n.id !== notification.id));
-      }, notification.duration);
-    };
 
-    window.addEventListener('showNotification' as any, handleNotification as EventListener);
-    
-    return () => {
-      window.removeEventListener('showNotification' as any, handleNotification as EventListener);
-    };
+      window.setTimeout(() => {
+        setNotifications((prev) => prev.filter((entry) => entry.id !== notification.id));
+      }, notification.duration ?? 3000);
+    });
   }, []);
 
   if (notifications.length === 0) return null;
@@ -51,9 +34,9 @@ export default function NotificationToast() {
           warning: { bg: '#f59e0b', border: '#b45309', text: '#fff' },
           error: { bg: '#ef4444', border: '#b91c1c', text: '#fff' },
         };
-        
+
         const color = colors[notif.type];
-        
+
         return (
           <div
             key={notif.id}
@@ -75,7 +58,7 @@ export default function NotificationToast() {
           </div>
         );
       })}
-      
+
       <style>{`
         @keyframes slideInRight {
           from {
@@ -92,10 +75,4 @@ export default function NotificationToast() {
   );
 }
 
-// Helper function to show notifications
-export const showNotification = (message: string, type: Notification['type'] = 'info', duration?: number) => {
-  const event = new CustomEvent('showNotification', {
-    detail: { message, type, duration },
-  });
-  window.dispatchEvent(event);
-};
+export { showNotification } from '../systems/feedback';

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { storyMilestones, getCharacter } from '../data/characters';
 import type { StoryMilestone } from '../data/characters';
@@ -7,6 +7,10 @@ export default function StoryNotification() {
   const money = useGameStore((state) => state.money);
   const reputation = useGameStore((state) => state.reputation);
   const employees = useGameStore((state) => state.employees);
+  const totalProjectsCompleted = useGameStore((state) => state.totalProjectsCompleted);
+  const completedResearchCount = useGameStore(
+    (state) => state.researchNodes.filter((node) => node.completed).length,
+  );
   const triggeredMilestones = useGameStore((state) => state.triggeredStoryMilestones);
   const claimStoryMilestone = useGameStore((state) => state.claimStoryMilestone);
 
@@ -32,6 +36,12 @@ export default function StoryNotification() {
         case 'employees':
           shouldTrigger = employees.length >= value;
           break;
+        case 'projects':
+          shouldTrigger = totalProjectsCompleted >= value;
+          break;
+        case 'research':
+          shouldTrigger = completedResearchCount >= value;
+          break;
         default:
           shouldTrigger = false;
       }
@@ -49,7 +59,20 @@ export default function StoryNotification() {
         break;
       }
     }
-  }, [money, reputation, employees.length, triggeredMilestones, claimStoryMilestone]);
+  }, [money, reputation, employees.length, totalProjectsCompleted, completedResearchCount, triggeredMilestones, claimStoryMilestone]);
+
+  const celebrationParticles = useMemo(
+    () =>
+      Array.from({ length: 30 }, (_, index) => ({
+        id: index,
+        left: `${(index * 17) % 100}%`,
+        top: `${(index * 23) % 100}%`,
+        color: ['#f59e0b', '#22c55e', '#0ea5e9', '#ef4444'][index % 4],
+        duration: 2 + (index % 3) * 0.5,
+        delay: (index % 5) * 0.1,
+      })),
+    [],
+  );
 
   const handleDismiss = () => {
     setIsVisible(false);
@@ -76,20 +99,20 @@ export default function StoryNotification() {
     >
       {/* Celebration particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 30 }).map((_, i) => (
+        {celebrationParticles.map((particle) => (
           <div
-            key={i}
+            key={particle.id}
             className="absolute"
             style={{
               width: 8,
               height: 8,
-              background: ['#f59e0b', '#22c55e', '#0ea5e9', '#ef4444'][i % 4],
+              background: particle.color,
               borderRadius: '50%',
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: particle.left,
+              top: particle.top,
               opacity: 0.8,
-              animation: `celebrate ${2 + Math.random() * 2}s ease-out forwards`,
-              animationDelay: `${Math.random() * 0.5}s`,
+              animation: `celebrate ${particle.duration}s ease-out forwards`,
+              animationDelay: `${particle.delay}s`,
             }}
           />
         ))}
