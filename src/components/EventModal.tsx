@@ -1,6 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { getCharacter } from '../data/characters';
+
+function buildEventParticles(seed: string) {
+  let value = seed.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0) % 2147483647;
+  if (value <= 0) value += 2147483646;
+  const random = () => {
+    value = (value * 16807) % 2147483647;
+    return (value - 1) / 2147483646;
+  };
+
+  return Array.from({ length: 20 }, (_, index) => ({
+    id: index,
+    width: random() * 4 + 2,
+    height: random() * 4 + 2,
+    left: `${random() * 100}%`,
+    top: `${random() * 100}%`,
+    duration: 3 + random() * 2,
+    delay: random() * 2,
+  }));
+}
 
 export default function EventModal() {
   const activeEvent = useGameStore((state) => state.activeEvent);
@@ -16,6 +35,11 @@ export default function EventModal() {
       setSelectedChoice(null);
     }
   }, [activeEvent]);
+
+  const particles = useMemo(
+    () => (activeEvent ? buildEventParticles(activeEvent.id) : []),
+    [activeEvent],
+  );
 
   if (!activeEvent || !isVisible) return null;
 
@@ -48,19 +72,19 @@ export default function EventModal() {
     >
       {/* Animated background particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 20 }).map((_, i) => (
+        {particles.map((particle) => (
           <div
-            key={i}
+            key={particle.id}
             className="absolute rounded-full"
             style={{
-              width: Math.random() * 4 + 2,
-              height: Math.random() * 4 + 2,
+              width: particle.width,
+              height: particle.height,
               background: '#0ea5e9',
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: particle.left,
+              top: particle.top,
               opacity: 0.3,
-              animation: `float ${3 + Math.random() * 2}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 2}s`,
+              animation: `float ${particle.duration}s ease-in-out infinite`,
+              animationDelay: `${particle.delay}s`,
             }}
           />
         ))}

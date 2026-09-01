@@ -14,10 +14,7 @@ export const achievements: Achievement[] = [
     description: 'Hire your first employee',
     icon: '👤',
     unlocked: false,
-    condition: () => {
-      const employees = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').employees || [];
-      return employees.length >= 1;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'first-project',
@@ -25,10 +22,7 @@ export const achievements: Achievement[] = [
     description: 'Start your first project',
     icon: '📁',
     unlocked: false,
-    condition: () => {
-      const projects = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').projects || [];
-      return projects.length >= 1;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'first-completion',
@@ -36,10 +30,7 @@ export const achievements: Achievement[] = [
     description: 'Complete your first project',
     icon: '🚀',
     unlocked: false,
-    condition: () => {
-      // This would need to track completed projects
-      return false;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: '100k',
@@ -47,10 +38,7 @@ export const achievements: Achievement[] = [
     description: 'Reach $100,000',
     icon: '💰',
     unlocked: false,
-    condition: () => {
-      const money = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').money || 0;
-      return money >= 100000;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: '500k',
@@ -58,10 +46,7 @@ export const achievements: Achievement[] = [
     description: 'Reach $500,000',
     icon: '💵',
     unlocked: false,
-    condition: () => {
-      const money = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').money || 0;
-      return money >= 500000;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'millionaire',
@@ -69,10 +54,7 @@ export const achievements: Achievement[] = [
     description: 'Reach $1,000,000',
     icon: '💎',
     unlocked: false,
-    condition: () => {
-      const money = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').money || 0;
-      return money >= 1000000;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'team-5',
@@ -80,10 +62,7 @@ export const achievements: Achievement[] = [
     description: 'Have 5 employees',
     icon: '👥',
     unlocked: false,
-    condition: () => {
-      const employees = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').employees || [];
-      return employees.length >= 5;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'team-10',
@@ -91,10 +70,7 @@ export const achievements: Achievement[] = [
     description: 'Have 10 employees',
     icon: '🏢',
     unlocked: false,
-    condition: () => {
-      const employees = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').employees || [];
-      return employees.length >= 10;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'reputation-50',
@@ -102,10 +78,7 @@ export const achievements: Achievement[] = [
     description: 'Reach 50 reputation',
     icon: '⭐',
     unlocked: false,
-    condition: () => {
-      const reputation = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').reputation || 0;
-      return reputation >= 50;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'reputation-100',
@@ -113,10 +86,7 @@ export const achievements: Achievement[] = [
     description: 'Reach 100 reputation',
     icon: '🌟',
     unlocked: false,
-    condition: () => {
-      const reputation = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').reputation || 0;
-      return reputation >= 100;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'research-first',
@@ -124,10 +94,7 @@ export const achievements: Achievement[] = [
     description: 'Complete your first research',
     icon: '🔬',
     unlocked: false,
-    condition: () => {
-      const researchNodes = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').researchNodes || [];
-      return researchNodes.some((node: any) => node.completed);
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'office-upgrade',
@@ -135,10 +102,7 @@ export const achievements: Achievement[] = [
     description: 'Upgrade your office size',
     icon: '🏢',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return office.size !== 'hacker_den';
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'contract-master',
@@ -146,10 +110,7 @@ export const achievements: Achievement[] = [
     description: 'Complete 5 contracts',
     icon: '📋',
     unlocked: false,
-    condition: () => {
-      // Track contract completions
-      return false;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'training-expert',
@@ -157,10 +118,7 @@ export const achievements: Achievement[] = [
     description: 'Train 10 employees',
     icon: '🎓',
     unlocked: false,
-    condition: () => {
-      // Track training count
-      return false;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'research-master',
@@ -168,10 +126,7 @@ export const achievements: Achievement[] = [
     description: 'Complete all research nodes',
     icon: '🔬',
     unlocked: false,
-    condition: () => {
-      const researchNodes = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').researchNodes || [];
-      return researchNodes.every((node: any) => node.completed);
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'team-leader',
@@ -179,10 +134,7 @@ export const achievements: Achievement[] = [
     description: 'Have 20 employees',
     icon: '👥',
     unlocked: false,
-    condition: () => {
-      const employees = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').employees || [];
-      return employees.length >= 20;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'first-product',
@@ -295,10 +247,7 @@ export const achievements: Achievement[] = [
     description: 'Place your first room',
     icon: '🏗️',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return (office.rooms || []).length >= 1;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'rooms-5',
@@ -306,10 +255,7 @@ export const achievements: Achievement[] = [
     description: 'Place 5 rooms',
     icon: '📐',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return (office.rooms || []).length >= 5;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'rooms-10',
@@ -317,10 +263,7 @@ export const achievements: Achievement[] = [
     description: 'Place 10 rooms',
     icon: '🏛️',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return (office.rooms || []).length >= 10;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'rooms-20',
@@ -328,10 +271,7 @@ export const achievements: Achievement[] = [
     description: 'Place 20 rooms',
     icon: '🌆',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return (office.rooms || []).length >= 20;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'room-upgrade',
@@ -339,10 +279,7 @@ export const achievements: Achievement[] = [
     description: 'Upgrade a room to level 2',
     icon: '⬆️',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return (office.rooms || []).some((r: any) => r.level >= 2);
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'room-max-level',
@@ -350,10 +287,7 @@ export const achievements: Achievement[] = [
     description: 'Upgrade a room to level 3',
     icon: '✨',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return (office.rooms || []).some((r: any) => r.level >= 3);
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'room-dev-pit',
@@ -361,10 +295,7 @@ export const achievements: Achievement[] = [
     description: 'Build a Dev Pit',
     icon: '💻',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return (office.rooms || []).some((r: any) => r.typeId === 'dev_pit');
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'room-server',
@@ -372,10 +303,7 @@ export const achievements: Achievement[] = [
     description: 'Build a Server Room',
     icon: '🖥️',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return (office.rooms || []).some((r: any) => r.typeId === 'server_room');
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'room-gym',
@@ -383,10 +311,7 @@ export const achievements: Achievement[] = [
     description: 'Build a Fitness Center',
     icon: '🏋️',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return (office.rooms || []).some((r: any) => r.typeId === 'gym');
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'room-exec',
@@ -394,10 +319,7 @@ export const achievements: Achievement[] = [
     description: 'Build an Executive Office',
     icon: '👔',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return (office.rooms || []).some((r: any) => r.typeId === 'exec_office');
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'room-game',
@@ -405,10 +327,7 @@ export const achievements: Achievement[] = [
     description: 'Build a Game Room',
     icon: '🎮',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return (office.rooms || []).some((r: any) => r.typeId === 'game_room');
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'room-variety',
@@ -416,12 +335,7 @@ export const achievements: Achievement[] = [
     description: 'Have 5 different room types',
     icon: '🎨',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      const rooms = office.rooms || [];
-      const uniqueTypes = new Set(rooms.map((r: any) => r.typeId));
-      return uniqueTypes.size >= 5;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'room-all-types',
@@ -429,13 +343,7 @@ export const achievements: Achievement[] = [
     description: 'Build every room type at least once',
     icon: '🏆',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      const rooms = office.rooms || [];
-      const uniqueTypes = new Set(rooms.map((r: any) => r.typeId));
-      // 13 total room types
-      return uniqueTypes.size >= 13;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
   {
     id: 'campus-full',
@@ -443,9 +351,6 @@ export const achievements: Achievement[] = [
     description: 'Reach Campus size with 20+ rooms',
     icon: '🏙️',
     unlocked: false,
-    condition: () => {
-      const office = JSON.parse(localStorage.getItem('aiLabTycoonSave') || '{}').office || {};
-      return office.size === 'campus' && (office.rooms || []).length >= 20;
-    },
+    condition: () => false, // evaluated via isAchievementUnlocked in gameStore
   },
 ];

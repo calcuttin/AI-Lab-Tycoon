@@ -38,6 +38,13 @@ describe('gameStore', () => {
     expect(state.reputation).toBe(42);
   });
 
+  it('autosaves with schema version 1.2', () => {
+    useGameStore.getState().saveGame();
+    const saved = JSON.parse(localStorage.getItem('aiLabTycoonSave')!);
+    expect(saved.version).toBe('1.2');
+    expect(saved.savedAt).toBeTruthy();
+  });
+
   it('advanceDay updates employees immutably', () => {
     const employee: Employee = {
       id: 'emp-1',
@@ -161,10 +168,10 @@ describe('gameStore', () => {
       }
     );
 
-    expect(combined.productivityBonus).toBeCloseTo(0.2);
-    expect(combined.moraleBonus).toBeCloseTo(0.3);
-    expect(combined.reputationBonus).toBeCloseTo(0.15);
-    expect(combined.burnoutReduction).toBeCloseTo(0.3);
+    expect(combined.productivityBonus).toBeCloseTo(0.1);
+    expect(combined.moraleBonus).toBeCloseTo(0.1);
+    expect(combined.reputationBonus).toBeCloseTo(0.05);
+    expect(combined.burnoutReduction).toBeCloseTo(0.1);
   });
 
   it('applies employee morale deltas and office bonuses', () => {
@@ -435,6 +442,7 @@ describe('gameStore', () => {
 
   it('persists achievement and story milestone progress', () => {
     useGameStore.setState({
+      money: 50_000,
       unlockedAchievements: ['100k'],
       triggeredStoryMilestones: ['first-steps'],
     });

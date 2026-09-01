@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { subscribeToParticles, type ParticlePayload } from '../systems/feedback';
 
 interface Particle {
   id: number;
@@ -14,58 +15,50 @@ export default function ParticleEffects() {
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
-    // Listen for particle effect events
-    const handleParticleEffect = (e: CustomEvent<{ type: 'money' | 'reputation' | 'celebration'; x: number; y: number }>) => {
-      const { type, x, y } = e.detail;
+    return subscribeToParticles((payload: ParticlePayload) => {
       const colors = {
         money: ['#22c55e', '#16a34a'],
         reputation: ['#f59e0b', '#d97706'],
         celebration: ['#0ea5e9', '#22c55e', '#f59e0b', '#a855f7'],
       };
-      
-      const colorSet = colors[type];
+
+      const colorSet = colors[payload.type];
       const newParticles: Particle[] = [];
-      
+
       for (let i = 0; i < 15; i++) {
         newParticles.push({
           id: Date.now() + i,
-          x,
-          y,
+          x: payload.x,
+          y: payload.y,
           vx: (Math.random() - 0.5) * 4,
           vy: (Math.random() - 0.5) * 4 - 2,
           life: 1,
           color: colorSet[Math.floor(Math.random() * colorSet.length)],
         });
       }
-      
-      setParticles((prev) => [...prev, ...newParticles]);
-    };
 
-    window.addEventListener('particleEffect' as any, handleParticleEffect as EventListener);
-    
-    return () => {
-      window.removeEventListener('particleEffect' as any, handleParticleEffect as EventListener);
-    };
+      setParticles((prev) => [...prev, ...newParticles]);
+    });
   }, []);
 
   useEffect(() => {
     if (particles.length === 0) return;
 
-    const interval = setInterval(() => {
+    const interval = window.setInterval(() => {
       setParticles((prev) =>
         prev
-          .map((p) => ({
-            ...p,
-            x: p.x + p.vx,
-            y: p.y + p.vy,
-            vy: p.vy + 0.1, // gravity
-            life: p.life - 0.02,
+          .map((particle) => ({
+            ...particle,
+            x: particle.x + particle.vx,
+            y: particle.y + particle.vy,
+            vy: particle.vy + 0.1,
+            life: particle.life - 0.02,
           }))
-          .filter((p) => p.life > 0)
+          .filter((particle) => particle.life > 0),
       );
     }, 16);
 
-    return () => clearInterval(interval);
+    return () => window.clearInterval(interval);
   }, [particles.length]);
 
   return (
@@ -89,11 +82,3 @@ export default function ParticleEffects() {
     </div>
   );
 }
-
-// Helper function to trigger particle effects
-export const triggerParticleEffect = (type: 'money' | 'reputation' | 'celebration', x: number, y: number) => {
-  const event = new CustomEvent('particleEffect', {
-    detail: { type, x, y },
-  });
-  window.dispatchEvent(event);
-};

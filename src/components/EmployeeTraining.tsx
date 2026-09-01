@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 import type { Employee } from '../store/gameStore';
-import { showNotification } from './NotificationToast';
+import { showNotification } from '../systems/feedback';
 
 export default function EmployeeTraining() {
   const employees = useGameStore((state) => state.employees);

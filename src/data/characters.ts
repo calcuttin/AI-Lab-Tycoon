@@ -322,6 +322,49 @@ export const storyMilestones: StoryMilestone[] = [
     },
   },
   {
+    id: 'first-ship',
+    title: 'Ship It!',
+    description: 'Your first product is live — just like the dot-com pioneers. Pets.com wishes they had your timing.',
+    triggerCondition: { type: 'projects', value: 1 },
+    reward: { reputation: 5 },
+    characterDialogue: {
+      characterId: 'jared',
+      text: "We shipped! I'm printing commemorative T-shirts. They say 'I survived v0.1' and they're already in the mail.",
+    },
+  },
+  {
+    id: 'first-research',
+    title: 'R&D Begins',
+    description: 'Your first research breakthrough. The enterprise era starts in a garage, but you have air conditioning.',
+    triggerCondition: { type: 'research', value: 1 },
+    characterDialogue: {
+      characterId: 'gilfoyle',
+      text: "Research complete. Barely. Next time let me pick the project so we don't embarrass ourselves.",
+    },
+  },
+  {
+    id: 'social-era',
+    title: 'Going Viral',
+    description: 'Three products shipped. People are sharing screenshots. Growth hacking is now a personality trait.',
+    triggerCondition: { type: 'projects', value: 3 },
+    reward: { money: 5000 },
+    characterDialogue: {
+      characterId: 'dinesh',
+      text: "Three launches! That's basically a platform. Gilfoyle says it's not, but what does he know?",
+    },
+  },
+  {
+    id: 'ai-boom',
+    title: 'AI Gold Rush',
+    description: 'Ten projects shipped. VCs are sliding into your DMs with term sheets and unsolicited advice.',
+    triggerCondition: { type: 'projects', value: 10 },
+    reward: { reputation: 15 },
+    characterDialogue: {
+      characterId: 'monica',
+      text: "Ten shipped products. Raviga partners are asking if you're 'AI-native.' I said yes before they could finish the question.",
+    },
+  },
+  {
     id: 'ten-employees',
     title: 'Growing Fast',
     description: 'Ten employees! You need a real office now.',

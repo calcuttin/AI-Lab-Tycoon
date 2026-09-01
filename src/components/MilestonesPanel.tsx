@@ -5,7 +5,7 @@ import type { ChallengeGoalType } from '../data/challenges';
 function formatProgress(goalType: ChallengeGoalType | undefined, value: number): string {
   if (goalType === 'earn_money') return `$${Number(value).toLocaleString()}`;
   if (goalType === 'reach_morale') return `${Math.floor(Number(value))}%`;
-  return String(Number(value) ?? 0);
+  return String(Math.floor(Number(value)));
 }
 
 export default function MilestonesPanel() {

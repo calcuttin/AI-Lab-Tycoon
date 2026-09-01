@@ -1,34 +1,43 @@
-import { useEffect, useState, useCallback } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { getTimeSystem } from '../systems/time';
 import TopBar from './TopBar';
 import Sidebar from './Sidebar';
-import ProjectsPanel from './ProjectsPanel';
-import ResearchTree from './ResearchTree';
-import EmployeesPanel from './EmployeesPanel';
-import OfficeView from './OfficeView';
-import MarketView from './MarketView';
 import EventModal from './EventModal';
 import StoryNotification from './StoryNotification';
 import WelcomePanel from './WelcomePanel';
 import NotificationToast from './NotificationToast';
-import AchievementsPanel from './AchievementsPanel';
-import MilestonesPanel from './MilestonesPanel';
 import ParticleEffects from './ParticleEffects';
 import DailyReport from './DailyReport';
-import StatisticsPanel from './StatisticsPanel';
 import KeyboardShortcuts from './KeyboardShortcuts';
-import EmployeeTraining from './EmployeeTraining';
-import PoliciesPanel from './PoliciesPanel';
-import ContractsPanel from './ContractsPanel';
 import TutorialOverlay from './TutorialOverlay';
 import AchievementTracker from './AchievementTracker';
+
+const ProjectsPanel = lazy(() => import('./ProjectsPanel'));
+const ResearchTree = lazy(() => import('./ResearchTree'));
+const EmployeesPanel = lazy(() => import('./EmployeesPanel'));
+const OfficeView = lazy(() => import('./OfficeView'));
+const MarketView = lazy(() => import('./MarketView'));
+const MilestonesPanel = lazy(() => import('./MilestonesPanel'));
+const StatisticsPanel = lazy(() => import('./StatisticsPanel'));
+const EmployeeTraining = lazy(() => import('./EmployeeTraining'));
+const PoliciesPanel = lazy(() => import('./PoliciesPanel'));
+const ContractsPanel = lazy(() => import('./ContractsPanel'));
+const AchievementsPanel = lazy(() => import('./AchievementsPanel'));
 
 export type View = 'projects' | 'research' | 'employees' | 'office' | 'market' | 'milestones' | 'statistics' | 'training' | 'policies' | 'contracts' | 'achievements';
 
 interface GameScreenProps {
   isNewGame?: boolean;
   onReplayIntro?: () => void;
+}
+
+function PanelFallback() {
+  return (
+    <div className="flex items-center justify-center h-full text-slate-400" style={{ fontFamily: 'var(--font-ui)' }}>
+      Loading...
+    </div>
+  );
 }
 
 export default function GameScreen({ isNewGame = true, onReplayIntro }: GameScreenProps) {
@@ -38,18 +47,16 @@ export default function GameScreen({ isNewGame = true, onReplayIntro }: GameScre
   const gameSpeed = useGameStore((state) => state.gameSpeed);
   const isPaused = useGameStore((state) => state.isPaused);
 
-  // Animated view transition wrapper
   const handleViewChange = useCallback((view: View) => {
     if (view === currentView) return;
     setViewTransition(true);
-    setTimeout(() => {
+    window.setTimeout(() => {
       setCurrentView(view);
       setViewTransition(false);
     }, 150);
   }, [currentView]);
 
   useEffect(() => {
-    // Only start the time system; do NOT reset game state (App handles load vs new game)
     const timeSystem = getTimeSystem();
     timeSystem.start();
 
@@ -64,32 +71,36 @@ export default function GameScreen({ isNewGame = true, onReplayIntro }: GameScre
   }, [gameSpeed, isPaused]);
 
   const renderView = () => {
-    switch (currentView) {
-      case 'projects':
-        return <ProjectsPanel />;
-      case 'research':
-        return <ResearchTree />;
-      case 'employees':
-        return <EmployeesPanel />;
-      case 'office':
-        return <OfficeView />;
-      case 'market':
-        return <MarketView />;
-      case 'milestones':
-        return <MilestonesPanel />;
-      case 'statistics':
-        return <StatisticsPanel />;
-      case 'training':
-        return <EmployeeTraining />;
-      case 'policies':
-        return <PoliciesPanel />;
-      case 'contracts':
-        return <ContractsPanel />;
-      case 'achievements':
-        return <AchievementsPanel />;
-      default:
-        return <ProjectsPanel />;
-    }
+    const panel = (() => {
+      switch (currentView) {
+        case 'projects':
+          return <ProjectsPanel />;
+        case 'research':
+          return <ResearchTree />;
+        case 'employees':
+          return <EmployeesPanel />;
+        case 'office':
+          return <OfficeView />;
+        case 'market':
+          return <MarketView />;
+        case 'milestones':
+          return <MilestonesPanel />;
+        case 'statistics':
+          return <StatisticsPanel />;
+        case 'training':
+          return <EmployeeTraining />;
+        case 'policies':
+          return <PoliciesPanel />;
+        case 'contracts':
+          return <ContractsPanel />;
+        case 'achievements':
+          return <AchievementsPanel />;
+        default:
+          return <ProjectsPanel />;
+      }
+    })();
+
+    return <Suspense fallback={<PanelFallback />}>{panel}</Suspense>;
   };
 
   return (

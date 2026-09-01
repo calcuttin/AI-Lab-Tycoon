@@ -27,6 +27,7 @@ export default function IntroScreen({
   const [savedGameExists] = useState(hasSavedGame);
   const [skipIntroNextTime, setSkipIntroNextTime] = useState(() => loadIntroSettings().skipIntro);
   const [muted, setMuted] = useState(() => loadIntroSettings().introMuted);
+  const [elapsed, setElapsed] = useState(0);
 
   const enterMenu = () => {
     setPhase('menu');
@@ -47,6 +48,7 @@ export default function IntroScreen({
     const settings = loadIntroSettings();
     const engine = new CanvasIntroEngine(canvas, {
       onComplete: enterMenu,
+      onTick: setElapsed,
       showHud: true,
     });
     engineRef.current = engine;
@@ -57,6 +59,7 @@ export default function IntroScreen({
 
     if (!forcePlay && (settings.skipIntro || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
       engine.pauseAt(INTRO_DURATION);
+      setElapsed(INTRO_DURATION);
       enterMenu();
     } else {
       getIntroAudio().start(settings.introMuted);
@@ -136,7 +139,7 @@ export default function IntroScreen({
             pointerEvents: 'none',
           }}
         >
-          Click or press Space to skip · {Math.max(0, Math.ceil(INTRO_DURATION - (engineRef.current?.getElapsed() ?? 0)))}s
+          Click or press Space to skip · {Math.max(0, Math.ceil(INTRO_DURATION - elapsed))}s
         </div>
       )}
 

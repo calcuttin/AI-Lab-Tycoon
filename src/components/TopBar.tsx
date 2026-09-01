@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useGameStore } from '../store/gameStore';
-import { showNotification } from './NotificationToast';
+import { showNotification } from '../systems/feedback';
 import { getAudioManager, playSound } from '../systems/audio';
+import IntroSettingsModal from './IntroSettingsModal';
 
 interface TopBarProps {
   onReplayIntro?: () => void;
@@ -24,6 +25,7 @@ export default function TopBar({ onReplayIntro }: TopBarProps) {
   const [repChange, setRepChange] = useState<number | null>(null);
   const [saveFeedback, setSaveFeedback] = useState(false);
   const [isMuted, setIsMuted] = useState(getAudioManager().isMuted());
+  const [showSettings, setShowSettings] = useState(false);
   const moneyChangeTimeoutRef = useRef<number | null>(null);
   const repChangeTimeoutRef = useRef<number | null>(null);
   const saveFeedbackTimeoutRef = useRef<number | null>(null);
@@ -35,8 +37,8 @@ export default function TopBar({ onReplayIntro }: TopBarProps) {
   useEffect(() => {
     const diff = money - moneyDisplay;
     if (Math.abs(diff) < EPS) {
-      setMoneyDisplay(money);
-      return;
+      const frame = requestAnimationFrame(() => setMoneyDisplay(money));
+      return () => cancelAnimationFrame(frame);
     }
     if (Math.abs(diff) >= MIN_CHANGE_TO_SHOW) {
       setMoneyChange(diff);
@@ -66,8 +68,8 @@ export default function TopBar({ onReplayIntro }: TopBarProps) {
   useEffect(() => {
     const diff = reputation - reputationDisplay;
     if (Math.abs(diff) < EPS) {
-      setReputationDisplay(reputation);
-      return;
+      const frame = requestAnimationFrame(() => setReputationDisplay(reputation));
+      return () => cancelAnimationFrame(frame);
     }
     if (Math.abs(diff) >= MIN_CHANGE_TO_SHOW) {
       setRepChange(diff);
@@ -227,6 +229,20 @@ export default function TopBar({ onReplayIntro }: TopBarProps) {
 
       <div className="flex items-center gap-2 relative z-10">
         <button
+          type="button"
+          onClick={() => setShowSettings(true)}
+          aria-label="Settings"
+          className="px-5 py-4 text-[15px] font-bold rounded transition-all hover:scale-110 active:scale-95"
+          style={{
+            background: 'linear-gradient(180deg, #334155 0%, #1e293b 100%)',
+            color: '#94a3b8',
+            border: '3px solid #475569',
+            boxShadow: '3px 3px 0 rgba(0,0,0,0.3)',
+          }}
+        >
+          ⚙️
+        </button>
+        <button
           onClick={() => {
             const muted = getAudioManager().toggleMute();
             setIsMuted(muted);
@@ -368,6 +384,12 @@ export default function TopBar({ onReplayIntro }: TopBarProps) {
           50% { opacity: 0.6; }
         }
       `}</style>
+      {showSettings && (
+        <IntroSettingsModal
+          onClose={() => setShowSettings(false)}
+          onReplayIntro={onReplayIntro}
+        />
+      )}
     </div>
   );
 }

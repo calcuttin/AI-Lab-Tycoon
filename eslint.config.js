@@ -19,5 +19,9 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // Animation and bootstrap flows intentionally sync UI state in effects.
+      'react-hooks/set-state-in-effect': 'off',
+    },
   },
 ])

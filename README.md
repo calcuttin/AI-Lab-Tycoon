@@ -15,13 +15,13 @@ Built with React, TypeScript, Zustand, and Tailwind CSS. Runs entirely in the br
 ## Features
 
 ### HBO Silicon Valley-Style Intro
-A continuous parallax flyover panorama scrolls through the history of Silicon Valley — from Hewlett Packard's garage through the dot-com boom to the AI era. Watch PETS.COM and THERANOS crumble, spot the VINE logo in a dumpster, and read billboards like *"SERIES F: $10B (PRE-REVENUE)"* before the camera zooms into your tiny lab.
+A Canvas-driven flyover scrolls through the history of Silicon Valley — from Hewlett Packard's garage through the dot-com boom to the AI era. Watch PETS.COM and THERANOS crumble, spot the VINE logo in a dumpster, and read billboards like *"SERIES F: $10B (PRE-REVENUE)"* before the camera zooms into your tiny lab. Skip, replay, or auto-resume your save from the title screen.
 
 ### Core Gameplay Loop
 - **Hire your team** — Start with nothing and recruit engineers, researchers, designers, and managers
 - **Ship AI products** — Build chatbots, image generators, code copilots, agent systems, and chase AGI
 - **Research new tech** — Unlock a branching research tree from basic transformers to artificial general intelligence
-- **Upgrade your office** — Add server racks, coffee machines, nap pods, and meeting rooms
+- **Upgrade your office** — Install slot-based workstation, amenity, and infrastructure upgrades
 - **Outcompete rivals** — Cortex, Nexus, Hooli, and more vie for market share with dynamic AI behavior
 
 ### Systems
@@ -30,11 +30,11 @@ A continuous parallax flyover panorama scrolls through the history of Silicon Va
 | **Projects** | 7+ project types with varying complexity, team requirements, and revenue potential |
 | **Employees** | 5 roles, 4 skill axes, morale tracking, trait system, training |
 | **Research** | Branching tech tree with prerequisites and unlock chains |
-| **Office** | Room placement, capacity limits, amenity bonuses |
+| **Office** | Slot-based upgrades with layout progression and amenity bonuses |
 | **Market** | Dynamic competitors with news feed, market share tracking, reputation |
 | **Contracts** | Client contracts with deadlines and bonus payouts |
 | **Policies** | Company-wide policies that affect morale, productivity, and costs |
-| **Achievements** | 20+ achievements for milestones and secret discoveries |
+| **Achievements** | 40+ achievements for milestones and secret discoveries |
 | **Statistics** | Revenue, morale, and reputation history with sparkline charts |
 | **Events** | Random story events with character dialogue and branching choices |
 
@@ -45,7 +45,7 @@ A continuous parallax flyover panorama scrolls through the history of Silicon Va
 - Animated sparkline charts for tracking stats over time
 - Keyboard shortcuts for all major actions
 - Tutorial overlay for new players
-- Auto-save with localStorage persistence
+- Auto-save each in-game day and on browser close (manual save still available)
 
 ---
 
@@ -75,7 +75,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 2. **Start a project** — Go to PROJECTS, pick an AI product type, and assign your team
 3. **Unpause the game** — Press SPACE or click the play button to start the clock
 4. **Research new tech** — Spend money on the RESEARCH tree to unlock better project types
-5. **Upgrade your office** — Buy amenities to boost morale and productivity
+5. **Upgrade your office** — Install workstation, amenity, and infrastructure upgrades in the OFFICE view
 6. **Watch the market** — Track competitors, read industry news, and grow your reputation
 7. **Complete contracts** — Take on client work for guaranteed income
 8. **Chase AGI** — The ultimate goal. Good luck.
@@ -122,10 +122,11 @@ Competitors dynamically launch products, secure funding, suffer data breaches, a
 ### Project Structure
 ```
 src/
-  components/    # 25+ React components (game panels, modals, overlays)
-  store/         # Zustand game state with save/load persistence
-  systems/       # Time system, audio engine
-  data/          # Game data (projects, research, events, characters, achievements)
+  components/    # React panels, modals, overlays, Canvas intro
+  intro/         # Canvas intro engine, timeline, audio
+  store/         # Zustand game state, simulation helpers, persistence
+  systems/       # Time system, audio engine, UI feedback bus
+  data/          # Game data (projects, research, events, characters, balance)
   hooks/         # Custom React hooks (team assignment)
 ```
 

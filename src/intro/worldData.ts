@@ -55,6 +55,10 @@ export const buildings: WorldBuilding[] = [
   { id: 'nvidia', name: 'NVIDIA', x: 3880, width: 82, height: 218, color: '#76b900', accent: '#4d7c0f', rooftop: 'server' },
   { id: 'cortex', name: 'CORTEX', x: 4080, width: 78, height: 198, color: '#22c55e', accent: '#15803d', rooftop: 'server' },
   { id: 'nexus', name: 'NEXUS', x: 4280, width: 88, height: 238, color: '#3b82f6', accent: '#1d4ed8', rooftop: 'server' },
+  { id: 'mistral', name: 'MISTRAL', x: 4480, width: 76, height: 198, color: '#f97316', accent: '#ea580c', rooftop: 'server' },
+  { id: 'stability', name: 'STABILITY', x: 4660, width: 72, height: 186, color: '#a855f7', accent: '#7e22ce', rooftop: 'server' },
+  { id: 'cohere', name: 'COHERE', x: 4840, width: 70, height: 176, color: '#14b8a6', accent: '#0f766e', rooftop: 'server' },
+  { id: 'scale', name: 'SCALE AI', x: 5020, width: 74, height: 190, color: '#6366f1', accent: '#4338ca', rooftop: 'server' },
   { id: 'anthropic', name: 'ANTHROPIC', x: 5200, width: 84, height: 220, color: '#d97706', accent: '#b45309', rooftop: 'server' },
   { id: 'meta', name: 'META AI', x: 5840, width: 90, height: 205, color: '#2563eb', accent: '#1d4ed8', rooftop: 'helipad' },
   { id: 'xai', name: 'xAI', x: 6480, width: 72, height: 198, color: '#f8fafc', accent: '#94a3b8', rooftop: 'server' },
@@ -69,6 +73,8 @@ export const billboards: WorldBillboard[] = [
   { text: 'SERIES F:\n$10B (PRE-REVENUE)', x: 2920, color: '#a855f7', width: 98, height: 54 },
   { text: 'WE USE AI', x: 3560, color: '#0ea5e9', width: 72, height: 42 },
   { text: 'AGI?', x: 4520, color: '#f43f5e', width: 58, height: 42 },
+  { text: 'FINE-TUNED\nON VIBES', x: 4760, color: '#22d3ee', width: 92, height: 48 },
+  { text: 'GPU\nSHORTAGE', x: 4980, color: '#facc15', width: 78, height: 48 },
   { text: 'NOT A\nCRYPTO SCAM', x: 5120, color: '#f97316', width: 86, height: 48 },
 ];
 
