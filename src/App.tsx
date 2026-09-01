@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import GameScreen from './components/GameScreen';
 import IntroScreen from './components/IntroScreen';
+import { shouldAutoResumeGame } from './intro/settings';
 import { useGameStore } from './store/gameStore';
 
 type SessionKind = 'new' | 'continue';
 
 function App() {
-  const [gameStarted, setGameStarted] = useState(false);
-  const [sessionKind, setSessionKind] = useState<SessionKind>('new');
+  const [gameStarted, setGameStarted] = useState(() => shouldAutoResumeGame() && useGameStore.getState().loadGame());
+  const [sessionKind, setSessionKind] = useState<SessionKind>(() => (shouldAutoResumeGame() ? 'continue' : 'new'));
   const [transitioning, setTransitioning] = useState(false);
+  const [replayIntro, setReplayIntro] = useState(false);
   const loadGame = useGameStore((state) => state.loadGame);
 
   const startSession = (kind: SessionKind) => {
@@ -32,17 +34,29 @@ function App() {
     }
   };
 
+  const handleReplayIntro = () => {
+    setReplayIntro(true);
+    setGameStarted(false);
+    setTransitioning(false);
+  };
+
   if (!gameStarted) {
     return (
       <div style={{ opacity: transitioning ? 0 : 1, transition: 'opacity 0.45s ease' }}>
-        <IntroScreen onNewGame={handleNewGame} onContinue={handleContinue} />
+        <IntroScreen
+          key={replayIntro ? 'replay' : 'title'}
+          forcePlay={replayIntro}
+          onNewGame={handleNewGame}
+          onContinue={handleContinue}
+          onIntroFinished={() => setReplayIntro(false)}
+        />
       </div>
     );
   }
 
   return (
     <div style={{ opacity: transitioning ? 0 : 1, transition: 'opacity 0.45s ease' }}>
-      <GameScreen isNewGame={sessionKind === 'new'} />
+      <GameScreen isNewGame={sessionKind === 'new'} onReplayIntro={handleReplayIntro} />
     </div>
   );
 }

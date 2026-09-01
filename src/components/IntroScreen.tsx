@@ -7,11 +7,18 @@ import { hasSavedGame, loadIntroSettings, saveIntroSettings } from '../intro/set
 interface IntroScreenProps {
   onNewGame: () => void;
   onContinue: () => void;
+  forcePlay?: boolean;
+  onIntroFinished?: () => void;
 }
 
 type IntroPhase = 'playing' | 'menu';
 
-export default function IntroScreen({ onNewGame, onContinue }: IntroScreenProps) {
+export default function IntroScreen({
+  onNewGame,
+  onContinue,
+  forcePlay = false,
+  onIntroFinished,
+}: IntroScreenProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<CanvasIntroEngine | null>(null);
   const [phase, setPhase] = useState<IntroPhase>('playing');
@@ -26,6 +33,7 @@ export default function IntroScreen({ onNewGame, onContinue }: IntroScreenProps)
     setTitleVisible(true);
     window.setTimeout(() => setButtonsVisible(true), 400);
     getIntroAudio().fadeOut();
+    onIntroFinished?.();
   };
 
   const skipToMenu = () => {
@@ -47,7 +55,7 @@ export default function IntroScreen({ onNewGame, onContinue }: IntroScreenProps)
     window.addEventListener('resize', handleResize);
     handleResize();
 
-    if (settings.skipIntro || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!forcePlay && (settings.skipIntro || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
       engine.pauseAt(INTRO_DURATION);
       enterMenu();
     } else {
@@ -60,7 +68,7 @@ export default function IntroScreen({ onNewGame, onContinue }: IntroScreenProps)
       engine.destroy();
       getIntroAudio().stop();
     };
-  }, []);
+  }, [forcePlay, onIntroFinished]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {

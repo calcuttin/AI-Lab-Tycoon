@@ -28,9 +28,10 @@ export type View = 'projects' | 'research' | 'employees' | 'office' | 'market' |
 
 interface GameScreenProps {
   isNewGame?: boolean;
+  onReplayIntro?: () => void;
 }
 
-export default function GameScreen({ isNewGame = true }: GameScreenProps) {
+export default function GameScreen({ isNewGame = true, onReplayIntro }: GameScreenProps) {
   const [currentView, setCurrentView] = useState<View>('projects');
   const [showWelcome, setShowWelcome] = useState(isNewGame);
   const [viewTransition, setViewTransition] = useState(false);
@@ -99,7 +100,7 @@ export default function GameScreen({ isNewGame = true }: GameScreenProps) {
         color: 'var(--color-text)',
       }}
     >
-      <TopBar />
+      <TopBar onReplayIntro={onReplayIntro} />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar currentView={currentView} setCurrentView={handleViewChange} />
         <main

@@ -33,3 +33,9 @@ export function saveIntroSettings(settings: Partial<IntroSettings>) {
 export function hasSavedGame() {
   return Boolean(localStorage.getItem('aiLabTycoonSave'));
 }
+
+/** True when the player opted out of the intro and has a save to resume. */
+export function shouldAutoResumeGame() {
+  const settings = loadIntroSettings();
+  return settings.skipIntro && hasSavedGame();
+}
