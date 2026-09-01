@@ -3,7 +3,11 @@ import { useGameStore } from '../store/gameStore';
 import { showNotification } from './NotificationToast';
 import { getAudioManager, playSound } from '../systems/audio';
 
-export default function TopBar() {
+interface TopBarProps {
+  onReplayIntro?: () => void;
+}
+
+export default function TopBar({ onReplayIntro }: TopBarProps) {
   const money = useGameStore((state) => state.money);
   const reputation = useGameStore((state) => state.reputation);
   const currentDate = useGameStore((state) => state.currentDate);
@@ -268,6 +272,21 @@ export default function TopBar() {
         >
           📂 LOAD
         </button>
+        {onReplayIntro && (
+          <button
+            onClick={onReplayIntro}
+            aria-label="Replay intro"
+            className="px-7 py-4 text-[15px] font-bold rounded transition-all hover:scale-110 active:scale-95"
+            style={{
+              background: 'linear-gradient(180deg, #334155 0%, #1e293b 100%)',
+              color: '#94a3b8',
+              border: '3px solid #475569',
+              boxShadow: '3px 3px 0 rgba(0,0,0,0.3)',
+            }}
+          >
+            🎬 INTRO
+          </button>
+        )}
         <button
           onClick={togglePause}
           aria-pressed={!isPaused}

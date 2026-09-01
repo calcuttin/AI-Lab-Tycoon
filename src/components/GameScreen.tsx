@@ -26,9 +26,14 @@ import AchievementTracker from './AchievementTracker';
 
 export type View = 'projects' | 'research' | 'employees' | 'office' | 'market' | 'milestones' | 'statistics' | 'training' | 'policies' | 'contracts' | 'achievements';
 
-export default function GameScreen() {
+interface GameScreenProps {
+  isNewGame?: boolean;
+  onReplayIntro?: () => void;
+}
+
+export default function GameScreen({ isNewGame = true, onReplayIntro }: GameScreenProps) {
   const [currentView, setCurrentView] = useState<View>('projects');
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(isNewGame);
   const [viewTransition, setViewTransition] = useState(false);
   const gameSpeed = useGameStore((state) => state.gameSpeed);
   const isPaused = useGameStore((state) => state.isPaused);
@@ -95,7 +100,7 @@ export default function GameScreen() {
         color: 'var(--color-text)',
       }}
     >
-      <TopBar />
+      <TopBar onReplayIntro={onReplayIntro} />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar currentView={currentView} setCurrentView={handleViewChange} />
         <main
