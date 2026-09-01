@@ -14,8 +14,8 @@ Built with React, TypeScript, Zustand, and Tailwind CSS. Runs entirely in the br
 
 ## Features
 
-### HBO Silicon Valley-Style Intro
-A Canvas-driven flyover scrolls through the history of Silicon Valley — from Hewlett Packard's garage through the dot-com boom to the AI era. Watch PETS.COM and THERANOS crumble, spot the VINE logo in a dumpster, and read billboards like *"SERIES F: $10B (PRE-REVENUE)"* before the camera zooms into your tiny lab. Skip, replay, or auto-resume your save from the title screen.
+### Cinematic Silicon Valley Intro
+A photorealistic Canvas flyover along the 101 — golden-hour skies, glass towers with lit windows, palm-lined hills, and highway traffic through seven decades of Valley history. Watch dot-com collapses, spot the VINE dumpster, and zoom into your lab as dusk falls.
 
 ### Core Gameplay Loop
 - **Hire your team** — Start with nothing and recruit engineers, researchers, designers, and managers
