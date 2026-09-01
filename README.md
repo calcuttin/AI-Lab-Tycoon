@@ -15,7 +15,7 @@ Built with React, TypeScript, Zustand, and Tailwind CSS. Runs entirely in the br
 ## Features
 
 ### Cinematic Silicon Valley Intro
-A photorealistic Canvas flyover along the 101 — golden-hour skies, glass towers with lit windows, palm-lined hills, and highway traffic through seven decades of Valley history. Watch dot-com collapses, spot the VINE dumpster, and zoom into your lab as dusk falls.
+Opens on an **AI-generated photorealistic garage plate** (1960s dawn, Ken Burns motion) before crossfading into a Canvas flyover along the 101 — golden-hour skies, glass towers, palm-lined hills, and highway traffic through seven decades of Valley history.
 
 ### Core Gameplay Loop
 - **Hire your team** — Start with nothing and recruit engineers, researchers, designers, and managers

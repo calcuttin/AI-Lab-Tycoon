@@ -1,6 +1,7 @@
 import { INTRO_DURATION } from './worldData';
 import { drawIntroScene } from './drawScene';
 import { getIntroRenderState } from './timeline';
+import { loadGaragePlate } from './videoPlate';
 
 export interface CanvasIntroEngineOptions {
   onComplete: () => void;
@@ -39,6 +40,9 @@ export class CanvasIntroEngine {
 
   start(fromTime = 0) {
     this.cancel();
+    void loadGaragePlate().catch(() => {
+      // Flyover still works if the plate asset fails to load.
+    });
     this.elapsed = fromTime;
     this.startTime = performance.now() - fromTime * 1000;
     this.playing = true;

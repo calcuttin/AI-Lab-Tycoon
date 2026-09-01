@@ -6,6 +6,13 @@ import {
   buildings,
 } from '../worldData';
 import type { IntroRenderState } from '../types';
+import {
+  drawGaragePlate,
+  getFlyoverBlend,
+  getGaragePlateImage,
+  isGaragePlateActive,
+  GARAGE_PLATE_DURATION,
+} from '../videoPlate';
 import { getAtmosphere } from './atmosphere';
 import { drawRealisticBillboard, drawRealisticBuilding } from './buildings';
 import { drawHighway } from './highway';
@@ -15,6 +22,7 @@ import { drawGroundBase, drawMountains } from './terrain';
 import { drawVegetationStrip } from './vegetation';
 
 function drawEraOverlay(ctx: CanvasRenderingContext2D, width: number, height: number, state: IntroRenderState) {
+  if (isGaragePlateActive(state.time) && state.time <= GARAGE_PLATE_DURATION) return;
   if (!state.era) return;
   const localT = state.time - state.era.time;
   const fadeIn = Math.min(1, localT / 0.9);
@@ -64,16 +72,17 @@ function drawVineDumpster(ctx: CanvasRenderingContext2D, cameraX: number, ground
   ctx.fillText('VINE', x + 4 * zoom, groundY - 8 * zoom);
 }
 
-export function drawIntroScene(
+function drawFlyoverScene(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
   state: IntroRenderState,
-  showHud: boolean,
+  alpha: number,
 ) {
-  const dpr = window.devicePixelRatio || 1;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.clearRect(0, 0, width, height);
+  if (alpha <= 0) return;
+
+  ctx.save();
+  ctx.globalAlpha = alpha;
 
   const groundY = height * GROUND_Y;
   const cameraX = state.camera.x;
@@ -96,8 +105,35 @@ export function drawIntroScene(
 
   drawGroundBase(ctx, width, groundY);
   drawHighway(ctx, width, groundY, cameraX, zoom, atmosphere.streetLightIntensity);
-
   applyCinematicPostProcess(ctx, width, height, state.progress, state.time);
+
+  ctx.restore();
+}
+
+export function drawIntroScene(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  state: IntroRenderState,
+  showHud: boolean,
+) {
+  const dpr = window.devicePixelRatio || 1;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+
+  const plate = getGaragePlateImage();
+  const flyoverAlpha = getFlyoverBlend(state.time);
+
+  if (flyoverAlpha > 0) {
+    drawFlyoverScene(ctx, width, height, state, flyoverAlpha);
+  } else {
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fillRect(0, 0, width, height);
+  }
+
+  if (plate && isGaragePlateActive(state.time)) {
+    drawGaragePlate(ctx, width, height, state.time, plate, state.era);
+  }
 
   if (showHud) {
     drawEraOverlay(ctx, width, height, state);
