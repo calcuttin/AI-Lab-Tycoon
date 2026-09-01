@@ -6,94 +6,30 @@ import type { EventGameState, GameEvent } from '../data/events';
 import { companyPhases, type CompanyPhaseId } from '../data/milestones';
 import { generateDailyChallenge, generateWeeklyChallenge, type Challenge, type ChallengeGoalType } from '../data/challenges';
 import { type RoomTypeId, getRoomTypeById, officeGridSizes, type OfficeSizeType, type RoomEffects } from '../data/roomTypes';
-import { type InstalledUpgrade, type OfficeSizeId, getUpgradeById, calculateTotalEffects, getLayoutById } from '../data/officeLayouts';
+import { type InstalledUpgrade, type OfficeSizeId, getUpgradeById, getLayoutById } from '../data/officeLayouts';
 import { playSound } from '../systems/audio';
 import { emitNotification, showNotification, triggerParticleEffect } from '../systems/feedback';
 import { computeProjectDailyProgress } from './projectProgress';
 import { BALANCE } from '../data/balance';
 import { getInitialContracts, type Contract } from '../data/contracts';
 import { achievements } from '../data/achievements';
-import { storyMilestones } from '../data/characters';
+import { storyMilestones, type StoryMilestone } from '../data/characters';
+import {
+  calculateUpgradeBonuses,
+  calculateRoomBonuses,
+  computeCombinedBonuses,
+  type CombinedBonuses,
+  type OfficeRoom,
+} from './bonuses';
+import { findNextStoryMilestone } from './storyMilestones';
 
-// Helper function to calculate slot-based upgrade bonuses
-export function calculateUpgradeBonuses(installedUpgrades: InstalledUpgrade[]): {
-  productivity: number;
-  morale: number;
-  research: number;
-  reputation: number;
-  capacity: number;
-  burnoutReduction: number;
-} {
-  return calculateTotalEffects(installedUpgrades);
-}
-
-// Helper function to calculate aggregate room bonuses (legacy, kept for compatibility)
-export function calculateRoomBonuses(rooms: OfficeRoom[]): RoomEffects {
-  const totals: RoomEffects = {
-    productivityBonus: 0,
-    moraleBonus: 0,
-    researchBonus: 0,
-    reputationBonus: 0,
-    capacityBonus: 0,
-    burnoutReduction: 0,
-    teamworkBonus: 0,
-    eventBonus: 0,
-  };
-
-  for (const room of rooms) {
-    const roomType = getRoomTypeById(room.typeId);
-    if (!roomType) continue;
-
-    // Calculate level multiplier (level 1 = 1x, level 2 = 1.3x, level 3 = 1.6x for upgradable rooms)
-    const levelMultiplier = roomType.upgradable && roomType.upgradeMultiplier
-      ? 1 + (room.level - 1) * (roomType.upgradeMultiplier - 1)
-      : 1;
-
-    // Condition affects efficiency (100 = full, 50 = half effect)
-    const conditionMultiplier = room.condition / 100;
-
-    const effectMultiplier = levelMultiplier * conditionMultiplier;
-
-    // Aggregate effects
-    if (roomType.effects.productivityBonus) {
-      totals.productivityBonus! += roomType.effects.productivityBonus * effectMultiplier;
-    }
-    if (roomType.effects.moraleBonus) {
-      totals.moraleBonus! += roomType.effects.moraleBonus * effectMultiplier;
-    }
-    if (roomType.effects.researchBonus) {
-      totals.researchBonus! += roomType.effects.researchBonus * effectMultiplier;
-    }
-    if (roomType.effects.reputationBonus) {
-      totals.reputationBonus! += roomType.effects.reputationBonus * effectMultiplier;
-    }
-    if (roomType.effects.capacityBonus) {
-      totals.capacityBonus! += roomType.effects.capacityBonus;
-    }
-    if (roomType.effects.burnoutReduction) {
-      // Burnout reduction stacks multiplicatively, capped at 80%
-      totals.burnoutReduction = Math.min(0.8, (totals.burnoutReduction ?? 0) + roomType.effects.burnoutReduction * effectMultiplier);
-    }
-    if (roomType.effects.teamworkBonus) {
-      totals.teamworkBonus! += roomType.effects.teamworkBonus * effectMultiplier;
-    }
-    if (roomType.effects.eventBonus) {
-      totals.eventBonus! += roomType.effects.eventBonus * effectMultiplier;
-    }
-  }
-
-  return totals;
-}
-
-// Forward declaration for OfficeRoom (used by calculateRoomBonuses)
-export interface OfficeRoom {
-  id: string;
-  typeId: RoomTypeId;
-  gridX: number;
-  gridY: number;
-  level: number;
-  condition: number;
-}
+export {
+  calculateUpgradeBonuses,
+  calculateRoomBonuses,
+  computeCombinedBonuses,
+  type CombinedBonuses,
+  type OfficeRoom,
+};
 
 export interface Employee {
   id: string;
@@ -194,16 +130,6 @@ type ResearchUpdateResult = {
   newlyCompletedResearch: string[];
 };
 
-export type CombinedBonuses = {
-  productivityBonus: number;
-  moraleBonus: number;
-  researchBonus: number;
-  reputationBonus: number;
-  burnoutReduction: number;
-};
-
-type SlotBonuses = ReturnType<typeof calculateUpgradeBonuses>;
-
 type FinanceResult = {
   passiveIncome: number;
   totalRevenue: number;
@@ -281,16 +207,6 @@ export function updateContractsForDay(
   });
 
   return { contracts: updatedContracts, completedCount, revenue };
-}
-
-export function computeCombinedBonuses(_roomBonuses: RoomEffects, slotBonuses: SlotBonuses): CombinedBonuses {
-  return {
-    productivityBonus: slotBonuses.productivity || 0,
-    moraleBonus: slotBonuses.morale || 0,
-    researchBonus: slotBonuses.research || 0,
-    reputationBonus: slotBonuses.reputation || 0,
-    burnoutReduction: Math.min(0.8, slotBonuses.burnoutReduction || 0),
-  };
 }
 
 export function applyEmployeeMoraleForDay(
@@ -802,6 +718,7 @@ export interface GameState {
   competitorNews: CompetitorNewsItem[];
   unlockedAchievements: string[];
   triggeredStoryMilestones: string[];
+  activeStoryMilestone: StoryMilestone | null;
   dailyLogs: DailyLog[];
   monthlyReport: DailyLog | null;
 
@@ -834,6 +751,8 @@ export interface GameState {
   handleEventChoice: (eventId: string, choiceId: string) => void;
   unlockAchievement: (achievementId: string) => boolean;
   claimStoryMilestone: (milestoneId: string, money: number, reputation: number) => boolean;
+  syncStoryMilestones: () => void;
+  dismissStoryMilestone: () => void;
   dismissMonthlyReport: () => void;
   trainEmployee: (employeeId: string, skill: keyof Employee['skills']) => void;
   acceptContract: (contractId: string) => boolean;
@@ -1155,6 +1074,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   competitorNews: [],
   unlockedAchievements: [],
   triggeredStoryMilestones: [],
+  activeStoryMilestone: null,
   dailyLogs: [],
   monthlyReport: null,
 
@@ -1404,6 +1324,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     }
 
     get().saveGame();
+    get().syncStoryMilestones();
   },
   
   addMoney: (amount) => set((state) => ({ money: state.money + amount })),
@@ -1890,6 +1811,26 @@ export const useGameStore = create<GameState>((set, get) => ({
     return true;
   },
 
+  syncStoryMilestones: () => {
+    const state = get();
+    if (state.activeStoryMilestone) return;
+    const milestone = findNextStoryMilestone(state);
+    if (!milestone) return;
+    const claimed = get().claimStoryMilestone(
+      milestone.id,
+      milestone.reward?.money ?? 0,
+      milestone.reward?.reputation ?? 0,
+    );
+    if (claimed) {
+      set({ activeStoryMilestone: milestone });
+    }
+  },
+
+  dismissStoryMilestone: () => {
+    set({ activeStoryMilestone: null });
+    get().syncStoryMilestones();
+  },
+
   dismissMonthlyReport: () => set({ monthlyReport: null }),
   
   trainEmployee: (employeeId, skill) => {
@@ -2106,6 +2047,7 @@ export const useGameStore = create<GameState>((set, get) => ({
         triggeredStoryMilestones: data.triggeredStoryMilestones ?? [],
         dailyLogs: data.dailyLogs ?? [],
         monthlyReport: data.monthlyReport ?? null,
+        activeStoryMilestone: null,
       });
 
       const loadedState = get();
@@ -2134,6 +2076,7 @@ export const useGameStore = create<GameState>((set, get) => ({
         });
       }
       
+      get().syncStoryMilestones();
       return true;
     } catch (error) {
       console.error('Failed to load game:', error);
@@ -2197,6 +2140,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       competitorNews: [],
       unlockedAchievements: [],
       triggeredStoryMilestones: [],
+      activeStoryMilestone: null,
       dailyLogs: [],
       monthlyReport: null,
     });

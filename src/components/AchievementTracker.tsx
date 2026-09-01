@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { achievements } from '../data/achievements';
 import { isAchievementUnlocked, useGameStore } from '../store/gameStore';
-import { showNotification } from './NotificationToast';
+import { showNotification } from '../systems/feedback';
 
 export default function AchievementTracker() {
   const unlockedAchievements = useGameStore((state) => state.unlockedAchievements);

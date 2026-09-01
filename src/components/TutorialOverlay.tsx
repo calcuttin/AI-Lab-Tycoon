@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 
 const tutorialSteps = [
@@ -46,8 +46,6 @@ export default function TutorialOverlay() {
       return new Set();
     }
   });
-  const [visible, setVisible] = useState(true);
-
   const projects = useGameStore((state) => state.projects);
   const totalProjectsCompleted = useGameStore((state) => state.totalProjectsCompleted);
   const isPaused = useGameStore((state) => state.isPaused);
@@ -61,27 +59,20 @@ export default function TutorialOverlay() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const activeStep = tutorialSteps.find((step) => !dismissed.has(step.id) && step.trigger(gameState as any));
 
-  // Auto-show when a new step becomes active
-  useEffect(() => {
-    if (activeStep) setVisible(true);
-  }, [activeStep?.id]);
-
   const handleDismiss = (stepId: string) => {
     const newDismissed = new Set(dismissed);
     newDismissed.add(stepId);
     setDismissed(newDismissed);
     localStorage.setItem('aiLabTycoon_dismissedTutorials', JSON.stringify([...newDismissed]));
-    setVisible(false);
   };
 
   const handleDismissAll = () => {
     const allIds = new Set(tutorialSteps.map((s) => s.id));
     setDismissed(allIds);
     localStorage.setItem('aiLabTycoon_dismissedTutorials', JSON.stringify([...allIds]));
-    setVisible(false);
   };
 
-  if (!activeStep || !visible) return null;
+  if (!activeStep) return null;
 
   return (
     <div

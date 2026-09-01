@@ -4,6 +4,7 @@ import { getIntroRenderState } from './timeline';
 
 export interface CanvasIntroEngineOptions {
   onComplete: () => void;
+  onTick?: (elapsed: number) => void;
   showHud?: boolean;
 }
 
@@ -88,6 +89,7 @@ export class CanvasIntroEngine {
       return;
     }
     this.render(this.elapsed);
+    this.options.onTick?.(this.elapsed);
     this.rafId = requestAnimationFrame(this.loop);
   };
 

@@ -23,7 +23,7 @@ export class TimeSystem {
     const store = useGameStore.getState();
 
     if (store.isPaused || store.gameSpeed === 0) {
-      this.timerId = setTimeout(() => this.tick(), 100);
+      this.timerId = setTimeout(() => this.tick(), 250);
       return;
     }
 

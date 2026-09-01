@@ -278,7 +278,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           >
             <div style={{ color: '#94a3b8' }}>QUALITY</div>
             <div style={{ color: '#f59e0b', fontWeight: 'bold', fontSize: 9 }}>
-              {(Number(project.quality) ?? 0).toFixed(1)}/10
+              {Number(project.quality).toFixed(1)}/10
             </div>
           </div>
           <div

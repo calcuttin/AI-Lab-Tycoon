@@ -82,5 +82,3 @@ export default function ParticleEffects() {
     </div>
   );
 }
-
-export { triggerParticleEffect } from '../systems/feedback';

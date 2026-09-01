@@ -74,5 +74,3 @@ export default function NotificationToast() {
     </div>
   );
 }
-
-export { showNotification } from '../systems/feedback';

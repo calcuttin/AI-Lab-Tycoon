@@ -1,4 +1,5 @@
-import type { CombinedBonuses, Employee, Project } from './gameStore';
+import type { CombinedBonuses } from './bonuses';
+import type { Employee, Project } from './gameStore';
 import type { RoomEffects } from '../data/roomTypes';
 
 export interface ProjectProgressPreview {

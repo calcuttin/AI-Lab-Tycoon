@@ -442,6 +442,7 @@ describe('gameStore', () => {
 
   it('persists achievement and story milestone progress', () => {
     useGameStore.setState({
+      money: 50_000,
       unlockedAchievements: ['100k'],
       triggeredStoryMilestones: ['first-steps'],
     });
