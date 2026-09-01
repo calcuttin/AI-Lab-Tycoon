@@ -209,7 +209,7 @@ export default function IntroScreen({
               TYCOON
             </div>
             <p style={{ color: '#94a3b8', marginTop: 16, fontSize: 14, letterSpacing: '0.08em' }}>
-              Build Your AI Empire
+              A cinematic flight through Silicon Valley
             </p>
           </div>
 
