@@ -26,9 +26,13 @@ import AchievementTracker from './AchievementTracker';
 
 export type View = 'projects' | 'research' | 'employees' | 'office' | 'market' | 'milestones' | 'statistics' | 'training' | 'policies' | 'contracts' | 'achievements';
 
-export default function GameScreen() {
+interface GameScreenProps {
+  isNewGame?: boolean;
+}
+
+export default function GameScreen({ isNewGame = true }: GameScreenProps) {
   const [currentView, setCurrentView] = useState<View>('projects');
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(isNewGame);
   const [viewTransition, setViewTransition] = useState(false);
   const gameSpeed = useGameStore((state) => state.gameSpeed);
   const isPaused = useGameStore((state) => state.isPaused);
