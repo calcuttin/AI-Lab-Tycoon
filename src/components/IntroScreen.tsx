@@ -1,8 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
-import { CanvasIntroEngine } from '../intro/CanvasIntroEngine';
-import { INTRO_DURATION } from '../intro/worldData';
-import { getIntroAudio } from '../intro/introAudio';
-import { hasSavedGame, loadIntroSettings, saveIntroSettings } from '../intro/settings';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { RenderedIntroPlayer } from "../intro/cinematic/RenderedIntroPlayer";
+import {
+  FILM_DURATION,
+  filmShots,
+  getFilmFrame,
+} from "../intro/cinematic/shots";
+import { getIntroAudio } from "../intro/introAudio";
+import {
+  hasSavedGame,
+  loadIntroSettings,
+  saveIntroSettings,
+} from "../intro/settings";
+import Icon from "./ui/Icon";
 
 interface IntroScreenProps {
   onNewGame: () => void;
@@ -11,284 +20,278 @@ interface IntroScreenProps {
   onIntroFinished?: () => void;
 }
 
-type IntroPhase = 'playing' | 'menu';
-
 export default function IntroScreen({
   onNewGame,
   onContinue,
   forcePlay = false,
   onIntroFinished,
 }: IntroScreenProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const engineRef = useRef<CanvasIntroEngine | null>(null);
-  const [phase, setPhase] = useState<IntroPhase>('playing');
-  const [titleVisible, setTitleVisible] = useState(false);
-  const [buttonsVisible, setButtonsVisible] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const engineRef = useRef<RenderedIntroPlayer | null>(null);
+  const phaseRef = useRef<"playing" | "menu">("playing");
+  const [phase, setPhase] = useState<"playing" | "menu">("playing");
+  const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [savedGameExists] = useState(hasSavedGame);
-  const [skipIntroNextTime, setSkipIntroNextTime] = useState(() => loadIntroSettings().skipIntro);
+  const [skipIntroNextTime, setSkipIntroNextTime] = useState(
+    () => loadIntroSettings().skipIntro,
+  );
   const [muted, setMuted] = useState(() => loadIntroSettings().introMuted);
   const [elapsed, setElapsed] = useState(0);
+  const frame = getFilmFrame(elapsed);
 
-  const enterMenu = () => {
-    setPhase('menu');
-    setTitleVisible(true);
-    window.setTimeout(() => setButtonsVisible(true), 400);
+  const enterMenu = useCallback(() => {
+    if (phaseRef.current === "menu") return;
+    phaseRef.current = "menu";
+    setPhase("menu");
     getIntroAudio().fadeOut();
     onIntroFinished?.();
-  };
-
-  const skipToMenu = () => {
-    engineRef.current?.skipToEnd();
-  };
+  }, [onIntroFinished]);
+  const skip = useCallback(() => {
+    if (engineRef.current) engineRef.current.skipToEnd();
+    else enterMenu();
+  }, [enterMenu]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
+    const video = videoRef.current;
+    if (!video) return;
     const settings = loadIntroSettings();
-    const engine = new CanvasIntroEngine(canvas, {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const engine = new RenderedIntroPlayer(video, {
       onComplete: enterMenu,
       onTick: setElapsed,
-      showHud: true,
+      onReady: () => setReady(true),
+      onAutoplayBlocked: () => setPaused(true),
+      onError: () => { setFailed(true); setReady(true); enterMenu(); },
+      onPlayback: (playing) => {
+        if (playing) setPaused(false);
+        if (playing && phaseRef.current === 'playing') {
+          getIntroAudio().start(loadIntroSettings().introMuted, video.currentTime);
+        } else getIntroAudio().stop();
+      },
     });
     engineRef.current = engine;
-
-    const handleResize = () => engine.resize();
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    if (!forcePlay && (settings.skipIntro || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
-      engine.pauseAt(INTRO_DURATION);
-      setElapsed(INTRO_DURATION);
+    if (!forcePlay && (settings.skipIntro || reducedMotion)) {
+      // Keep the poster still; reduced-motion users need not decode the film.
+      setReady(true);
       enterMenu();
-    } else {
-      getIntroAudio().start(settings.introMuted);
-      engine.start();
-    }
-
+    } else engine.start(0);
     return () => {
-      window.removeEventListener('resize', handleResize);
       engine.destroy();
+      engineRef.current = null;
       getIntroAudio().stop();
     };
-  }, [forcePlay, onIntroFinished]);
+  }, [forcePlay, enterMenu]);
+
+  const togglePause = useCallback(() => {
+    if (!ready || phaseRef.current !== "playing") return;
+    if (paused) {
+      engineRef.current?.start();
+      getIntroAudio().start(muted, videoRef.current?.currentTime ?? 0);
+    } else {
+      engineRef.current?.pauseAt();
+      getIntroAudio().stop();
+    }
+    setPaused(!paused);
+  }, [ready, muted, paused]);
 
   useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (phase !== 'playing') return;
-      if (event.key === 'Escape' || event.key === ' ' || event.key === 'Enter') {
+    const handleKey = (event: KeyboardEvent) => {
+      if (phaseRef.current !== "playing" || event.repeat) return;
+      const target = event.target;
+      if (target instanceof HTMLElement && target.closest("button,input,a"))
+        return;
+      if (event.key === "Escape" || event.key === "Enter") {
         event.preventDefault();
-        skipToMenu();
+        skip();
+      }
+      if (event.code === "Space") {
+        event.preventDefault();
+        togglePause();
       }
     };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [phase]);
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [skip, togglePause]);
 
-  const handleStart = (action: () => void) => {
-    saveIntroSettings({ skipIntro: skipIntroNextTime, introMuted: muted });
-    getIntroAudio().stop();
-    action();
-  };
 
   const toggleMute = () => {
     const next = !muted;
     setMuted(next);
     saveIntroSettings({ introMuted: next });
-    if (next) {
-      getIntroAudio().stop();
-    } else if (phase === 'playing') {
-      getIntroAudio().start(false);
-    }
+    if (next) getIntroAudio().stop();
+    else if (phase === "playing" && !paused) getIntroAudio().start(false, videoRef.current?.currentTime ?? 0);
+  };
+  const startGame = (action: () => void) => {
+    saveIntroSettings({ skipIntro: skipIntroNextTime, introMuted: muted });
+    getIntroAudio().stop();
+    action();
+  };
+  const seek = (time: number) => {
+    getIntroAudio().stop();
+    engineRef.current?.pauseAt(time);
+    if (!paused) engineRef.current?.start(time);
+  };
+  const replay = () => {
+    phaseRef.current = "playing";
+    setPhase("playing");
+    setPaused(false);
+    engineRef.current?.start(0);
+    getIntroAudio().start(muted, videoRef.current?.currentTime ?? 0);
   };
 
   return (
     <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: '#020617',
-        overflow: 'hidden',
-        fontFamily: 'var(--font-intro, "Segoe UI", system-ui, sans-serif)',
-      }}
+      className={`valley-film ${phase === "menu" ? "valley-film--menu" : ""}`}
     >
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          display: 'block',
-          cursor: phase === 'playing' ? 'pointer' : 'default',
-        }}
-        onClick={phase === 'playing' ? skipToMenu : undefined}
+      <video
+        ref={videoRef}
+        className="valley-film__canvas valley-film__video"
+        src="/intro/realism/valley-intro.mp4"
+        poster="/intro/realism/valley-intro-poster.jpg"
+        muted
+        playsInline
+        preload="metadata"
+        aria-label="Original animated Silicon Valley film: freeway commuters, the Hollow campus, speculative glass towers, a suburban garage, and the founder’s workbench."
       />
-
-      {phase === 'playing' && (
+      <div className="valley-film__grade" />
+      {phase === "playing" && (
         <div
-          style={{
-            position: 'absolute',
-            bottom: 28,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            color: 'rgba(148, 163, 184, 0.9)',
-            fontSize: 12,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            pointerEvents: 'none',
-          }}
+          className="valley-film__curtain"
+          style={{ opacity: frame.curtain }}
+        />
+      )}
+      <header className="valley-film__header">
+        <div className="valley-film__brand">
+          <span className="valley-film__brand-mark">AI</span>
+          <span>
+            AI LAB TYCOON<small>A SILICON VALLEY SATIRE</small>
+          </span>
+        </div>
+        <button
+          className="film-control"
+          onClick={toggleMute}
+          aria-label={muted ? "Unmute intro" : "Mute intro"}
         >
-          Click or press Space to skip · {Math.max(0, Math.ceil(INTRO_DURATION - elapsed))}s
+          {muted ? "Sound off" : "Sound on"}
+          <span aria-hidden="true">{muted ? "○" : "◖"}</span>
+        </button>
+      </header>
+      {!ready && (
+        <div className="valley-film__loading">
+          <span />
+          Preparing unreasonable expectations…
         </div>
       )}
-
-      <button
-        type="button"
-        onClick={toggleMute}
-        style={{
-          position: 'absolute',
-          top: 20,
-          right: 20,
-          zIndex: 30,
-          background: 'rgba(15, 23, 42, 0.75)',
-          border: '1px solid rgba(148, 163, 184, 0.35)',
-          color: '#e2e8f0',
-          borderRadius: 8,
-          padding: '8px 12px',
-          cursor: 'pointer',
-          fontSize: 12,
-        }}
-      >
-        {muted ? 'Unmute' : 'Mute'}
-      </button>
-
-      {phase === 'menu' && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            paddingBottom: 72,
-            background: 'linear-gradient(180deg, rgba(2,6,23,0.05) 0%, rgba(2,6,23,0.55) 45%, rgba(2,6,23,0.92) 100%)',
-            pointerEvents: 'none',
-          }}
-        >
-          <div
-            style={{
-              textAlign: 'center',
-              marginBottom: 28,
-              opacity: titleVisible ? 1 : 0,
-              transform: titleVisible ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'opacity 0.8s ease, transform 0.8s ease',
-            }}
-          >
-            <div
-              style={{
-                fontSize: 'clamp(28px, 5vw, 56px)',
-                fontWeight: 800,
-                letterSpacing: '0.12em',
-                color: '#f8fafc',
-                textShadow: '0 8px 30px rgba(0,0,0,0.45)',
-              }}
-            >
-              AI LAB
-            </div>
-            <div
-              style={{
-                fontSize: 'clamp(36px, 7vw, 72px)',
-                fontWeight: 800,
-                letterSpacing: '0.18em',
-                color: '#38bdf8',
-                textShadow: '0 8px 30px rgba(56, 189, 248, 0.35)',
-              }}
-            >
-              TYCOON
-            </div>
-            <p style={{ color: '#94a3b8', marginTop: 16, fontSize: 14, letterSpacing: '0.08em' }}>
-              A cinematic flight through Silicon Valley
-            </p>
+      {phase === "playing" ? (
+        <>
+          <div className="valley-film__chapter" key={frame.shotIndex}>
+            <span className="valley-film__eyebrow">{frame.shot.place}</span>
+            <h1>{frame.shot.title}</h1>
+            <p>{frame.shot.caption}</p>
           </div>
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 14,
-              alignItems: 'center',
-              opacity: buttonsVisible ? 1 : 0,
-              transform: buttonsVisible ? 'translateY(0)' : 'translateY(16px)',
-              transition: 'opacity 0.5s ease, transform 0.5s ease',
-              pointerEvents: buttonsVisible ? 'auto' : 'none',
-            }}
-          >
-            <button
-              type="button"
-              onClick={() => handleStart(onNewGame)}
-              style={{
-                padding: '18px 48px',
-                fontSize: 16,
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                background: 'linear-gradient(180deg, #22c55e 0%, #16a34a 100%)',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 12,
-                boxShadow: '0 12px 30px rgba(34, 197, 94, 0.35)',
-                cursor: 'pointer',
-              }}
-            >
-              NEW GAME
-            </button>
-
+          <footer className="valley-film__transport">
+            <div className="valley-film__transport-row">
+              <div className="valley-film__playback">
+                <button
+                  className="film-control"
+                  onClick={togglePause}
+                  disabled={!ready}
+                  aria-label={paused ? "Play intro" : "Pause intro"}
+                >
+                  <Icon name={paused ? "play" : "pause"} size={15} />
+                  {paused ? "Play" : "Pause"}
+                </button>
+                <span className="valley-film__time">
+                  00:{String(Math.floor(elapsed)).padStart(2, "0")} / 00:
+                  {FILM_DURATION}
+                </span>
+              </div>
+              <button
+                className="film-control film-control--skip"
+                onClick={skip}
+              >
+                Skip intro <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <div className="valley-film__timeline">
+              {filmShots.map((shot, index) => (
+                <button
+                  key={shot.start}
+                  disabled={!ready}
+                  onClick={() => seek(shot.start + 0.6)}
+                  aria-label={`Jump to ${shot.place.split(" / ")[1].toLowerCase()}`}
+                  aria-current={index === frame.shotIndex ? "step" : undefined}
+                >
+                  <span
+                    style={{
+                      transform: `scaleX(${index < frame.shotIndex ? 1 : index === frame.shotIndex ? frame.progress : 0})`,
+                    }}
+                  />
+                </button>
+              ))}
+            </div>
+          </footer>
+        </>
+      ) : (
+        <div className="valley-film__menu">
+          <span className="valley-film__eyebrow">
+            WELCOME TO YOUR NEXT BIG THING
+          </span>
+          <h1>
+            AI LAB
+            <br />
+            <em>TYCOON.</em>
+          </h1>
+          <p>
+            Change the world.
+            <br />
+            Or at least make next month’s rent.
+          </p>
+          {failed && (
+            <p className="valley-film__fallback" role="status">
+              The film couldn’t load on this device. Your company is ready to
+              play.
+            </p>
+          )}
+          <div className="valley-film__actions">
             {savedGameExists && (
               <button
-                type="button"
-                onClick={() => handleStart(onContinue)}
-                style={{
-                  padding: '14px 36px',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  background: 'rgba(30, 41, 59, 0.9)',
-                  color: '#cbd5e1',
-                  border: '1px solid rgba(148, 163, 184, 0.35)',
-                  borderRadius: 10,
-                  cursor: 'pointer',
-                }}
+                className="film-start"
+                onClick={() => startGame(onContinue)}
               >
-                CONTINUE
+                Back to the grind <span>↗</span>
               </button>
             )}
-
-            <label
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                color: '#94a3b8',
-                fontSize: 12,
-                marginTop: 8,
-                cursor: 'pointer',
-              }}
+            <button
+              className={savedGameExists ? "film-control" : "film-start"}
+              onClick={() => startGame(onNewGame)}
             >
-              <input
-                type="checkbox"
-                checked={skipIntroNextTime}
-                onChange={(event) => setSkipIntroNextTime(event.target.checked)}
-              />
-              Skip intro next time
-            </label>
+              Found a startup <span>↗</span>
+            </button>
+            {!failed && ready && (
+              <button className="film-control" onClick={replay}>
+                Replay film
+              </button>
+            )}
           </div>
-
-          <div style={{ position: 'absolute', bottom: 16, color: '#64748b', fontSize: 11, letterSpacing: '0.08em' }}>
-            v2.0 · A SATIRICAL AI ADVENTURE
-          </div>
+          <label className="valley-film__preference">
+            <input
+              type="checkbox"
+              checked={skipIntroNextTime}
+              onChange={(event) => {
+                setSkipIntroNextTime(event.target.checked);
+                saveIntroSettings({ skipIntro: event.target.checked });
+              }}
+            />
+            Skip intro next time
+          </label>
         </div>
       )}
+      <div className="valley-film__edge-label" aria-hidden="true">
+        CALIFORNIA DREAMING. QUARTERLY REPORTING.
+      </div>
     </div>
   );
 }

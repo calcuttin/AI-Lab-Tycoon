@@ -38,30 +38,30 @@ export default function MilestonesPanel() {
 
   return (
     <div className="space-y-4" style={{ fontFamily: 'var(--font-pixel)' }}>
-      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#0ea5e9', textShadow: '2px 2px 0 #0369a1' }}>
+      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#b7d98e', textShadow: 'none' }}>
         🏁 MILESTONES
       </h2>
 
       {/* Company phase */}
       <div
-        className="p-5 rounded"
+        className="p-5 rounded-lg"
         style={{
-          background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-          border: '5px solid #a855f7',
-          boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+          background: '#202523',
+          border: '1px solid #b2a2cf',
+          boxShadow: 'none',
         }}
       >
-        <div style={{ fontSize: 11, fontWeight: 'bold', color: '#a855f7', marginBottom: 8 }}>
+        <div style={{ fontSize: 14, fontWeight: 'bold', color: '#b2a2cf', marginBottom: 8 }}>
           COMPANY PHASE
         </div>
         <div className="flex items-center gap-4 mb-4">
           <div
-            className="w-16 h-16 rounded flex items-center justify-center flex-shrink-0"
+            className="w-16 h-16 rounded-lg flex items-center justify-center flex-shrink-0"
             style={{
-              background: 'linear-gradient(180deg, #a855f7 0%, #7c3aed 100%)',
-              border: '4px solid #6d28d9',
+              background: '#b2a2cf',
+              border: '1px solid #6d28d9',
               fontSize: 32,
-              boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+              boxShadow: 'none',
             }}
           >
             {currentPhase?.icon ?? '🌱'}
@@ -70,14 +70,14 @@ export default function MilestonesPanel() {
             <div style={{ fontSize: 12, fontWeight: 'bold', color: '#fff', marginBottom: 2 }}>
               {currentPhase?.name ?? 'Startup'}
             </div>
-            <div style={{ fontSize: 9, color: '#94a3b8' }}>
+            <div style={{ fontSize: 12, color: '#a7b39d' }}>
               {currentPhase?.description ?? 'Just getting started.'}
             </div>
           </div>
         </div>
         {nextPhase && (
-          <div style={{ fontSize: 9, color: '#94a3b8' }}>
-            Next: <span style={{ color: '#a855f7' }}>{nextPhase.name}</span> —{' '}
+          <div style={{ fontSize: 12, color: '#a7b39d' }}>
+            Next: <span style={{ color: '#b2a2cf' }}>{nextPhase.name}</span> —{' '}
             {req.money != null && `$${Number(req.money).toLocaleString()} `}
             {req.reputation != null && `${req.reputation} rep `}
             {req.employees != null && `${req.employees} employees `}
@@ -91,37 +91,37 @@ export default function MilestonesPanel() {
       {/* Daily challenge */}
       {dailyChallenge && (
         <div
-          className="p-5 rounded"
+          className="p-5 rounded-lg"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '5px solid #f59e0b',
-            boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #d9b778',
+            boxShadow: 'none',
           }}
         >
-          <div style={{ fontSize: 11, fontWeight: 'bold', color: '#f59e0b', marginBottom: 8 }}>
+          <div style={{ fontSize: 14, fontWeight: 'bold', color: '#d9b778', marginBottom: 8 }}>
             ☀️ DAILY CHALLENGE
           </div>
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
-              <div style={{ fontSize: 10, color: '#fff', marginBottom: 2 }}>{dailyChallenge?.title ?? 'Daily Challenge'}</div>
-              <div style={{ fontSize: 9, color: '#94a3b8' }}>{dailyChallenge?.description ?? ''}</div>
+              <div style={{ fontSize: 13, color: '#fff', marginBottom: 2 }}>{dailyChallenge?.title ?? 'Daily Challenge'}</div>
+              <div style={{ fontSize: 12, color: '#a7b39d' }}>{dailyChallenge?.description ?? ''}</div>
             </div>
-            <div style={{ fontSize: 10, color: '#f59e0b' }}>
+            <div style={{ fontSize: 13, color: '#d9b778' }}>
               {formatProgress(dailyChallenge?.goalType, dailyProg)} / {formatProgress(dailyChallenge?.goalType, dailyTarget)}
             </div>
-            <div style={{ fontSize: 9, color: '#22c55e' }}>
+            <div style={{ fontSize: 12, color: '#a5c992' }}>
               +${Number(dailyChallenge?.rewardMoney ?? 0).toLocaleString()} / +{dailyChallenge?.rewardReputation ?? 0} rep
             </div>
           </div>
           <div
-            className="mt-2 h-2 rounded overflow-hidden"
-            style={{ background: '#2d3748', border: '2px solid #475569' }}
+            className="mt-2 h-2 rounded-lg overflow-hidden"
+            style={{ background: '#333b36', border: '1px solid #46523d' }}
           >
             <div
               style={{
                 height: '100%',
                 width: `${Math.min(100, Math.max(0, (dailyProg / dailyTarget) * 100))}%`,
-                background: 'linear-gradient(90deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(90deg, #d9b778 0%, #d97706 100%)',
                 transition: 'width 0.3s',
               }}
             />
@@ -132,38 +132,38 @@ export default function MilestonesPanel() {
       {/* Weekly challenge */}
       {weeklyChallenge && (
         <div
-          className="p-5 rounded"
+          className="p-5 rounded-lg"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '5px solid #0ea5e9',
-            boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #b7d98e',
+            boxShadow: 'none',
           }}
         >
-          <div style={{ fontSize: 11, fontWeight: 'bold', color: '#0ea5e9', marginBottom: 8 }}>
+          <div style={{ fontSize: 14, fontWeight: 'bold', color: '#b7d98e', marginBottom: 8 }}>
             📅 WEEKLY CHALLENGE
           </div>
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
-              <div style={{ fontSize: 10, color: '#fff', marginBottom: 2 }}>{weeklyChallenge?.title ?? 'Weekly Challenge'}</div>
-              <div style={{ fontSize: 9, color: '#94a3b8' }}>{weeklyChallenge?.description ?? ''}</div>
+              <div style={{ fontSize: 13, color: '#fff', marginBottom: 2 }}>{weeklyChallenge?.title ?? 'Weekly Challenge'}</div>
+              <div style={{ fontSize: 12, color: '#a7b39d' }}>{weeklyChallenge?.description ?? ''}</div>
             </div>
-            <div style={{ fontSize: 10, color: '#0ea5e9' }}>
+            <div style={{ fontSize: 13, color: '#b7d98e' }}>
               {formatProgress(weeklyChallenge?.goalType, weeklyProg)} / {formatProgress(weeklyChallenge?.goalType, weeklyTarget)}
             </div>
-            <div style={{ fontSize: 9, color: '#22c55e' }}>
+            <div style={{ fontSize: 12, color: '#a5c992' }}>
               +${Number(weeklyChallenge?.rewardMoney ?? 0).toLocaleString()} / +{weeklyChallenge?.rewardReputation ?? 0} rep
               {weeklyChallenge?.rewardLegacy != null && ` / +${weeklyChallenge.rewardLegacy} Legacy`}
             </div>
           </div>
           <div
-            className="mt-2 h-2 rounded overflow-hidden"
-            style={{ background: '#2d3748', border: '2px solid #475569' }}
+            className="mt-2 h-2 rounded-lg overflow-hidden"
+            style={{ background: '#333b36', border: '1px solid #46523d' }}
           >
             <div
               style={{
                 height: '100%',
                 width: `${Math.min(100, Math.max(0, (weeklyProg / weeklyTarget) * 100))}%`,
-                background: 'linear-gradient(90deg, #0ea5e9 0%, #0284c7 100%)',
+                background: 'linear-gradient(90deg, #b7d98e 0%, #8ea86f 100%)',
                 transition: 'width 0.3s',
               }}
             />
@@ -173,66 +173,66 @@ export default function MilestonesPanel() {
 
       {/* Shipped products */}
       <div
-        className="p-5 rounded"
+        className="p-5 rounded-lg"
         style={{
-          background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-          border: '5px solid #22c55e',
-          boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+          background: '#202523',
+          border: '1px solid #a5c992',
+          boxShadow: 'none',
         }}
       >
-        <div style={{ fontSize: 11, fontWeight: 'bold', color: '#22c55e', marginBottom: 8 }}>
+        <div style={{ fontSize: 14, fontWeight: 'bold', color: '#a5c992', marginBottom: 8 }}>
           🛒 SHIPPED PRODUCTS (passive income)
         </div>
         {Array.isArray(shippedProducts) && shippedProducts.length > 0 && (
-          <ul className="space-y-2 mb-4" style={{ fontSize: 9 }}>
+          <ul className="space-y-2 mb-4" style={{ fontSize: 12 }}>
             {shippedProducts.map((p: { id: string; name: string; dailyRevenue: number }) => (
               <li key={p.id} className="flex justify-between items-center">
                 <span style={{ color: '#fff' }}>{p.name}</span>
-                <span style={{ color: '#22c55e' }}>+${p.dailyRevenue.toLocaleString()}/day</span>
+                <span style={{ color: '#a5c992' }}>+${p.dailyRevenue.toLocaleString()}/day</span>
               </li>
             ))}
           </ul>
         )}
-        <div style={{ fontSize: 8, color: '#94a3b8' }}>
+        <div style={{ fontSize: 11, color: '#a7b39d' }}>
           Completed projects become products automatically. Daily revenue is based on project quality and market appeal.
         </div>
       </div>
 
       {/* Prestige / Legacy */}
       <div
-        className="p-5 rounded"
+        className="p-5 rounded-lg"
         style={{
-          background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-          border: '5px solid #ec4899',
-          boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+          background: '#202523',
+          border: '1px solid #ec4899',
+          boxShadow: 'none',
         }}
       >
-        <div style={{ fontSize: 11, fontWeight: 'bold', color: '#ec4899', marginBottom: 8 }}>
+        <div style={{ fontSize: 14, fontWeight: 'bold', color: '#ec4899', marginBottom: 8 }}>
           🔄 PRESTIGE & LEGACY
         </div>
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div>
-            <div style={{ fontSize: 10, color: '#fff' }}>
+            <div style={{ fontSize: 13, color: '#fff' }}>
               Prestige level: <span style={{ color: '#ec4899' }}>{prestigeLevel ?? 0}</span>
             </div>
-            <div style={{ fontSize: 10, color: '#fff' }}>
-              Legacy Points: <span style={{ color: '#f59e0b' }}>{legacyPoints ?? 0}</span>
+            <div style={{ fontSize: 13, color: '#fff' }}>
+              Legacy Points: <span style={{ color: '#d9b778' }}>{legacyPoints ?? 0}</span>
             </div>
-            <div style={{ fontSize: 8, color: '#94a3b8', marginTop: 4 }}>
+            <div style={{ fontSize: 11, color: '#a7b39d', marginTop: 4 }}>
               Prestige resets your run but gives a permanent cash bonus on new games. Legacy is earned from challenges and progress.
             </div>
           </div>
           <button
             type="button"
             onClick={prestigeReset}
-            className="px-4 py-3 rounded font-bold transition-all hover:scale-[1.02]"
+            className="px-4 py-3 rounded-lg font-bold transition-all "
             style={{
-              background: 'linear-gradient(180deg, #ec4899 0%, #db2777 100%)',
-              border: '3px solid #be185d',
+              background: '#ec4899',
+              border: '1px solid #be185d',
               color: '#fff',
               fontFamily: 'var(--font-pixel)',
-              fontSize: 9,
-              boxShadow: '3px 3px 0 rgba(0,0,0,0.3)',
+              fontSize: 12,
+              boxShadow: 'none',
             }}
           >
             PRESTIGE (NEW GAME+)

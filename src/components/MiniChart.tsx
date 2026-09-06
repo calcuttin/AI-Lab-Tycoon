@@ -8,7 +8,7 @@ interface MiniChartProps {
 export default function MiniChart({ data, color, height = 60, label }: MiniChartProps) {
   if (data.length < 2) {
     return (
-      <div style={{ height, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, color: '#64748b' }}>
+      <div style={{ height, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#8b9980' }}>
         COLLECTING DATA...
       </div>
     );
@@ -40,9 +40,9 @@ export default function MiniChart({ data, color, height = 60, label }: MiniChart
   return (
     <div>
       {label && (
-        <div style={{ fontSize: 7, color: '#94a3b8', marginBottom: 4, letterSpacing: 1 }}>
+        <div style={{ fontSize: 10, color: '#a7b39d', marginBottom: 4, letterSpacing: 1 }}>
           {label}
-          <span style={{ marginLeft: 8, color: trend === '+' ? '#22c55e' : trend === '-' ? '#ef4444' : '#94a3b8' }}>
+          <span style={{ marginLeft: 8, color: trend === '+' ? '#a5c992' : trend === '-' ? '#e49a8e' : '#a7b39d' }}>
             {trend === '+' ? '▲' : trend === '-' ? '▼' : '—'}
           </span>
         </div>
@@ -61,7 +61,7 @@ export default function MiniChart({ data, color, height = 60, label }: MiniChart
             y1={padding + chartHeight * frac}
             x2={padding + chartWidth}
             y2={padding + chartHeight * frac}
-            stroke="#334155"
+            stroke="#333d32"
             strokeWidth={0.5}
             strokeDasharray="2,2"
           />
@@ -87,7 +87,7 @@ export default function MiniChart({ data, color, height = 60, label }: MiniChart
             cy={padding + chartHeight - ((latest - min) / range) * chartHeight}
             r={3}
             fill={color}
-            stroke="#0c1222"
+            stroke="#171b1a"
             strokeWidth={1}
           />
         )}

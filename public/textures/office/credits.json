@@ -1,0 +1,38 @@
+[
+  {
+    "file": "public/textures/office/garage_floor-diff.jpg",
+    "source": "https://polyhaven.com/a/garage_floor",
+    "license": "CC0-1.0",
+    "bytes": 71518
+  },
+  {
+    "file": "public/textures/office/garage_floor-nor_gl.jpg",
+    "source": "https://polyhaven.com/a/garage_floor",
+    "license": "CC0-1.0",
+    "bytes": 30768
+  },
+  {
+    "file": "public/textures/office/garage_floor-rough.jpg",
+    "source": "https://polyhaven.com/a/garage_floor",
+    "license": "CC0-1.0",
+    "bytes": 35505
+  },
+  {
+    "file": "public/textures/office/painted_plaster_wall-diff.jpg",
+    "source": "https://polyhaven.com/a/painted_plaster_wall",
+    "license": "CC0-1.0",
+    "bytes": 56464
+  },
+  {
+    "file": "public/textures/office/painted_plaster_wall-nor_gl.jpg",
+    "source": "https://polyhaven.com/a/painted_plaster_wall",
+    "license": "CC0-1.0",
+    "bytes": 60575
+  },
+  {
+    "file": "public/textures/office/painted_plaster_wall-rough.jpg",
+    "source": "https://polyhaven.com/a/painted_plaster_wall",
+    "license": "CC0-1.0",
+    "bytes": 20218
+  }
+]

@@ -43,37 +43,37 @@ export default function EmployeeTraining() {
 
   return (
     <div className="space-y-4" style={{ fontFamily: 'var(--font-pixel)' }}>
-      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#0ea5e9', textShadow: '2px 2px 0 #0369a1' }}>
+      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#b7d98e', textShadow: 'none' }}>
         🎓 EMPLOYEE TRAINING
       </h2>
 
       {employees.length === 0 ? (
         <div
-          className="text-center py-16 rounded"
+          className="text-center py-16 rounded-lg"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '4px solid #2d3748',
-            boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #333b36',
+            boxShadow: 'none',
           }}
         >
           <div style={{ fontSize: 48, marginBottom: 12 }}>🎓</div>
-          <div style={{ fontSize: 11, color: '#94a3b8', marginBottom: 6, fontWeight: 'bold' }}>
+          <div style={{ fontSize: 14, color: '#a7b39d', marginBottom: 6, fontWeight: 'bold' }}>
             NO EMPLOYEES TO TRAIN
           </div>
-          <div style={{ fontSize: 9, color: '#64748b' }}>Hire employees first!</div>
+          <div style={{ fontSize: 12, color: '#8b9980' }}>Hire employees first!</div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Employee selection */}
           <div
-            className="p-5 rounded"
+            className="p-5 rounded-lg"
             style={{
-              background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-              border: '5px solid #0ea5e9',
-              boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+              background: '#202523',
+              border: '1px solid #b7d98e',
+              boxShadow: 'none',
             }}
           >
-            <div style={{ fontSize: 11, fontWeight: 'bold', color: '#fff', marginBottom: 12, textShadow: '1px 1px 0 #000' }}>
+            <div style={{ fontSize: 14, fontWeight: 'bold', color: '#fff', marginBottom: 12, textShadow: 'none' }}>
               SELECT EMPLOYEE
             </div>
             <div className="space-y-2 max-h-96 overflow-y-auto">
@@ -81,19 +81,19 @@ export default function EmployeeTraining() {
                 <button
                   key={emp.id}
                   onClick={() => setSelectedEmployee(emp.id)}
-                  className="w-full p-3 rounded text-left transition-all hover:scale-[1.02]"
+                  className="w-full p-3 rounded-lg text-left transition-all "
                   style={{
                     background: selectedEmployee === emp.id
-                      ? 'linear-gradient(180deg, #0ea5e9 0%, #0284c7 100%)'
-                      : 'linear-gradient(180deg, #2d3748 0%, #1a2744 100%)',
-                    border: `3px solid ${selectedEmployee === emp.id ? '#0369a1' : '#475569'}`,
-                    boxShadow: '3px 3px 0 rgba(0,0,0,0.3)',
+                      ? '#b7d98e'
+                      : '#333b36',
+                    border: `1px solid ${selectedEmployee === emp.id ? '#536b3e' : '#46523d'}`,
+                    boxShadow: 'none',
                   }}
                 >
-                  <div style={{ fontSize: 9, fontWeight: 'bold', color: '#fff', marginBottom: 2 }}>
+                  <div style={{ fontSize: 12, fontWeight: 'bold', color: '#fff', marginBottom: 2 }}>
                     {emp.name.toUpperCase()}
                   </div>
-                  <div style={{ fontSize: 7, color: '#94a3b8' }}>{emp.role}</div>
+                  <div style={{ fontSize: 10, color: '#a7b39d' }}>{emp.role}</div>
                 </button>
               ))}
             </div>
@@ -102,14 +102,14 @@ export default function EmployeeTraining() {
           {/* Skill selection */}
           {selectedEmployee && (
             <div
-              className="p-5 rounded"
+              className="p-5 rounded-lg"
               style={{
-                background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-                border: '5px solid #22c55e',
-                boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+                background: '#202523',
+                border: '1px solid #a5c992',
+                boxShadow: 'none',
               }}
             >
-              <div style={{ fontSize: 11, fontWeight: 'bold', color: '#fff', marginBottom: 12, textShadow: '1px 1px 0 #000' }}>
+              <div style={{ fontSize: 14, fontWeight: 'bold', color: '#fff', marginBottom: 12, textShadow: 'none' }}>
                 SELECT SKILL
               </div>
               {(['development', 'research', 'creativity', 'management'] as const).map((skill) => {
@@ -123,25 +123,25 @@ export default function EmployeeTraining() {
                     key={skill}
                     onClick={() => setSelectedSkill(skill)}
                     disabled={!canTrain}
-                    className="w-full p-4 rounded mb-3 text-left transition-all hover:scale-[1.02]"
+                    className="w-full p-4 rounded-lg mb-3 text-left transition-all "
                     style={{
                       background: selectedSkill === skill
-                        ? 'linear-gradient(180deg, #22c55e 0%, #16a34a 100%)'
-                        : 'linear-gradient(180deg, #2d3748 0%, #1a2744 100%)',
-                      border: `3px solid ${selectedSkill === skill ? '#15803d' : '#475569'}`,
-                      boxShadow: '3px 3px 0 rgba(0,0,0,0.3)',
+                        ? '#a5c992'
+                        : '#333b36',
+                      border: `1px solid ${selectedSkill === skill ? '#425637' : '#46523d'}`,
+                      boxShadow: 'none',
                       opacity: canTrain ? 1 : 0.6,
                     }}
                   >
                     <div className="flex justify-between items-center mb-2">
-                      <div style={{ fontSize: 9, fontWeight: 'bold', color: '#fff' }}>
+                      <div style={{ fontSize: 12, fontWeight: 'bold', color: '#fff' }}>
                         {skill.toUpperCase()}
                       </div>
-                      <div style={{ fontSize: 10, color: '#94a3b8' }}>
+                      <div style={{ fontSize: 13, color: '#a7b39d' }}>
                         {currentLevel}/10
                       </div>
                     </div>
-                    <div style={{ fontSize: 8, color: '#94a3b8' }}>
+                    <div style={{ fontSize: 11, color: '#a7b39d' }}>
                       Cost: ${cost.toLocaleString()}
                     </div>
                   </button>
@@ -151,12 +151,12 @@ export default function EmployeeTraining() {
               {selectedSkill && (
                 <button
                   onClick={handleTrain}
-                  className="w-full py-4 rounded transition-all hover:scale-[1.02] mt-4"
+                  className="w-full py-4 rounded-lg transition-all  mt-4"
                   style={{
-                    background: 'linear-gradient(180deg, #22c55e 0%, #16a34a 100%)',
-                    border: '4px solid #15803d',
-                    boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
-                    fontSize: 10,
+                    background: '#425637',
+                    border: '1px solid #425637',
+                    boxShadow: 'none',
+                    fontSize: 13,
                     fontWeight: 'bold',
                     color: '#fff',
                   }}

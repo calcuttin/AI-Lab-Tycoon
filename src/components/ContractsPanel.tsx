@@ -25,40 +25,40 @@ export default function ContractsPanel() {
 
   return (
     <div className="space-y-4" style={{ fontFamily: 'var(--font-pixel)' }}>
-      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#0ea5e9', textShadow: '2px 2px 0 #0369a1' }}>
+      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#b7d98e', textShadow: 'none' }}>
         📋 CONTRACTS
       </h2>
 
       {/* Active contract */}
       {activeContract && (
         <div
-          className="p-5 rounded mb-4"
+          className="p-5 rounded-lg mb-4"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '5px solid #f59e0b',
-            boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #d9b778',
+            boxShadow: 'none',
           }}
         >
           <div className="flex justify-between items-start mb-3">
             <div>
-              <div style={{ fontSize: 11, fontWeight: 'bold', color: '#fff', marginBottom: 4 }}>
+              <div style={{ fontSize: 14, fontWeight: 'bold', color: '#fff', marginBottom: 4 }}>
                 ACTIVE: {activeContract.title}
               </div>
-              <div style={{ fontSize: 8, color: '#94a3b8' }}>{activeContract.description}</div>
+              <div style={{ fontSize: 11, color: '#a7b39d' }}>{activeContract.description}</div>
             </div>
-            <div style={{ fontSize: 12, fontWeight: 'bold', color: '#22c55e' }}>
+            <div style={{ fontSize: 12, fontWeight: 'bold', color: '#a5c992' }}>
               ${activeContract.reward.toLocaleString()}
             </div>
           </div>
           <div
-            className="w-full py-3 rounded"
+            className="w-full py-3 rounded-lg"
             style={{
-              background: '#0c1222',
-              border: '4px solid #475569',
-              boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
-              fontSize: 9,
+              background: '#171b1a',
+              border: '1px solid #46523d',
+              boxShadow: 'none',
+              fontSize: 12,
               fontWeight: 'bold',
-              color: '#f59e0b',
+              color: '#d9b778',
               textAlign: 'center',
             }}
           >
@@ -76,30 +76,30 @@ export default function ContractsPanel() {
             return (
               <div
                 key={contract.id}
-                className="p-4 rounded transition-all hover:scale-[1.02]"
+                className="p-4 rounded-lg transition-all "
                 style={{
-                  background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-                  border: `5px solid ${canAccept ? '#0ea5e9' : '#475569'}`,
-                  boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+                  background: '#202523',
+                  border: `1px solid ${canAccept ? '#b7d98e' : '#46523d'}`,
+                  boxShadow: 'none',
                   opacity: canAccept ? 1 : 0.7,
                 }}
               >
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <div style={{ fontSize: 10, fontWeight: 'bold', color: '#fff', marginBottom: 2 }}>
+                    <div style={{ fontSize: 13, fontWeight: 'bold', color: '#fff', marginBottom: 2 }}>
                       {contract.title}
                     </div>
-                    <div style={{ fontSize: 7, color: '#94a3b8', marginBottom: 4 }}>
+                    <div style={{ fontSize: 10, color: '#a7b39d', marginBottom: 4 }}>
                       Client: {contract.client}
                     </div>
-                    <div style={{ fontSize: 8, color: '#94a3b8' }}>{contract.description}</div>
+                    <div style={{ fontSize: 11, color: '#a7b39d' }}>{contract.description}</div>
                   </div>
-                  <div style={{ fontSize: 11, fontWeight: 'bold', color: '#22c55e' }}>
+                  <div style={{ fontSize: 14, fontWeight: 'bold', color: '#a5c992' }}>
                     ${contract.reward.toLocaleString()}
                   </div>
                 </div>
                 
-                <div className="mb-3" style={{ fontSize: 7, color: '#94a3b8' }}>
+                <div className="mb-3" style={{ fontSize: 10, color: '#a7b39d' }}>
                   <div>Required: Dev {contract.requiredSkills.development} | 
                     Res {contract.requiredSkills.research} | 
                     Cre {contract.requiredSkills.creativity}</div>
@@ -109,16 +109,16 @@ export default function ContractsPanel() {
                 <button
                   onClick={() => handleAcceptContract(contract.id)}
                   disabled={!canAccept}
-                  className="w-full py-2 rounded transition-all hover:scale-[1.02]"
+                  className="w-full py-2 rounded-lg transition-all "
                   style={{
                     background: canAccept
-                      ? 'linear-gradient(180deg, #0ea5e9 0%, #0284c7 100%)'
-                      : 'linear-gradient(180deg, #334155 0%, #1e293b 100%)',
-                    border: `3px solid ${canAccept ? '#0369a1' : '#475569'}`,
-                    boxShadow: '3px 3px 0 rgba(0,0,0,0.3)',
-                    fontSize: 8,
+                      ? '#b7d98e'
+                      : '#333d32',
+                    border: `1px solid ${canAccept ? '#536b3e' : '#46523d'}`,
+                    boxShadow: 'none',
+                    fontSize: 11,
                     fontWeight: 'bold',
-                    color: canAccept ? '#fff' : '#64748b',
+                    color: canAccept ? '#fff' : '#8b9980',
                   }}
                 >
                   {canAccept ? 'ACCEPT CONTRACT' : 'INSUFFICIENT SKILLS'}

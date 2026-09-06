@@ -17,42 +17,42 @@ export default function MarketView() {
   const yourMarketShare = calculateMarketShare();
 
   // Competitor colors
-  const competitorColors = ['#ef4444', '#f59e0b', '#3b82f6', '#8b5cf6', '#ec4899'];
+  const competitorColors = ['#e49a8e', '#d9b778', '#3b82f6', '#8b5cf6', '#ec4899'];
 
   return (
     <div className="space-y-4" style={{ fontFamily: 'var(--font-pixel)' }}>
-      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#0ea5e9', textShadow: '2px 2px 0 #0369a1' }}>
+      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#b7d98e', textShadow: 'none' }}>
         📊 MARKET
       </h2>
 
       {/* Market trends section */}
       <div
-        className="p-5 rounded mb-4"
+        className="p-5 rounded-lg mb-4"
         style={{
-          background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-          border: '5px solid #a855f7',
-          boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+          background: '#202523',
+          border: '1px solid #b2a2cf',
+          boxShadow: 'none',
         }}
       >
-        <div style={{ fontSize: 11, fontWeight: 'bold', color: '#fff', marginBottom: 8, textShadow: '1px 1px 0 #000' }}>
+        <div style={{ fontSize: 14, fontWeight: 'bold', color: '#fff', marginBottom: 8, textShadow: 'none' }}>
           📈 MARKET TRENDS
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3" style={{ fontSize: 8 }}>
-          <div className="p-3 rounded" style={{ background: 'rgba(14, 165, 233, 0.1)', border: '2px solid #0ea5e944' }}>
-            <div style={{ color: '#94a3b8', marginBottom: 2 }}>AI DEMAND</div>
-            <div style={{ color: '#22c55e', fontWeight: 'bold' }}>↑ HIGH</div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3" style={{ fontSize: 11 }}>
+          <div className="p-3 rounded-lg" style={{ background: 'rgba(14, 165, 233, 0.1)', border: '1px solid #b7d98e44' }}>
+            <div style={{ color: '#a7b39d', marginBottom: 2 }}>AI DEMAND</div>
+            <div style={{ color: '#a5c992', fontWeight: 'bold' }}>↑ HIGH</div>
           </div>
-          <div className="p-3 rounded" style={{ background: 'rgba(245, 158, 11, 0.1)', border: '2px solid #f59e0b44' }}>
-            <div style={{ color: '#94a3b8', marginBottom: 2 }}>COMPETITION</div>
-            <div style={{ color: '#ef4444', fontWeight: 'bold' }}>↑ INTENSE</div>
+          <div className="p-3 rounded-lg" style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid #d9b77844' }}>
+            <div style={{ color: '#a7b39d', marginBottom: 2 }}>COMPETITION</div>
+            <div style={{ color: '#e49a8e', fontWeight: 'bold' }}>↑ INTENSE</div>
           </div>
-          <div className="p-3 rounded" style={{ background: 'rgba(168, 85, 247, 0.1)', border: '2px solid #a855f744' }}>
-            <div style={{ color: '#94a3b8', marginBottom: 2 }}>INNOVATION</div>
-            <div style={{ color: '#a855f7', fontWeight: 'bold' }}>→ STEADY</div>
+          <div className="p-3 rounded-lg" style={{ background: 'rgba(168, 85, 247, 0.1)', border: '1px solid #b2a2cf44' }}>
+            <div style={{ color: '#a7b39d', marginBottom: 2 }}>INNOVATION</div>
+            <div style={{ color: '#b2a2cf', fontWeight: 'bold' }}>→ STEADY</div>
           </div>
-          <div className="p-3 rounded" style={{ background: 'rgba(34, 197, 94, 0.1)', border: '2px solid #22c55e44' }}>
-            <div style={{ color: '#94a3b8', marginBottom: 2 }}>FUNDING</div>
-            <div style={{ color: '#22c55e', fontWeight: 'bold' }}>↑ AVAILABLE</div>
+          <div className="p-3 rounded-lg" style={{ background: 'rgba(34, 197, 94, 0.1)', border: '1px solid #a5c99244' }}>
+            <div style={{ color: '#a7b39d', marginBottom: 2 }}>FUNDING</div>
+            <div style={{ color: '#a5c992', fontWeight: 'bold' }}>↑ AVAILABLE</div>
           </div>
         </div>
       </div>
@@ -60,31 +60,31 @@ export default function MarketView() {
       {/* Industry News Feed */}
       {competitorNews.length > 0 && (
         <div
-          className="p-5 rounded mb-4"
+          className="p-5 rounded-lg mb-4"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '5px solid #0ea5e9',
-            boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #b7d98e',
+            boxShadow: 'none',
           }}
         >
-          <div style={{ fontSize: 11, fontWeight: 'bold', color: '#fff', marginBottom: 12, textShadow: '1px 1px 0 #000' }}>
+          <div style={{ fontSize: 14, fontWeight: 'bold', color: '#fff', marginBottom: 12, textShadow: 'none' }}>
             📰 INDUSTRY NEWS
           </div>
           <div className="space-y-2" style={{ maxHeight: 200, overflowY: 'auto' }}>
             {competitorNews.map((item, i) => (
               <div
                 key={`${item.day}-${i}`}
-                className="flex items-center gap-3 p-3 rounded"
+                className="flex items-center gap-3 p-3 rounded-lg"
                 style={{
                   background: i === 0 ? 'rgba(14, 165, 233, 0.1)' : 'rgba(255,255,255,0.02)',
-                  border: i === 0 ? '2px solid #0ea5e944' : '1px solid #1e293b',
+                  border: i === 0 ? '2px solid #b7d98e44' : '1px solid #283026',
                   animation: i === 0 ? 'fadeInUp 0.5s ease-out' : undefined,
                 }}
               >
                 <span style={{ fontSize: 16 }}>{item.icon}</span>
                 <div className="flex-1">
-                  <div style={{ fontSize: 8, color: '#e2e8f0' }}>{item.headline}</div>
-                  <div style={{ fontSize: 7, color: '#64748b', marginTop: 2 }}>
+                  <div style={{ fontSize: 11, color: '#e2e8f0' }}>{item.headline}</div>
+                  <div style={{ fontSize: 10, color: '#8b9980', marginTop: 2 }}>
                     Day {item.day} • {daysPlayed - item.day === 0 ? 'TODAY' : `${daysPlayed - item.day}d ago`}
                   </div>
                 </div>
@@ -97,11 +97,11 @@ export default function MarketView() {
       {/* Your stats - Enhanced */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div
-          className="p-5 rounded relative overflow-hidden"
+          className="p-5 rounded-lg relative overflow-hidden"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '5px solid #0ea5e9',
-            boxShadow: '0 0 20px rgba(14, 165, 233, 0.4), 5px 5px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #b7d98e',
+            boxShadow: 'none',
           }}
         >
           {/* Animated background */}
@@ -112,13 +112,13 @@ export default function MarketView() {
               animation: 'slideBg 3s linear infinite',
             }}
           />
-          <div style={{ fontSize: 11, fontWeight: 'bold', color: '#fff', marginBottom: 8, textShadow: '1px 1px 0 #000', position: 'relative', zIndex: 1 }}>
+          <div style={{ fontSize: 14, fontWeight: 'bold', color: '#fff', marginBottom: 8, textShadow: 'none', position: 'relative', zIndex: 1 }}>
             YOUR LAB
           </div>
-          <div className="space-y-3" style={{ fontSize: 9, position: 'relative', zIndex: 1 }}>
+          <div className="space-y-3" style={{ fontSize: 12, position: 'relative', zIndex: 1 }}>
             <div className="flex justify-between items-center">
-              <span style={{ color: '#94a3b8' }}>MARKET SHARE:</span>
-              <span style={{ color: '#0ea5e9', fontWeight: 'bold', fontSize: 12, textShadow: '0 0 10px rgba(14, 165, 233, 0.6)' }}>
+              <span style={{ color: '#a7b39d' }}>MARKET SHARE:</span>
+              <span style={{ color: '#b7d98e', fontWeight: 'bold', fontSize: 12, textShadow: 'none' }}>
                 {yourMarketShare.toFixed(1)}%
               </span>
             </div>
@@ -126,9 +126,9 @@ export default function MarketView() {
             <div
               style={{
                 height: 16,
-                background: '#2d3748',
+                background: '#333b36',
                 borderRadius: 3,
-                border: '3px solid #475569',
+                border: '1px solid #46523d',
                 overflow: 'hidden',
               }}
             >
@@ -136,14 +136,14 @@ export default function MarketView() {
                 style={{
                   height: '100%',
                   width: `${(yourMarketShare / 100) * 100}%`,
-                  background: 'linear-gradient(90deg, #0ea5e9 0%, #0284c7 100%)',
-                  boxShadow: 'inset 0 0 10px rgba(14, 165, 233, 0.5)',
+                  background: 'linear-gradient(90deg, #b7d98e 0%, #8ea86f 100%)',
+                  boxShadow: 'none',
                 }}
               />
             </div>
             <div className="flex justify-between items-center">
-              <span style={{ color: '#94a3b8' }}>REPUTATION:</span>
-              <span style={{ color: '#f59e0b', fontWeight: 'bold', fontSize: 12, textShadow: '0 0 10px rgba(245, 158, 11, 0.6)' }}>
+              <span style={{ color: '#a7b39d' }}>REPUTATION:</span>
+              <span style={{ color: '#d9b778', fontWeight: 'bold', fontSize: 12, textShadow: 'none' }}>
                 {reputation}
               </span>
             </div>
@@ -151,28 +151,28 @@ export default function MarketView() {
         </div>
 
         <div
-          className="p-5 rounded"
+          className="p-5 rounded-lg"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '5px solid #22c55e',
-            boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #a5c992',
+            boxShadow: 'none',
           }}
         >
-          <div style={{ fontSize: 11, fontWeight: 'bold', color: '#fff', marginBottom: 8, textShadow: '1px 1px 0 #000' }}>
+          <div style={{ fontSize: 14, fontWeight: 'bold', color: '#fff', marginBottom: 8, textShadow: 'none' }}>
             STATS
           </div>
-          <div className="space-y-2" style={{ fontSize: 8 }}>
+          <div className="space-y-2" style={{ fontSize: 11 }}>
             <div className="flex justify-between">
-              <span style={{ color: '#94a3b8' }}>EMPLOYEES:</span>
-              <span style={{ color: '#22c55e', fontWeight: 'bold' }}>{employees.length}</span>
+              <span style={{ color: '#a7b39d' }}>EMPLOYEES:</span>
+              <span style={{ color: '#a5c992', fontWeight: 'bold' }}>{employees.length}</span>
             </div>
             <div className="flex justify-between">
-              <span style={{ color: '#94a3b8' }}>ACTIVE PROJECTS:</span>
-              <span style={{ color: '#0ea5e9', fontWeight: 'bold' }}>{projects.length}</span>
+              <span style={{ color: '#a7b39d' }}>ACTIVE PROJECTS:</span>
+              <span style={{ color: '#b7d98e', fontWeight: 'bold' }}>{projects.length}</span>
             </div>
             <div className="flex justify-between">
-              <span style={{ color: '#94a3b8' }}>CAPITAL:</span>
-              <span style={{ color: '#22c55e', fontWeight: 'bold' }}>
+              <span style={{ color: '#a7b39d' }}>CAPITAL:</span>
+              <span style={{ color: '#a5c992', fontWeight: 'bold' }}>
                 ${money >= 1000000 ? `${(money / 1000000).toFixed(2)}M` : money >= 1000 ? `${(money / 1000).toFixed(1)}K` : money.toFixed(0)}
               </span>
             </div>
@@ -180,17 +180,17 @@ export default function MarketView() {
         </div>
 
         <div
-          className="p-5 rounded"
+          className="p-5 rounded-lg"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '5px solid #f59e0b',
-            boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #d9b778',
+            boxShadow: 'none',
           }}
         >
-          <div style={{ fontSize: 11, fontWeight: 'bold', color: '#fff', marginBottom: 8, textShadow: '1px 1px 0 #000' }}>
+          <div style={{ fontSize: 14, fontWeight: 'bold', color: '#fff', marginBottom: 8, textShadow: 'none' }}>
             TRENDS
           </div>
-          <div className="space-y-2" style={{ fontSize: 8, color: '#94a3b8' }}>
+          <div className="space-y-2" style={{ fontSize: 11, color: '#a7b39d' }}>
             <div className="flex items-center gap-2">
               <span style={{ fontSize: 12 }}>📈</span>
               <span>CHATBOTS ARE TRENDING</span>
@@ -209,32 +209,32 @@ export default function MarketView() {
 
       {/* Market share pie chart visualization */}
       <div
-        className="p-5 rounded"
+        className="p-5 rounded-lg"
         style={{
-          background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-          border: '5px solid #2d3748',
-          boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+          background: '#202523',
+          border: '1px solid #333b36',
+          boxShadow: 'none',
         }}
       >
-        <div style={{ fontSize: 11, fontWeight: 'bold', color: '#fff', marginBottom: 12, textShadow: '1px 1px 0 #000' }}>
+        <div style={{ fontSize: 14, fontWeight: 'bold', color: '#fff', marginBottom: 12, textShadow: 'none' }}>
           MARKET SHARE BREAKDOWN
         </div>
         <div className="space-y-3">
           {/* Your share */}
           <div>
-            <div className="flex justify-between mb-2" style={{ fontSize: 8 }}>
+            <div className="flex justify-between mb-2" style={{ fontSize: 11 }}>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded" style={{ background: '#0ea5e9' }} />
+                <div className="w-3 h-3 rounded-lg" style={{ background: '#b7d98e' }} />
                 <span style={{ color: '#fff', fontWeight: 'bold' }}>YOUR LAB</span>
               </div>
-              <span style={{ color: '#0ea5e9', fontWeight: 'bold' }}>{yourMarketShare.toFixed(1)}%</span>
+              <span style={{ color: '#b7d98e', fontWeight: 'bold' }}>{yourMarketShare.toFixed(1)}%</span>
             </div>
             <div
               style={{
                 height: 12,
-                background: '#2d3748',
+                background: '#333b36',
                 borderRadius: 2,
-                border: '2px solid #475569',
+                border: '1px solid #46523d',
                 overflow: 'hidden',
               }}
             >
@@ -242,8 +242,8 @@ export default function MarketView() {
                 style={{
                   height: '100%',
                   width: `${(yourMarketShare / 100) * 100}%`,
-                  background: 'linear-gradient(90deg, #0ea5e9 0%, #0284c7 100%)',
-                  boxShadow: 'inset 0 0 8px rgba(14, 165, 233, 0.5)',
+                  background: 'linear-gradient(90deg, #b7d98e 0%, #8ea86f 100%)',
+                  boxShadow: 'none',
                 }}
               />
             </div>
@@ -254,9 +254,9 @@ export default function MarketView() {
             const color = competitorColors[index % competitorColors.length];
             return (
               <div key={competitor.id}>
-                <div className="flex justify-between mb-2" style={{ fontSize: 8 }}>
+                <div className="flex justify-between mb-2" style={{ fontSize: 11 }}>
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded" style={{ background: color }} />
+                    <div className="w-3 h-3 rounded-lg" style={{ background: color }} />
                     <span style={{ color: '#fff', fontWeight: 'bold' }}>{competitor.name.toUpperCase()}</span>
                   </div>
                   <span style={{ color, fontWeight: 'bold' }}>{competitor.marketShare.toFixed(1)}%</span>
@@ -264,9 +264,9 @@ export default function MarketView() {
                 <div
                   style={{
                     height: 12,
-                    background: '#2d3748',
+                    background: '#333b36',
                     borderRadius: 2,
-                    border: '2px solid #475569',
+                    border: '1px solid #46523d',
                     overflow: 'hidden',
                   }}
                 >
@@ -287,7 +287,7 @@ export default function MarketView() {
 
       {/* Competitors grid - Enhanced */}
       <div>
-        <div style={{ fontSize: 11, fontWeight: 'bold', color: '#94a3b8', marginBottom: 12 }}>
+        <div style={{ fontSize: 14, fontWeight: 'bold', color: '#a7b39d', marginBottom: 12 }}>
           COMPETITORS
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -296,11 +296,11 @@ export default function MarketView() {
             return (
               <div
                 key={competitor.id}
-                className="rounded relative overflow-hidden transition-all hover:scale-[1.02]"
+                className="rounded-lg relative overflow-hidden transition-all "
                 style={{
-                  background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-                  border: `5px solid ${color}`,
-                  boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+                  background: '#202523',
+                  border: `1px solid ${color}`,
+                  boxShadow: 'none',
                 }}
               >
                 {/* Header */}
@@ -308,34 +308,34 @@ export default function MarketView() {
                   className="p-4"
                   style={{
                     background: `linear-gradient(135deg, ${color}22 0%, transparent 100%)`,
-                    borderBottom: `2px solid ${color}44`,
+                    borderBottom: `1px solid ${color}44`,
                   }}
                 >
-                  <div style={{ fontSize: 10, fontWeight: 'bold', color: '#fff', marginBottom: 4, textShadow: '1px 1px 0 #000' }}>
+                  <div style={{ fontSize: 13, fontWeight: 'bold', color: '#fff', marginBottom: 4, textShadow: 'none' }}>
                     {competitor.name.toUpperCase()}
                   </div>
-                  <div style={{ fontSize: 7, color: '#64748b', fontStyle: 'italic' }}>
+                  <div style={{ fontSize: 10, color: '#8b9980', fontStyle: 'italic' }}>
                     "{competitor.tagline}"
                   </div>
                 </div>
 
                 {/* Body */}
-                <div className="p-4 space-y-3" style={{ fontSize: 8 }}>
-                  <div className="flex justify-between items-center p-2 rounded" style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
-                    <span style={{ color: '#94a3b8' }}>SHARE:</span>
-                    <span style={{ color: '#fff', fontWeight: 'bold', fontSize: 10 }}>{competitor.marketShare}%</span>
+                <div className="p-4 space-y-3" style={{ fontSize: 11 }}>
+                  <div className="flex justify-between items-center p-2 rounded-lg" style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
+                    <span style={{ color: '#a7b39d' }}>SHARE:</span>
+                    <span style={{ color: '#fff', fontWeight: 'bold', fontSize: 13 }}>{competitor.marketShare}%</span>
                   </div>
-                  <div className="flex justify-between items-center p-2 rounded" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
-                    <span style={{ color: '#94a3b8' }}>REP:</span>
-                    <span style={{ color: '#f59e0b', fontWeight: 'bold', fontSize: 10 }}>{competitor.reputation}</span>
+                  <div className="flex justify-between items-center p-2 rounded-lg" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+                    <span style={{ color: '#a7b39d' }}>REP:</span>
+                    <span style={{ color: '#d9b778', fontWeight: 'bold', fontSize: 13 }}>{competitor.reputation}</span>
                   </div>
                   {/* Market share bar */}
                   <div
                     style={{
                       height: 14,
-                      background: '#2d3748',
+                      background: '#333b36',
                       borderRadius: 3,
-                      border: '3px solid #475569',
+                      border: '1px solid #46523d',
                       overflow: 'hidden',
                     }}
                   >
@@ -350,10 +350,10 @@ export default function MarketView() {
                   </div>
                   {/* Recent activity */}
                   {competitor.recentActivity.length > 0 && (
-                    <div style={{ borderTop: '1px solid #1e293b', paddingTop: 6, marginTop: 4 }}>
-                      <div style={{ fontSize: 7, color: '#64748b', marginBottom: 4 }}>RECENT:</div>
+                    <div style={{ borderTop: '1px solid #283026', paddingTop: 6, marginTop: 4 }}>
+                      <div style={{ fontSize: 10, color: '#8b9980', marginBottom: 4 }}>RECENT:</div>
                       {competitor.recentActivity.slice(0, 2).map((activity, ai) => (
-                        <div key={ai} style={{ fontSize: 7, color: '#94a3b8', marginBottom: 2, lineHeight: 1.4 }}>
+                        <div key={ai} style={{ fontSize: 10, color: '#a7b39d', marginBottom: 2, lineHeight: 1.4 }}>
                           • {activity}
                         </div>
                       ))}

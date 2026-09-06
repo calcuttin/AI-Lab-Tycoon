@@ -29,10 +29,10 @@ export default function NotificationToast() {
     >
       {notifications.map((notif) => {
         const colors = {
-          success: { bg: '#22c55e', border: '#15803d', text: '#fff' },
-          info: { bg: '#0ea5e9', border: '#0369a1', text: '#fff' },
-          warning: { bg: '#f59e0b', border: '#b45309', text: '#fff' },
-          error: { bg: '#ef4444', border: '#b91c1c', text: '#fff' },
+          success: { bg: '#a5c992', border: '#425637', text: '#24311d' },
+          info: { bg: '#b7d98e', border: '#536b3e', text: '#24311d' },
+          warning: { bg: '#d9b778', border: '#b45309', text: '#24311d' },
+          error: { bg: '#e49a8e', border: '#b91c1c', text: '#24311d' },
         };
 
         const color = colors[notif.type];
@@ -40,19 +40,19 @@ export default function NotificationToast() {
         return (
           <div
             key={notif.id}
-            className="px-5 py-3 rounded relative overflow-hidden"
+            className="px-5 py-3 rounded-lg relative overflow-hidden"
             role={notif.type === 'error' ? 'alert' : 'status'}
             style={{
               background: `linear-gradient(180deg, ${color.bg} 0%, ${color.bg}dd 100%)`,
-              border: `4px solid ${color.border}`,
-              boxShadow: '5px 5px 0 rgba(0,0,0,0.3), 0 0 20px rgba(0,0,0,0.2)',
+              border: `1px solid ${color.border}`,
+              boxShadow: 'none',
               color: color.text,
               minWidth: 280,
               maxWidth: 400,
               animation: 'slideInRight 0.3s ease-out',
             }}
           >
-            <div style={{ fontSize: 10, fontWeight: 'bold', textShadow: '2px 2px 0 rgba(0,0,0,0.3)' }}>
+            <div style={{ fontSize: 13, fontWeight: 'bold', textShadow: 'none' }}>
               {notif.message}
             </div>
           </div>

@@ -1,0 +1,10 @@
+{
+  "renderer": "4.5.13 LTS",
+  "engine": "Cycles / Metal",
+  "width": 1920,
+  "height": 1080,
+  "fps": 24,
+  "frames": 144,
+  "durationSeconds": 6,
+  "video": "public/intro/realism/garage-proof.mp4"
+}
