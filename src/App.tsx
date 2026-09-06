@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import GameScreen from './components/GameScreen';
 import IntroScreen from './components/IntroScreen';
 import { shouldAutoResumeGame } from './intro/settings';
@@ -42,10 +42,19 @@ function App() {
   };
 
   const handleReplayIntro = () => {
+    saveGame();
+    setSessionKind('continue');
     setReplayIntro(true);
     setGameStarted(false);
     setTransitioning(false);
   };
+
+  const handleIntroFinished = useCallback(() => {
+    if (replayIntro) {
+      setReplayIntro(false);
+      setGameStarted(true);
+    }
+  }, [replayIntro]);
 
   if (!gameStarted) {
     return (
@@ -55,7 +64,7 @@ function App() {
           forcePlay={replayIntro}
           onNewGame={handleNewGame}
           onContinue={handleContinue}
-          onIntroFinished={() => setReplayIntro(false)}
+          onIntroFinished={handleIntroFinished}
         />
       </div>
     );

@@ -16,7 +16,10 @@ export default function KeyboardShortcuts({ setCurrentView }: KeyboardShortcutsP
     const handleKeyPress = (e: KeyboardEvent) => {
       // Don't trigger if typing in an input/textarea/select or contentEditable
       const target = e.target as HTMLElement | null;
-      if (!target) return;
+      if (!target || e.defaultPrevented || e.repeat) return;
+      // Native dialogs own the keyboard; Space must activate focused controls.
+      if (document.querySelector('dialog[open]')) return;
+      if (target.closest('button, a, [role="button"]') && (e.key === ' ' || e.key === 'Enter')) return;
       if (target.isContentEditable) return;
       if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) {
         return;
@@ -27,6 +30,7 @@ export default function KeyboardShortcuts({ setCurrentView }: KeyboardShortcutsP
 
       switch (e.key.toLowerCase()) {
         case ' ':
+          if (hasModifier) return;
           e.preventDefault();
           togglePause();
           break;

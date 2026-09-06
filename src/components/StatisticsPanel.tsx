@@ -28,25 +28,25 @@ export default function StatisticsPanel() {
   const activeResearch = researchNodes.filter(n => n.progress > 0 && !n.completed).length;
 
   const stats = [
-    { label: 'DAYS PLAYED', value: daysPlayed, color: '#0ea5e9', icon: '📅' },
-    { label: 'PROJECTS COMPLETED', value: totalProjectsCompleted, color: '#22c55e', icon: '🚀' },
-    { label: 'TOTAL REVENUE', value: `$${(totalRevenueEver / 1000).toFixed(0)}k`, color: '#22c55e', icon: '💵' },
-    { label: 'RESEARCH COMPLETED', value: completedResearch, color: '#a855f7', icon: '🔬' },
-    { label: 'ACTIVE RESEARCH', value: activeResearch, color: '#f59e0b', icon: '⚗️' },
-    { label: 'TOTAL EMPLOYEES', value: employees.length, color: '#0ea5e9', icon: '👥' },
-    { label: 'CONTRACTS DONE', value: totalContractsCompleted, color: '#0ea5e9', icon: '📋' },
-    { label: 'TRAININGS DONE', value: totalTrainingsDone, color: '#a855f7', icon: '🎓' },
-    { label: 'SHIPPED PRODUCTS', value: shippedProducts.length, color: '#22c55e', icon: '🛒' },
-    { label: 'COMPANY PHASE', value: companyPhase.replace('_', ' '), color: '#a855f7', icon: '🏁' },
+    { label: 'DAYS PLAYED', value: daysPlayed, color: '#b7d98e', icon: '📅' },
+    { label: 'PROJECTS COMPLETED', value: totalProjectsCompleted, color: '#a5c992', icon: '🚀' },
+    { label: 'TOTAL REVENUE', value: `$${(totalRevenueEver / 1000).toFixed(0)}k`, color: '#a5c992', icon: '💵' },
+    { label: 'RESEARCH COMPLETED', value: completedResearch, color: '#b2a2cf', icon: '🔬' },
+    { label: 'ACTIVE RESEARCH', value: activeResearch, color: '#d9b778', icon: '⚗️' },
+    { label: 'TOTAL EMPLOYEES', value: employees.length, color: '#b7d98e', icon: '👥' },
+    { label: 'CONTRACTS DONE', value: totalContractsCompleted, color: '#b7d98e', icon: '📋' },
+    { label: 'TRAININGS DONE', value: totalTrainingsDone, color: '#b2a2cf', icon: '🎓' },
+    { label: 'SHIPPED PRODUCTS', value: shippedProducts.length, color: '#a5c992', icon: '🛒' },
+    { label: 'COMPANY PHASE', value: companyPhase.replace('_', ' '), color: '#b2a2cf', icon: '🏁' },
     { label: 'LEGACY POINTS', value: legacyPoints, color: '#ec4899', icon: '⭐' },
-    { label: 'AVG MORALE', value: `${Math.floor(avgMorale)}%`, color: avgMorale > 70 ? '#22c55e' : avgMorale > 50 ? '#f59e0b' : '#ef4444', icon: '😊' },
-    { label: 'AVG DEV SKILL', value: avgDevSkill.toFixed(1), color: '#0ea5e9', icon: '💻' },
-    { label: 'MONTHLY EXPENSES', value: `$${(totalSalaries + office.rent).toLocaleString()}`, color: '#ef4444', icon: '💰' },
+    { label: 'AVG MORALE', value: `${Math.floor(avgMorale)}%`, color: avgMorale > 70 ? '#a5c992' : avgMorale > 50 ? '#d9b778' : '#e49a8e', icon: '😊' },
+    { label: 'AVG DEV SKILL', value: avgDevSkill.toFixed(1), color: '#b7d98e', icon: '💻' },
+    { label: 'MONTHLY EXPENSES', value: `$${(totalSalaries + office.rent).toLocaleString()}`, color: '#e49a8e', icon: '💰' },
   ];
 
   return (
     <div className="space-y-4" style={{ fontFamily: 'var(--font-pixel)' }}>
-      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#0ea5e9', textShadow: '2px 2px 0 #0369a1' }}>
+      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#b7d98e', textShadow: 'none' }}>
         📊 STATISTICS
       </h2>
 
@@ -55,34 +55,34 @@ export default function StatisticsPanel() {
         className="grid grid-cols-1 md:grid-cols-3 gap-3"
       >
         <div
-          className="p-4 rounded"
+          className="p-4 rounded-lg"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '4px solid #22c55e',
-            boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #a5c992',
+            boxShadow: 'none',
           }}
         >
-          <MiniChart data={revenueHistory} color="#22c55e" label="DAILY REVENUE (LAST 30 DAYS)" height={80} />
+          <MiniChart data={revenueHistory} color="#a5c992" label="DAILY REVENUE (LAST 30 DAYS)" height={80} />
         </div>
         <div
-          className="p-4 rounded"
+          className="p-4 rounded-lg"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '4px solid #f59e0b',
-            boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #d9b778',
+            boxShadow: 'none',
           }}
         >
-          <MiniChart data={moraleHistory} color="#f59e0b" label="TEAM MORALE TREND" height={80} />
+          <MiniChart data={moraleHistory} color="#d9b778" label="TEAM MORALE TREND" height={80} />
         </div>
         <div
-          className="p-4 rounded"
+          className="p-4 rounded-lg"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '4px solid #a855f7',
-            boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #b2a2cf',
+            boxShadow: 'none',
           }}
         >
-          <MiniChart data={reputationHistory} color="#a855f7" label="REPUTATION GROWTH" height={80} />
+          <MiniChart data={reputationHistory} color="#b2a2cf" label="REPUTATION GROWTH" height={80} />
         </div>
       </div>
 
@@ -91,17 +91,17 @@ export default function StatisticsPanel() {
         {stats.map((stat, index) => (
           <div
             key={stat.label}
-            className="p-4 rounded relative overflow-hidden"
+            className="p-4 rounded-lg relative overflow-hidden"
             style={{
-              background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-              border: `4px solid ${stat.color}`,
-              boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+              background: '#202523',
+              border: `1px solid ${stat.color}`,
+              boxShadow: 'none',
               animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`,
             }}
           >
             <div className="flex items-center gap-2 mb-2">
               <span style={{ fontSize: 20 }}>{stat.icon}</span>
-              <div style={{ fontSize: 8, color: '#94a3b8' }}>{stat.label}</div>
+              <div style={{ fontSize: 11, color: '#a7b39d' }}>{stat.label}</div>
             </div>
             <div
               style={{
@@ -120,14 +120,14 @@ export default function StatisticsPanel() {
       {/* Employee breakdown */}
       {employees.length > 0 && (
         <div
-          className="p-5 rounded"
+          className="p-5 rounded-lg"
           style={{
-            background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-            border: '5px solid #0ea5e9',
-            boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+            background: '#202523',
+            border: '1px solid #b7d98e',
+            boxShadow: 'none',
           }}
         >
-          <div style={{ fontSize: 11, fontWeight: 'bold', color: '#fff', marginBottom: 12, textShadow: '1px 1px 0 #000' }}>
+          <div style={{ fontSize: 14, fontWeight: 'bold', color: '#fff', marginBottom: 12, textShadow: 'none' }}>
             TEAM BREAKDOWN
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
@@ -136,16 +136,16 @@ export default function StatisticsPanel() {
               return (
                 <div
                   key={role}
-                  className="p-3 rounded text-center"
+                  className="p-3 rounded-lg text-center"
                   style={{
-                    background: 'linear-gradient(180deg, #2d3748 0%, #1a2744 100%)',
-                    border: '3px solid #475569',
+                    background: '#333b36',
+                    border: '1px solid #46523d',
                   }}
                 >
                   <div style={{ fontSize: 20, marginBottom: 4 }}>
                     {roleEmployees.length > 0 ? '👤' : '👻'}
                   </div>
-                  <div style={{ fontSize: 8, color: '#94a3b8', marginBottom: 2 }}>{role.toUpperCase()}</div>
+                  <div style={{ fontSize: 11, color: '#a7b39d', marginBottom: 2 }}>{role.toUpperCase()}</div>
                   <div style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}>{roleEmployees.length}</div>
                 </div>
               );

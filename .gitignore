@@ -25,3 +25,19 @@ dist-ssr
 
 output/
 .claude/
+
+# Downloaded film source assets and Blender render intermediates.
+# Reproduce with scripts/film/fetch_assets.py and render_garage.py.
+art/garage-proof/assets/
+art/garage-proof/*.blend*
+art/garage-proof/frames/
+art/garage-proof/*.log
+scripts/film/__pycache__/
+public/intro/realism/garage-proof-draft.png
+
+# Full film editable sources and intermediate frames.
+art/valley-film/*.blend*
+art/valley-film/frames/
+art/valley-film/shot-*.png
+art/game-assets/*.blend*
+art/valley-film/valley-master.mp4

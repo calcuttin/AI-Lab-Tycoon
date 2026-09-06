@@ -1,113 +1,123 @@
+// Original understated electronic cue: syncopated bass, plucked chords and soft
+// percussion. Synthesized locally; no soundtrack samples or network requests.
 class IntroAudio {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
-  private filter: BiquadFilterNode | null = null;
-  private oscillators: OscillatorNode[] = [];
+  private timer: number | undefined;
+  private fadeTimer: number | undefined;
+  private nodes = new Set<OscillatorNode>();
+  private step = 0;
+  private nextTime = 0;
   private started = false;
 
-  private getContext() {
-    if (!this.ctx) {
-      try {
-        this.ctx = new AudioContext();
-        this.master = this.ctx.createGain();
-        this.filter = this.ctx.createBiquadFilter();
-        this.filter.type = 'lowpass';
-        this.filter.frequency.value = 900;
-        this.filter.Q.value = 0.7;
-        this.master.gain.value = 0.2;
-        this.filter.connect(this.master);
-        this.master.connect(this.ctx.destination);
-      } catch {
-        return null;
+  start(muted = false, offsetSeconds = 0) {
+    if (muted || this.started) return;
+    window.clearTimeout(this.fadeTimer);
+    try {
+      this.ctx ??= new AudioContext();
+      if (this.ctx.state === "suspended")
+        void this.ctx.resume().catch(() => {});
+      this.master ??= this.ctx.createGain();
+      this.master.disconnect();
+      this.master.connect(this.ctx.destination);
+      this.master.gain.cancelScheduledValues(this.ctx.currentTime);
+      this.master.gain.setValueAtTime(0.0001, this.ctx.currentTime);
+      this.master.gain.linearRampToValueAtTime(0.2, this.ctx.currentTime + 0.6);
+      this.started = true;
+      this.step = Math.floor(offsetSeconds / (60 / 112 / 2));
+      this.nextTime = this.ctx.currentTime + 0.05;
+      this.schedule();
+      this.timer = window.setInterval(() => this.schedule(), 80);
+    } catch {
+      this.stop();
+    }
+  }
+  private note(
+    frequency: number,
+    at: number,
+    length: number,
+    volume: number,
+    type: OscillatorType = "sine",
+    slide?: number,
+  ) {
+    if (!this.ctx || !this.master) return;
+    const osc = this.ctx.createOscillator(),
+      gain = this.ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(frequency, at);
+    if (slide)
+      osc.frequency.exponentialRampToValueAtTime(slide, at + length * 0.8);
+    gain.gain.setValueAtTime(0.0001, at);
+    gain.gain.exponentialRampToValueAtTime(volume, at + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, at + length);
+    osc.connect(gain);
+    gain.connect(this.master);
+    this.nodes.add(osc);
+    osc.onended = () => {
+      osc.disconnect();
+      gain.disconnect();
+      this.nodes.delete(osc);
+    };
+    osc.start(at);
+    osc.stop(at + length + 0.03);
+  }
+  private schedule() {
+    if (!this.ctx || !this.started || this.ctx.state !== "running") return;
+    // Avoid scheduling a backlog when a background browser throttles timers.
+    if (this.nextTime < this.ctx.currentTime - 0.3)
+      this.nextTime = this.ctx.currentTime + 0.03;
+    const eighth = 60 / 112 / 2;
+    while (this.nextTime < this.ctx.currentTime + 0.22) {
+      const beat = this.step % 16;
+      const root = [55, 65.406, 49, 73.416][Math.floor(this.step / 16) % 4];
+      if ([0, 3, 6, 8, 11, 14].includes(beat))
+        this.note(
+          root * (beat === 14 ? 2 : 1),
+          this.nextTime,
+          0.23,
+          0.33,
+          "triangle",
+        );
+      if (beat % 4 === 0) this.note(130, this.nextTime, 0.16, 0.48, "sine", 42);
+      if (beat % 4 === 2) {
+        this.note(185, this.nextTime, 0.075, 0.12, "triangle", 80);
+        this.note(3300, this.nextTime, 0.045, 0.028, "square");
       }
+      if (beat % 2 === 1)
+        this.note(6700, this.nextTime, 0.025, 0.016, "square");
+      if ([1, 7, 10, 15].includes(beat)) {
+        for (const ratio of [4, 5, 6])
+          this.note(root * ratio, this.nextTime, 0.5, 0.05, "sine");
+      }
+      this.nextTime += eighth;
+      this.step++;
     }
-    if (this.ctx.state === 'suspended') {
-      void this.ctx.resume();
-    }
-    return this.ctx;
   }
-
-  start(muted = false) {
-    if (this.started || muted) return;
-    const ctx = this.getContext();
-    if (!ctx || !this.master || !this.filter) return;
-
-    this.stop(false);
-    this.started = true;
-
-    const now = ctx.currentTime;
-    this.filter.frequency.setValueAtTime(600, now);
-    this.filter.frequency.exponentialRampToValueAtTime(2800, now + 18);
-    this.filter.frequency.exponentialRampToValueAtTime(1200, now + 55);
-
-    const padNotes = [55, 82.41, 110, 138.59, 164.81];
-    for (const freq of padNotes) {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      gain.gain.value = 0.035;
-      osc.connect(gain);
-      gain.connect(this.filter);
-      osc.start();
-      this.oscillators.push(osc);
-    }
-
-    const warmth = ctx.createOscillator();
-    const warmthGain = ctx.createGain();
-    warmth.type = 'triangle';
-    warmth.frequency.value = 55;
-    warmthGain.gain.value = 0.025;
-    warmth.connect(warmthGain);
-    warmthGain.connect(this.filter);
-    warmth.start();
-    this.oscillators.push(warmth);
-
-    const lead = ctx.createOscillator();
-    const leadGain = ctx.createGain();
-    lead.type = 'sine';
-    lead.frequency.value = 220;
-    leadGain.gain.value = 0.018;
-    lead.connect(leadGain);
-    leadGain.connect(this.filter);
-    lead.start();
-    this.oscillators.push(lead);
-
-    const lfo = ctx.createOscillator();
-    const lfoGain = ctx.createGain();
-    lfo.frequency.value = 0.06;
-    lfoGain.gain.value = 18;
-    lfo.connect(lfoGain);
-    lfoGain.connect(lead.frequency);
-    lfo.start();
-    this.oscillators.push(lfo);
-  }
-
-  fadeOut(durationMs = 1400) {
+  fadeOut(durationMs = 900) {
     if (!this.master || !this.ctx) return;
+    window.clearInterval(this.timer);
+    window.clearTimeout(this.fadeTimer);
     const now = this.ctx.currentTime;
     this.master.gain.cancelScheduledValues(now);
     this.master.gain.setValueAtTime(this.master.gain.value, now);
-    this.master.gain.linearRampToValueAtTime(0.001, now + durationMs / 1000);
-    window.setTimeout(() => this.stop(), durationMs + 50);
+    this.master.gain.linearRampToValueAtTime(0.0001, now + durationMs / 1000);
+    this.fadeTimer = window.setTimeout(() => this.stop(), durationMs + 30);
   }
-
-  stop(resetStarted = true) {
-    for (const osc of this.oscillators) {
+  stop() {
+    window.clearInterval(this.timer);
+    window.clearTimeout(this.fadeTimer);
+    for (const osc of this.nodes) {
       try {
         osc.stop();
       } catch {
-        // oscillator may already be stopped
+        /* already ended */
       }
     }
-    this.oscillators = [];
-    if (resetStarted) this.started = false;
+    this.nodes.clear();
+    this.started = false;
   }
 }
-
 let instance: IntroAudio | null = null;
-
 export function getIntroAudio() {
-  if (!instance) instance = new IntroAudio();
-  return instance;
+  return (instance ??= new IntroAudio());
 }

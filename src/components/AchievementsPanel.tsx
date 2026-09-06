@@ -9,23 +9,23 @@ export default function AchievementsPanel() {
 
   return (
     <div className="space-y-4" style={{ fontFamily: 'var(--font-pixel)' }}>
-      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#0ea5e9', textShadow: '2px 2px 0 #0369a1' }}>
+      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#b7d98e', textShadow: 'none' }}>
         🏆 ACHIEVEMENTS
       </h2>
 
       {/* Stats */}
       <div
-        className="p-5 rounded"
+        className="p-5 rounded-lg"
         style={{
-          background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-          border: '5px solid #f59e0b',
-          boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+          background: '#202523',
+          border: '1px solid #d9b778',
+          boxShadow: 'none',
         }}
       >
         <div className="flex items-center gap-6">
-          <div style={{ fontSize: 10 }}>
-            <span style={{ color: '#94a3b8' }}>PROGRESS: </span>
-            <span style={{ color: '#f59e0b', fontWeight: 'bold', fontSize: 14 }}>
+          <div style={{ fontSize: 13 }}>
+            <span style={{ color: '#a7b39d' }}>PROGRESS: </span>
+            <span style={{ color: '#d9b778', fontWeight: 'bold', fontSize: 14 }}>
               {unlocked.length} / {achievements.length}
             </span>
           </div>
@@ -34,9 +34,9 @@ export default function AchievementsPanel() {
               height: 16,
               flex: 1,
               maxWidth: 300,
-              background: '#2d3748',
+              background: '#333b36',
               borderRadius: 3,
-              border: '3px solid #475569',
+              border: '1px solid #46523d',
               overflow: 'hidden',
             }}
           >
@@ -44,9 +44,9 @@ export default function AchievementsPanel() {
               style={{
                 height: '100%',
                 width: `${(unlocked.length / achievements.length) * 100}%`,
-                background: 'linear-gradient(90deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(90deg, #d9b778 0%, #d97706 100%)',
                 transition: 'width 0.3s',
-                boxShadow: 'inset 0 0 10px rgba(245, 158, 11, 0.5)',
+                boxShadow: 'none',
               }}
             />
           </div>
@@ -56,18 +56,18 @@ export default function AchievementsPanel() {
       {/* Unlocked achievements */}
       {unlocked.length > 0 && (
         <div>
-          <div style={{ fontSize: 11, fontWeight: 'bold', color: '#22c55e', marginBottom: 8 }}>
+          <div style={{ fontSize: 14, fontWeight: 'bold', color: '#a5c992', marginBottom: 8 }}>
             ✓ UNLOCKED ({unlocked.length})
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {unlocked.map((achievement) => (
               <div
                 key={achievement.id}
-                className="p-4 rounded relative overflow-hidden transition-all hover:scale-[1.02]"
+                className="p-4 rounded-lg relative overflow-hidden transition-all "
                 style={{
-                  background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-                  border: '5px solid #22c55e',
-                  boxShadow: '0 0 20px rgba(34, 197, 94, 0.4), 5px 5px 0 rgba(0,0,0,0.3)',
+                  background: '#202523',
+                  border: '1px solid #a5c992',
+                  boxShadow: 'none',
                 }}
               >
                 {/* Shine effect */}
@@ -80,21 +80,21 @@ export default function AchievementsPanel() {
                 />
                 <div className="flex items-center gap-3 relative z-10">
                   <div
-                    className="w-14 h-14 rounded flex items-center justify-center flex-shrink-0"
+                    className="w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0"
                     style={{
-                      background: 'linear-gradient(180deg, #22c55e 0%, #16a34a 100%)',
-                      border: '4px solid #15803d',
+                      background: '#425637',
+                      border: '1px solid #425637',
                       fontSize: 28,
-                      boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+                      boxShadow: 'none',
                     }}
                   >
                     {achievement.icon}
                   </div>
                   <div className="flex-1">
-                    <div style={{ fontSize: 10, fontWeight: 'bold', color: '#fff', textShadow: '1px 1px 0 #000', marginBottom: 2 }}>
+                    <div style={{ fontSize: 13, fontWeight: 'bold', color: '#fff', textShadow: 'none', marginBottom: 2 }}>
                       {achievement.title.toUpperCase()}
                     </div>
-                    <div style={{ fontSize: 8, color: '#94a3b8' }}>{achievement.description}</div>
+                    <div style={{ fontSize: 11, color: '#a7b39d' }}>{achievement.description}</div>
                   </div>
                 </div>
               </div>
@@ -106,39 +106,39 @@ export default function AchievementsPanel() {
       {/* Locked achievements */}
       {locked.length > 0 && (
         <div>
-          <div style={{ fontSize: 11, fontWeight: 'bold', color: '#94a3b8', marginBottom: 8 }}>
+          <div style={{ fontSize: 14, fontWeight: 'bold', color: '#a7b39d', marginBottom: 8 }}>
             🔒 LOCKED ({locked.length})
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {locked.map((achievement) => (
               <div
                 key={achievement.id}
-                className="p-4 rounded"
+                className="p-4 rounded-lg"
                 style={{
-                  background: 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-                  border: '5px solid #475569',
-                  boxShadow: '5px 5px 0 rgba(0,0,0,0.3)',
+                  background: '#202523',
+                  border: '1px solid #46523d',
+                  boxShadow: 'none',
                   opacity: 0.6,
                 }}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-14 h-14 rounded flex items-center justify-center flex-shrink-0"
+                    className="w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0"
                     style={{
-                      background: 'linear-gradient(180deg, #334155 0%, #1e293b 100%)',
-                      border: '4px solid #475569',
+                      background: '#333d32',
+                      border: '1px solid #46523d',
                       fontSize: 28,
-                      boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+                      boxShadow: 'none',
                       filter: 'grayscale(100%)',
                     }}
                   >
                     {achievement.icon}
                   </div>
                   <div className="flex-1">
-                    <div style={{ fontSize: 10, fontWeight: 'bold', color: '#64748b' }}>
+                    <div style={{ fontSize: 13, fontWeight: 'bold', color: '#8b9980' }}>
                       {achievement.title.toUpperCase()}
                     </div>
-                    <div style={{ fontSize: 8, color: '#475569' }}>{achievement.description}</div>
+                    <div style={{ fontSize: 11, color: '#46523d' }}>{achievement.description}</div>
                   </div>
                   <div style={{ fontSize: 20, opacity: 0.5 }}>🔒</div>
                 </div>

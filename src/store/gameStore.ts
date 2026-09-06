@@ -7,6 +7,7 @@ import { companyPhases, type CompanyPhaseId } from '../data/milestones';
 import { generateDailyChallenge, generateWeeklyChallenge, type Challenge, type ChallengeGoalType } from '../data/challenges';
 import { type RoomTypeId, getRoomTypeById, officeGridSizes, type OfficeSizeType, type RoomEffects } from '../data/roomTypes';
 import { type InstalledUpgrade, type OfficeSizeId, getUpgradeById, getLayoutById } from '../data/officeLayouts';
+import { relocateOfficeUpgrades } from '../data/officeRelocation';
 import { playSound } from '../systems/audio';
 import { emitNotification, showNotification, triggerParticleEffect } from '../systems/feedback';
 import { computeProjectDailyProgress } from './projectProgress';
@@ -1462,6 +1463,7 @@ export const useGameStore = create<GameState>((set, get) => ({
         office: {
           ...state.office,
           size: nextSize,
+          installedUpgrades: relocateOfficeUpgrades(state.office.installedUpgrades, nextSize),
           level: state.office.level + 1,
           rent: newRent[nextSize],
           gridWidth: newGridSize.width,

@@ -2,20 +2,24 @@
 
 A satirical tycoon game where you build an AI startup in Silicon Valley. Inspired by Game Dev Tycoon and the HBO series *Silicon Valley*, you'll hire engineers, ship AI products, outmaneuver competitors, and chase the dream of AGI — all while burning through venture capital.
 
-Built with React, TypeScript, Zustand, and Tailwind CSS. Runs entirely in the browser.
+Built with React, TypeScript, Zustand, Three.js, and Tailwind CSS. Runs entirely in the browser.
 
 ---
 
-## Screenshots
+## The founder workspace
 
-![Game Screenshot](Title.png)
+A charcoal-and-sage management interface surrounds a live 3D office. Hire staff, assign projects, furnish the garage, and watch the company evolve from a dubious incubator to a campus. The UI keeps the HBO *Silicon Valley* premise through mentor dialogue, startup satire, and the original story events.
+
+See [the UI and 3D system notes](docs/UI_SYSTEM.md) for the component architecture, asset library, and validation steps.
 
 ---
 
 ## Features
 
 ### Cinematic Silicon Valley Intro
-Opens on an **AI-generated photorealistic garage plate** (1960s dawn, Ken Burns motion) before crossfading into a Canvas flyover along the 101 — golden-hour skies, glass towers, palm-lined hills, and highway traffic through seven decades of Valley history.
+An original **36-second Blender opening film** travels through peninsula traffic, the fictional Hollow campus, speculative glass towers, the neighborhood, and the founder’s garage and workbench. Six real camera setups, moving commuters, a construction crane, scanned surfaces, and original satirical signage bring the miniature Valley to life. Includes an original synthesized score, pause, chapter navigation, skip, replay, and reduced-motion support.
+
+The playable office now uses a compact Blender prop pack, scanned concrete/plaster surfaces, environment reflections, evening task lighting, animated screens, staff gestures, foliage, coffee steam, and a rotating fan. Use the camera tour or select an office area and focus the camera to inspect the details. Production instructions: [Full film](art/valley-film/README.md).
 
 ### Core Gameplay Loop
 - **Hire your team** — Start with nothing and recruit engineers, researchers, designers, and managers
@@ -39,12 +43,16 @@ Opens on an **AI-generated photorealistic garage plate** (1960s dawn, Ken Burns 
 | **Events** | Random story events with character dialogue and branching choices |
 
 ### Visual Polish
-- Pixel art aesthetic with "Press Start 2P" font
+- Shared buttons, badges, SVG icons, dialogs, and responsive management surfaces
+- Interactive 3D cutaway offices with modeled furniture, equipment, lighting, and shadows
+- Staff typing/idle motion, server LEDs, screen glow, and coffee steam tied to game speed
+- Camera orbit, zoom, reset, and daylight/evening controls
+- Accessible furnishing controls, reduced-motion support, and a WebGL fallback
 - Procedural Web Audio API sound effects
 - Particle effects for achievements and milestones
 - Animated sparkline charts for tracking stats over time
 - Keyboard shortcuts for all major actions
-- Tutorial overlay for new players
+- Satirical onboarding and a dismissible founder hint
 - Auto-save each in-game day and on browser close (manual save still available)
 
 ---
@@ -75,7 +83,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 2. **Start a project** — Go to PROJECTS, pick an AI product type, and assign your team
 3. **Unpause the game** — Press SPACE or click the play button to start the clock
 4. **Research new tech** — Spend money on the RESEARCH tree to unlock better project types
-5. **Upgrade your office** — Install workstation, amenity, and infrastructure upgrades in the OFFICE view
+5. **Upgrade your office** — Install workstation, amenity, and infrastructure upgrades in Headquarters
 6. **Watch the market** — Track competitors, read industry news, and grow your reputation
 7. **Complete contracts** — Take on client work for guaranteed income
 8. **Chase AGI** — The ultimate goal. Good luck.
@@ -122,8 +130,8 @@ Competitors dynamically launch products, secure funding, suffer data breaches, a
 ### Project Structure
 ```
 src/
-  components/    # React panels, modals, overlays, Canvas intro
-  intro/         # Canvas intro engine, timeline, audio
+  components/    # React panels, modals, overlays, cinematic intro
+  intro/         # 3D cinematic set, camera edit, audio; legacy Canvas renderer
   store/         # Zustand game state, simulation helpers, persistence
   systems/       # Time system, audio engine, UI feedback bus
   data/          # Game data (projects, research, events, characters, balance)
@@ -135,7 +143,7 @@ src/
 ## Easter Eggs
 
 The game is packed with Silicon Valley references. A few hints:
-- Watch the intro carefully for collapsing buildings
+- Look for the satirical signs and growing corporate empires in the intro
 - Check the dumpsters
 - Read every billboard
 - Some story events feature familiar characters

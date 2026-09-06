@@ -1,0 +1,14 @@
+{
+  "source": "Original project models",
+  "units": "meters",
+  "up": "Y in glTF",
+  "file": "public/models/office-props.glb",
+  "objects": [
+    "DeskShell",
+    "ChairShell",
+    "DeskLamp",
+    "FloorFan",
+    "FanRotor"
+  ],
+  "bytes": 644076
+}

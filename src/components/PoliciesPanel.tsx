@@ -7,19 +7,19 @@ const policyDetails: Record<Policy, { title: string; description: string; effect
     title: 'Balanced',
     description: 'Default pace with steady morale.',
     effect: 'Neutral speed and morale',
-    color: '#0ea5e9',
+    color: '#b7d98e',
   },
   crunch: {
     title: 'Crunch Mode',
     description: 'Short-term speed boost at a morale cost.',
     effect: '+Speed, -Morale',
-    color: '#ef4444',
+    color: '#e49a8e',
   },
   wellness: {
     title: 'Wellness First',
     description: 'Protect morale with a small speed tradeoff.',
     effect: '+Morale, -Speed',
-    color: '#22c55e',
+    color: '#a5c992',
   },
 };
 
@@ -29,7 +29,7 @@ export default function PoliciesPanel() {
 
   return (
     <div className="space-y-4" style={{ fontFamily: 'var(--font-pixel)' }}>
-      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#0ea5e9', textShadow: '2px 2px 0 #0369a1' }}>
+      <h2 className="text-sm font-bold tracking-wide" style={{ color: '#b7d98e', textShadow: 'none' }}>
         🧩 POLICIES
       </h2>
 
@@ -41,24 +41,24 @@ export default function PoliciesPanel() {
             <button
               key={key}
               onClick={() => setPolicy(key)}
-              className="p-4 rounded text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="p-4 rounded-lg text-left transition-all  active:scale-[0.98]"
               style={{
                 background: isActive
                   ? `linear-gradient(180deg, ${details.color}22 0%, transparent 100%)`
-                  : 'linear-gradient(180deg, #1a2744 0%, #0c1222 100%)',
-                border: `5px solid ${isActive ? details.color : '#475569'}`,
+                  : '#202523',
+                border: `1px solid ${isActive ? details.color : '#46523d'}`,
                 boxShadow: isActive
                   ? `0 0 20px ${details.color}55, 5px 5px 0 rgba(0,0,0,0.3)`
                   : '5px 5px 0 rgba(0,0,0,0.3)',
               }}
             >
-              <div style={{ fontSize: 11, fontWeight: 'bold', color: '#fff', marginBottom: 6 }}>
+              <div style={{ fontSize: 14, fontWeight: 'bold', color: '#fff', marginBottom: 6 }}>
                 {details.title.toUpperCase()}
               </div>
-              <div style={{ fontSize: 8, color: '#94a3b8', marginBottom: 8 }}>
+              <div style={{ fontSize: 11, color: '#a7b39d', marginBottom: 8 }}>
                 {details.description}
               </div>
-              <div style={{ fontSize: 8, color: details.color, fontWeight: 'bold' }}>
+              <div style={{ fontSize: 11, color: details.color, fontWeight: 'bold' }}>
                 {details.effect}
               </div>
             </button>
