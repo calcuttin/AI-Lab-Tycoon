@@ -15,10 +15,13 @@ function App() {
   const saveGame = useGameStore((state) => state.saveGame);
 
   useEffect(() => {
+    // A title-only tab has not loaded the saved company. Its initial store must
+    // never overwrite a save belonging to another tab when this tab closes.
+    if (!gameStarted && !replayIntro && !transitioning) return;
     const handleBeforeUnload = () => saveGame();
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [saveGame]);
+  }, [saveGame, gameStarted, replayIntro, transitioning]);
 
   const startSession = (kind: SessionKind) => {
     setSessionKind(kind);

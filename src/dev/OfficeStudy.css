@@ -1,0 +1,14 @@
+.office-study { min-height: 100vh; padding: 24px; max-width: 1800px; margin: auto; }
+.office-study-header { display: flex; justify-content: space-between; gap: 24px; align-items: center; margin-bottom: 20px; }
+.office-study-header h1 { font-size: clamp(25px, 3vw, 38px); font-weight: 600; letter-spacing: -.035em; }
+.office-study-header p:not(.office-study-eyebrow), .office-study-note { color: var(--muted); }
+.office-study-eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: 10px; color: var(--accent); }
+.office-study-header a { color: var(--accent); white-space: nowrap; }
+.office-study-stages, .office-study-controls, .office-study-areas { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.office-study button { padding: 9px 13px; background: #252c27; border: 1px solid #445044; border-radius: 7px; color: #dce2d8; font-size: 12px; }
+.office-study button[aria-pressed="true"] { background: #c5df91; border-color: #c5df91; color: #182214; }
+.office-study-controls span { color: var(--muted); margin-left: auto; font-size: 12px; }
+.office-study-canvas { width: 100%; height: min(72vh, 900px); min-height: 420px; overflow: hidden; border-radius: 12px; border: 1px solid #526050; }
+.office-study-canvas canvas { display: block; width: 100%; height: 100%; }
+.office-study-note { font-size: 12px; margin-top: 12px; }
+@media(max-width: 640px) { .office-study { padding: 12px; } .office-study-header { align-items: flex-start; gap: 12px; } .office-study-header a { font-size: 11px; } .office-study-controls span { width: 100%; margin-left: 0; } .office-study-canvas { height: 62vh; min-height: 340px; } }

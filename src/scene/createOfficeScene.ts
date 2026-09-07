@@ -1,12 +1,13 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { getFurnishingAreas } from "../data/officeRelocation";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { loadOfficeSurfaces } from "./officeMaterials";
+import { createOfficePostProcessing } from "./officePostProcessing";
+import { createOfficeMaterials } from "./officeMaterials";
 import { OfficeObjects } from "./officeObjects";
+import { getOfficeFloorplan } from "./officeFloorplan";
+import { buildOfficeBuilding } from "./officeBuilding";
+import { createOfficeGarden } from "./officeGarden";
 import {
-  calculateTotalEffects,
-  getLayoutById,
   getUpgradeById,
   type OfficeSizeId,
   type InstalledUpgrade,
@@ -39,7 +40,7 @@ export function createOfficeScene(
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = data.night ? 1.05 : 1.12;
   renderer.domElement.setAttribute(
@@ -60,30 +61,22 @@ export function createOfficeScene(
   pmrem.dispose();
   const room = new THREE.Group();
   scene.add(room);
-  const layout = getLayoutById(data.size)!;
-  const dimensions = {
-    hacker_den: 14,
-    small: 16,
-    medium: 20,
-    large: 24,
-    campus: 28,
-  };
-  const width = dimensions[data.size];
-  const depth = width * 0.72;
-  const wallHeight = 3.1;
-  const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 150);
+  const floorplan = getOfficeFloorplan(data.size, data.upgrades, data.employees.length);
+  const { width, depth } = floorplan;
+  const frameSize = Math.max(width, depth);
+  const camera = new THREE.PerspectiveCamera(36, 1, 0.1, Math.max(150, frameSize * 8));
   const defaultPosition = new THREE.Vector3(
-    width * 0.94,
-    width * 0.79,
-    width * 1.14,
+    frameSize * 0.94,
+    frameSize * 0.79,
+    frameSize * 1.14,
   );
   camera.position.copy(defaultPosition);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 0.1, 0);
   controls.enableDamping = true;
   controls.dampingFactor = 0.07;
-  controls.minDistance = width * 0.65;
-  controls.maxDistance = width * 2.65;
+  controls.minDistance = 4.5;
+  controls.maxDistance = frameSize * 2.65;
   controls.minPolarAngle = 0.35;
   controls.maxPolarAngle = Math.PI * 0.43;
   controls.minAzimuthAngle = -0.2;
@@ -93,23 +86,23 @@ export function createOfficeScene(
   const ambient = new THREE.HemisphereLight(
     data.night ? "#93bfdc" : "#e8efed",
     "#716f58",
-    data.night ? 1.0 : 1.65,
+    data.night ? 0.65 : 0.95,
   );
   scene.add(ambient);
   const sun = new THREE.DirectionalLight(
     data.night ? "#a6c9ec" : "#fff1d5",
-    data.night ? 1.1 : 2.8,
+    data.night ? 0.85 : 3.2,
   );
-  sun.position.set(-7, 13, 5);
+  sun.position.set(-3, 9, -8);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
   Object.assign(sun.shadow.camera, {
-    left: -width,
-    right: width,
-    top: width,
-    bottom: -width,
+    left: -frameSize,
+    right: frameSize,
+    top: frameSize,
+    bottom: -frameSize,
     near: 0.5,
-    far: 70,
+    far: Math.max(70, frameSize * 3),
   });
   sun.shadow.normalBias = 0.035;
   sun.shadow.bias = -0.00015;
@@ -123,254 +116,12 @@ export function createOfficeScene(
   );
   warm.position.set(1, 4, -2);
   scene.add(warm);
-  assets.box(
-    scene,
-    0,
-    -0.47,
-    0,
-    200,
-    0.1,
-    200,
-    data.night ? "#26323a" : "#bbc4b5",
-  );
-  assets.box(room, 0, -0.23, 0, width + 0.3, 0.46, depth + 0.3, "#aaa99a");
-  // A tiled concrete material keeps large campuses inexpensive to draw.
-  const concrete = assets.texture(256, 256, (ctx) => {
-    ctx.fillStyle = "#c4bca9";
-    ctx.fillRect(0, 0, 256, 256);
-    for (let i = 0; i < 1400; i++) {
-      ctx.fillStyle = i % 2 ? "rgba(83,78,62,.065)" : "rgba(245,240,218,.12)";
-      ctx.fillRect((i * 71) % 256, (i * 131 + Math.floor(i / 7)) % 256, 2, 2);
-    }
-    ctx.fillStyle = "#b0aa98";
-    ctx.fillRect(0, 0, 256, 1);
-    ctx.fillRect(0, 0, 1, 256);
-  });
-  concrete.wrapS = concrete.wrapT = THREE.RepeatWrapping;
-  concrete.repeat.set(width, depth);
-  concrete.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-  const floor = assets.mesh(
-    room,
-    new THREE.PlaneGeometry(width, depth),
-    new THREE.MeshStandardMaterial({ map: concrete, roughness: 0.96 }),
-    0,
-    0.035,
-    0,
-  );
-  floor.rotation.x = -Math.PI / 2;
-  const backWall = assets.box(
-    room,
-    0,
-    wallHeight / 2,
-    -depth / 2,
-    width,
-    wallHeight,
-    0.16,
-    "#d8d4c4",
-  );
-  const sideWall = assets.box(
-    room,
-    -width / 2,
-    wallHeight / 2,
-    0,
-    0.16,
-    wallHeight,
-    depth,
-    "#babfb0",
-  );
-  assets.box(room, 0, 0.12, -depth / 2 + 0.11, width, 0.22, 0.05, "#90978b");
-  assets.box(room, -width / 2 + 0.11, 0.12, 0, 0.05, 0.22, depth, "#838d81");
-  assets.box(
-    room,
-    0,
-    wallHeight + 0.02,
-    -depth / 2,
-    width + 0.1,
-    0.12,
-    0.26,
-    "#dedbd0",
-  );
-  assets.box(
-    room,
-    -width / 2,
-    wallHeight + 0.02,
-    0,
-    0.26,
-    0.12,
-    depth,
-    "#d4d6c9",
-  );
-  // Back-wall windows: deep frames, panes and sunlit sills.
-  for (let i = 0; i < 3; i++) {
-    const x = -width / 2 + 1.6 + i * 2.5;
-    assets.box(room, x, 1.98, -depth / 2 + 0.1, 2.04, 1.71, 0.08, "#77877e");
-    const windowMat = new THREE.MeshStandardMaterial({
-      color: data.night ? "#405d76" : "#b4d1ce",
-      emissive: data.night ? "#253752" : "#c3d7c7",
-      emissiveIntensity: 0.35,
-      roughness: 0.15,
-      metalness: 0.2,
-    });
-    assets.mesh(
-      room,
-      new THREE.PlaneGeometry(1.88, 1.55),
-      windowMat,
-      x,
-      1.98,
-      -depth / 2 + 0.15,
-    );
-    assets.box(room, x, 1.98, -depth / 2 + 0.2, 0.055, 1.6, 0.05, "#e4e2d6");
-    assets.box(room, x, 1.98, -depth / 2 + 0.2, 1.95, 0.055, 0.05, "#e4e2d6");
-    assets.box(room, x, 1.1, -depth / 2 + 0.25, 2.18, 0.08, 0.38, "#e2dfd1");
-  }
-  assets.sign(
-    room,
-    "DISRUPT.",
-    "Preferably after the stand-up.",
-    2.8,
-    1.4,
-    width / 2 - 2.5,
-    2.06,
-    -depth / 2 + 0.11,
-    true,
-  );
-  // Whiteboard on the left wall. A strategy is mostly arrows.
-  // Exposed conduits and a breaker box keep the incubator grounded in a garage.
-  assets.box(
-    room,
-    -width / 2 + 0.13,
-    2.9,
-    0,
-    0.035,
-    0.035,
-    depth - 0.5,
-    "#7f877c",
-    0.45,
-    0.55,
-  );
-  assets.box(
-    room,
-    -width / 2 + 0.15,
-    1.88,
-    -depth / 2 + 1.65,
-    0.16,
-    0.66,
-    0.48,
-    "#969b8f",
-    0.45,
-    0.45,
-  );
-  assets.box(
-    room,
-    -width / 2 + 0.24,
-    1.83,
-    -depth / 2 + 1.65,
-    0.015,
-    0.28,
-    0.2,
-    "#72796b",
-  );
-  assets.box(
-    room,
-    -width / 2 + 0.14,
-    2.55,
-    -depth / 2 + 1.65,
-    0.035,
-    0.7,
-    0.035,
-    "#7f877c",
-    0.45,
-    0.55,
-  );
-  const board = assets.group(
-    room,
-    -width / 2 + 0.12,
-    depth / 2 - 2.5,
-    Math.PI / 2,
-  );
-  assets.box(board, 0, 1.86, -0.015, 2.35, 1.36, 0.08, "#7c8982");
-  assets.sign(
-    board,
-    "AI → ??? → IPO",
-    "Runway is a state of mind.",
-    2.23,
-    1.25,
-    0,
-    1.86,
-    0.03,
-  );
-  assets.plant(room, -width / 2 + 0.6, -depth / 2 + 0.6, 0.9);
-  assets.plant(room, width / 2 - 0.65, -depth / 2 + 0.65, 1.25);
-  assets.plant(room, -width / 2 + 0.6, depth / 2 - 0.65, 1.1);
-  // The founder's inherited sofa is scenery; purchasable amenities supply bonuses.
-  assets.sofa(room, width / 2 - 2.3, depth / 2 - 0.9);
-  assets.box(
-    room,
-    width / 2 - 2.2,
-    0.34,
-    depth / 2 - 2.15,
-    1.15,
-    0.06,
-    0.58,
-    "#a48a64",
-  );
-  for (const x of [-0.4, 0.4])
-    assets.box(
-      room,
-      width / 2 - 2.2 + x,
-      0.17,
-      depth / 2 - 2.15,
-      0.04,
-      0.32,
-      0.4,
-      "#5b5e51",
-    );
-  assets.box(
-    room,
-    width / 2 - 2.4,
-    0.39,
-    depth / 2 - 2.15,
-    0.45,
-    0.05,
-    0.36,
-    "#bd8b56",
-  );
-  assets.sign(
-    room,
-    "10%",
-    "Incubator equity. Non-negotiable.",
-    1,
-    0.5,
-    width / 2 - 0.5,
-    1.5,
-    -depth / 2 + 0.12,
-  );
-
-  assets.floorFan(room, -width / 2 + 1.15, -depth / 2 + 2.25);
-  // Pendant fixtures and pools of warm light anchor the evening scene.
-  for (const x of [-width * 0.22, width * 0.22]) {
-    assets.cylinder(room, x, 2.98, -1.2, 0.22, 0.32, 0.16, '#3e4c46');
-    const diffuser = assets.mesh(room, new THREE.CircleGeometry(0.27, 24),
-      new THREE.MeshBasicMaterial({ color: data.night ? '#ffe0a1' : '#e8dec3' }), x, 2.895, -1.2);
-    diffuser.rotation.x = Math.PI / 2;
-    if (data.night) {
-      const lamp = new THREE.PointLight('#ffd7a0', 12, 7, 2);
-      lamp.position.set(x, 2.7, -1.2); room.add(lamp);
-    }
-  }
+  const building = buildOfficeBuilding({ scene, room, assets, size: data.size, night: data.night, width, depth, areas: floorplan.areas });
   const clickable: THREE.Object3D[] = [];
   const markers = new Map<string, THREE.Mesh>();
   let employeeIndex = 0;
-  const areas = getFurnishingAreas(data.size, data.upgrades);
-  const workSlots = areas.filter((s) => s.type === "workstation");
-  const seats =
-    layout.baseCapacity + calculateTotalEffects(data.upgrades).capacity;
-  const staffPerSlot = Math.ceil(
-    Math.max(data.employees.length, seats) / Math.max(1, workSlots.length),
-  );
-  for (const slot of areas) {
-    const x = ((slot.x + slot.width / 2) / 100 - 0.5) * (width - 1.4);
-    const z = ((slot.y + slot.height / 2) / 100 - 0.5) * (depth - 1.4);
+  for (const area of floorplan.areas) {
+    const { slot, x, z } = area;
     const installed = data.upgrades.find((u) => u.slotId === slot.id);
     const upgrade = installed && getUpgradeById(installed.upgradeId);
     const zone = assets.group(room, x, z);
@@ -381,32 +132,25 @@ export function createOfficeScene(
       0,
       0.055,
       0,
-      Math.max(1.5, (slot.width / 100) * (width - 2)),
+      area.width,
       0.018,
-      Math.max(1.1, (slot.height / 100) * (depth - 2)),
+      area.depth,
       "#93a28b",
     );
     marker.material = new THREE.MeshStandardMaterial({
       color: "#93a28b",
       transparent: true,
-      opacity: 0.15,
+      opacity: 0.025,
       depthWrite: false,
     });
     marker.receiveShadow = true;
     markers.set(slot.id, marker);
     if (slot.type === "workstation") {
-      const count = Math.max(2, staffPerSlot);
-      const cols = Math.min(
-        3,
-        Math.max(1, Math.floor(((slot.width / 100) * (width - 1)) / 1.9)),
-      );
-      const rows = Math.ceil(count / cols);
-      const spacingZ = Math.min(2.2, ((slot.height / 100) * depth) / rows);
-      for (let i = 0; i < count; i++) {
+      for (const [i, position] of area.desks.entries()) {
         const desk = assets.desk(
           zone,
-          ((i % cols) - (cols - 1) / 2) * 1.95,
-          (Math.floor(i / cols) - (rows - 1) / 2) * spacingZ,
+          position.x,
+          position.z,
           i,
           !!upgrade && upgrade.id !== "basic_desks",
           upgrade?.id === "standing_desks",
@@ -535,8 +279,13 @@ export function createOfficeScene(
     } else cameraMove = { position, target };
     needsRender = true;
   };
-  const releaseSurfaces = loadOfficeSurfaces(floor, [backWall, sideWall], width, depth, () => { needsRender = true; });
-  void assets.loadDetails(() => { needsRender = true; });
+  const surfaces = createOfficeMaterials(() => { needsRender = true; });
+  for (const { mesh, spec } of building.surfaces) void surfaces.apply(mesh, spec);
+  const garden = createOfficeGarden(building.exterior,
+    building.exterior.userData.plantingPoints as { x: number; z: number }[], () => { needsRender = true; });
+  surfaces.applyProps(room);
+  void assets.loadDetails(() => { surfaces.applyProps(room); needsRender = true; });
+  const post = createOfficePostProcessing(renderer, scene, camera);
   controls.addEventListener("change", () => {
     needsRender = true;
   });
@@ -545,6 +294,7 @@ export function createOfficeScene(
     const w = Math.max(1, host.clientWidth),
       h = Math.max(1, host.clientHeight);
     renderer.setSize(w, h);
+    post.resize(w, h);
     camera.aspect = w / h;
     camera.fov =
       (2 *
@@ -620,7 +370,7 @@ export function createOfficeScene(
       (puff.material as THREE.MeshBasicMaterial).opacity =
         0.23 * (1 - (puff.position.y - 1.35) / 0.45);
     });
-    renderer.render(scene, camera);
+    post.render();
     needsRender = false;
   });
   return {
@@ -634,7 +384,7 @@ export function createOfficeScene(
       markers.forEach((mesh, slotId) => {
         const material = mesh.material as THREE.MeshStandardMaterial;
         material.color.set(slotId === id ? "#bad978" : "#93a28b");
-        material.opacity = slotId === id ? 0.6 : 0.15;
+        material.opacity = slotId === id ? 0.16 : 0.025;
       });
     },
     zoom(direction) {
@@ -654,12 +404,16 @@ export function createOfficeScene(
       if (!marker) return;
       const target = marker.getWorldPosition(new THREE.Vector3());
       target.y = 0.7;
-      const offset = camera.position.clone().sub(controls.target).setLength(width * 0.85);
+      const area = floorplan.areas.find(({ slot }) => slot.id === slotId);
+      const distance = area ? THREE.MathUtils.clamp(Math.max(area.width, area.depth) * 1.45, 6, 16) : 10;
+      const offset = camera.position.clone().sub(controls.target).setLength(distance);
       moveCamera(target.clone().add(offset), target);
     },
     setTour(enabled) { tour = enabled; needsRender = true; },
     dispose() {
-      releaseSurfaces();
+      post.dispose();
+      surfaces.dispose();
+      garden.dispose();
       environment.dispose();
       renderer.setAnimationLoop(null);
       observer.disconnect();

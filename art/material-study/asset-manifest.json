@@ -1,0 +1,180 @@
+{
+  "credit": "Powered by Poly Haven",
+  "assets": [
+    {
+      "id": "wood_table_worn",
+      "source": "https://polyhaven.com/a/wood_table_worn",
+      "license": "CC0-1.0",
+      "authors": {
+        "Dimitrios Savva": "Photography",
+        "Rico Cilliers": "Processing"
+      },
+      "resolution": "2k",
+      "files": [
+        {
+          "file": "wood_table_worn/wood_table_worn_diff_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/wood_table_worn/wood_table_worn_diff_2k.jpg",
+          "md5": "44d2440f1581401e0ea65133c0e11d79",
+          "bytes": 3108339
+        },
+        {
+          "file": "wood_table_worn/wood_table_worn_nor_gl_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/wood_table_worn/wood_table_worn_nor_gl_2k.jpg",
+          "md5": "855386aa1a252bfbf13116047e9e9915",
+          "bytes": 3142587
+        },
+        {
+          "file": "wood_table_worn/wood_table_worn_rough_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/wood_table_worn/wood_table_worn_rough_2k.jpg",
+          "md5": "0eb31614bc05c3e92a832f063991b6e0",
+          "bytes": 2890891
+        }
+      ]
+    },
+    {
+      "id": "fabric_pattern_07",
+      "source": "https://polyhaven.com/a/fabric_pattern_07",
+      "license": "CC0-1.0",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "resolution": "2k",
+      "files": [
+        {
+          "file": "fabric_pattern_07/fabric_pattern_07_col_1_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/fabric_pattern_07/fabric_pattern_07_col_1_2k.jpg",
+          "md5": "ad5b3f69e889a6890d6413ea1568ff25",
+          "bytes": 2650991
+        },
+        {
+          "file": "fabric_pattern_07/fabric_pattern_07_nor_gl_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/fabric_pattern_07/fabric_pattern_07_nor_gl_2k.jpg",
+          "md5": "bf1eb2488da43265bd49e42778b6ae51",
+          "bytes": 2572375
+        },
+        {
+          "file": "fabric_pattern_07/fabric_pattern_07_rough_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/fabric_pattern_07/fabric_pattern_07_rough_2k.jpg",
+          "md5": "96906a97616405b0e664b9d18638d4f9",
+          "bytes": 1657764
+        }
+      ]
+    },
+    {
+      "id": "brown_leather",
+      "source": "https://polyhaven.com/a/brown_leather",
+      "license": "CC0-1.0",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "resolution": "2k",
+      "files": [
+        {
+          "file": "brown_leather/brown_leather_albedo_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/brown_leather/brown_leather_albedo_2k.jpg",
+          "md5": "1bd381c43817743a2affdd1ce2d193c7",
+          "bytes": 2137518
+        },
+        {
+          "file": "brown_leather/brown_leather_nor_gl_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/brown_leather/brown_leather_nor_gl_2k.jpg",
+          "md5": "6e86bbaf5e995c4154b76a1e4b0f4f1c",
+          "bytes": 3030702
+        },
+        {
+          "file": "brown_leather/brown_leather_rough_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/brown_leather/brown_leather_rough_2k.jpg",
+          "md5": "95b48a5c95b02d87dadee46c26f1cfb5",
+          "bytes": 2801956
+        }
+      ]
+    },
+    {
+      "id": "asphalt_02",
+      "source": "https://polyhaven.com/a/asphalt_02",
+      "license": "CC0-1.0",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "resolution": "2k",
+      "files": [
+        {
+          "file": "asphalt_02/asphalt_02_diff_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/asphalt_02/asphalt_02_diff_2k.jpg",
+          "md5": "336af399fd98a39ab986d8b3bf73b4ff",
+          "bytes": 3075676
+        },
+        {
+          "file": "asphalt_02/asphalt_02_nor_gl_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+          "md5": "77ebd1cc0b020ccaa1c6b58f103d1f75",
+          "bytes": 4943950
+        },
+        {
+          "file": "asphalt_02/asphalt_02_rough_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/asphalt_02/asphalt_02_rough_2k.jpg",
+          "md5": "6fe669ab38640ef2009d6a28d1ad5ee9",
+          "bytes": 2230457
+        }
+      ]
+    },
+    {
+      "id": "gravel_ground_01",
+      "source": "https://polyhaven.com/a/gravel_ground_01",
+      "license": "CC0-1.0",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "resolution": "2k",
+      "files": [
+        {
+          "file": "gravel_ground_01/gravel_ground_01_diff_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravel_ground_01/gravel_ground_01_diff_2k.jpg",
+          "md5": "3157af7d0cb76c72efaab07061a46876",
+          "bytes": 3823037
+        },
+        {
+          "file": "gravel_ground_01/gravel_ground_01_nor_gl_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravel_ground_01/gravel_ground_01_nor_gl_2k.jpg",
+          "md5": "9267ce17723cb3a7cac84dbef986dcbf",
+          "bytes": 5481185
+        },
+        {
+          "file": "gravel_ground_01/gravel_ground_01_rough_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravel_ground_01/gravel_ground_01_rough_2k.jpg",
+          "md5": "0dec2b0888927ea575a5cb41fcc58a46",
+          "bytes": 1582667
+        }
+      ]
+    },
+    {
+      "id": "wood_floor",
+      "source": "https://polyhaven.com/a/wood_floor",
+      "license": "CC0-1.0",
+      "authors": {
+        "Dimitrios Savva": "All"
+      },
+      "resolution": "2k",
+      "files": [
+        {
+          "file": "wood_floor/wood_floor_diff_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/wood_floor/wood_floor_diff_2k.jpg",
+          "md5": "d209b7416b022ed06093aef068c7fe23",
+          "bytes": 2983667
+        },
+        {
+          "file": "wood_floor/wood_floor_nor_gl_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/wood_floor/wood_floor_nor_gl_2k.jpg",
+          "md5": "e1d8a588c1fc3d62cc60da1e4cd1a689",
+          "bytes": 1863576
+        },
+        {
+          "file": "wood_floor/wood_floor_rough_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/wood_floor/wood_floor_rough_2k.jpg",
+          "md5": "325868b3352d71059753498b1c94385b",
+          "bytes": 2267559
+        }
+      ]
+    }
+  ]
+}

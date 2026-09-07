@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 // Original, editable game assets. Units are meters; Y is up.
@@ -30,6 +31,7 @@ export class OfficeObjects {
         key,
         new THREE.MeshStandardMaterial({ color, roughness, metalness }),
       );
+    this.materials.get(key)!.name = color;
     return this.materials.get(key)!;
   }
   mesh(
@@ -60,8 +62,22 @@ export class OfficeObjects {
     metalness = 0,
   ) {
     const key = `b/${w}/${h}/${d}`;
-    if (!this.geometries.has(key))
-      this.geometries.set(key, new THREE.BoxGeometry(w, h, d));
+    if (!this.geometries.has(key)) {
+      const rounded = Math.min(w, h, d) > 0.075 && Math.max(w, h, d) < 4;
+      const geometry = rounded
+        ? new RoundedBoxGeometry(w, h, d, 2, Math.min(0.045, Math.min(w, h, d) * 0.22))
+        : new THREE.BoxGeometry(w, h, d);
+      const position = geometry.getAttribute('position');
+      const normal = geometry.getAttribute('normal');
+      const uv = geometry.getAttribute('uv');
+      for (let i = 0; i < position.count; i++) {
+        const nx = Math.abs(normal.getX(i)), ny = Math.abs(normal.getY(i)), nz = Math.abs(normal.getZ(i));
+        if (ny >= nx && ny >= nz) uv.setXY(i, position.getX(i), position.getZ(i));
+        else if (nx > nz) uv.setXY(i, position.getZ(i), position.getY(i));
+        else uv.setXY(i, position.getX(i), position.getY(i));
+      }
+      this.geometries.set(key, geometry);
+    }
     return this.mesh(
       parent,
       this.geometries.get(key)!,

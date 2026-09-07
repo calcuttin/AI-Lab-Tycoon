@@ -1,6 +1,8 @@
 """Encode the complete Blender edit using bundled FFmpeg; no external encoder."""
 import bpy,pathlib,json
-ROOT=pathlib.Path(__file__).resolve().parents[2];ART=ROOT/'art/valley-film';OUT=ROOT/'public/intro/realism'
+ROOT=pathlib.Path(__file__).resolve().parents[2]
+ART=pathlib.Path(globals().get('FILM_ART', ROOT/'art/valley-film'))
+OUT=pathlib.Path(globals().get('OUTPUT_DIR', ROOT/'public/intro/realism'));OUT.mkdir(parents=True,exist_ok=True)
 files=[ART/'frames'/f'frame-{i:04d}.png' for i in range(1,865)]
 assert all(p.exists() and p.stat().st_size>1000 for p in files),'Film frame sequence incomplete'
 bpy.ops.wm.read_factory_settings(use_empty=True);scene=bpy.context.scene

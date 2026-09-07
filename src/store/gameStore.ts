@@ -1,4 +1,5 @@
-import { create } from 'zustand';
+import { create, type StateCreator, type StoreApi, type UseBoundStore } from 'zustand';
+import { captureHotState, refreshHotStore, type HotStateSnapshot } from './hotState';
 import { projectTypes } from '../data/projectTypes';
 import { gameEvents } from '../data/events';
 import { getInitialEmployees } from '../data/initialTeam';
@@ -1011,7 +1012,7 @@ const initialCompetitors: Competitor[] = [
   },
 ];
 
-export const useGameStore = create<GameState>((set, get) => ({
+const createGameState: StateCreator<GameState> = (set, get) => ({
   // Initial state - Start with more money and paused
   money: 100000,
   reputation: 0,
@@ -2147,4 +2148,33 @@ export const useGameStore = create<GameState>((set, get) => ({
       monthlyReport: null,
     });
   },
-}));
+});
+
+
+// Preserve the bound hook/API itself, not just values. Modules and timer closures
+// that survive an update must keep reading and subscribing to this same company.
+const retainedStore = import.meta.hot?.data?.companyStore as UseBoundStore<StoreApi<GameState>> | undefined;
+export const useGameStore = retainedStore ?? create<GameState>(createGameState);
+
+if (import.meta.hot?.data) {
+  // Stable hook/API makes this a safe boundary for catalog dependency updates.
+  import.meta.hot.accept();
+  const snapshot = import.meta.hot.data.companyState as HotStateSnapshot | undefined;
+  if (retainedStore || snapshot) {
+    refreshHotStore(useGameStore, createGameState, snapshot);
+    const restored = useGameStore.getState();
+    // Refresh executable catalog definitions by ID after dependency edits.
+    useGameStore.setState({
+      activeEvent: restored.activeEvent
+        ? gameEvents.find((event) => event.id === restored.activeEvent?.id) ?? restored.activeEvent
+        : null,
+      activeStoryMilestone: restored.activeStoryMilestone
+        ? storyMilestones.find((milestone) => milestone.id === restored.activeStoryMilestone?.id) ?? restored.activeStoryMilestone
+        : null,
+    });
+  }
+  import.meta.hot.dispose((data) => {
+    data.companyStore = useGameStore;
+    data.companyState = captureHotState(useGameStore.getState());
+  });
+}

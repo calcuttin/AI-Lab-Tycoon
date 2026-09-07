@@ -518,7 +518,7 @@ export const gameEvents: GameEvent[] = [
     id: 'first-lease',
     title: 'Your First Real Lease',
     description:
-      "You're leaving the hacker den. The landlord wants a longer lease and a security deposit.",
+      "You're moving from the founder garage into the incubator house. The landlord wants a longer lease and a security deposit.",
     probability: 0.09,
     triggerCondition: (state) => getOfficeSize(state) === 'small' && !hasSeenEvent(state, 'first-lease'),
     choices: [
@@ -546,7 +546,7 @@ export const gameEvents: GameEvent[] = [
     id: 'it-closet',
     title: 'The Server Closet',
     description:
-      'Your small office has a cramped IT closet. It hums ominously at night.',
+      'Your incubator house has a cramped IT closet. It hums ominously at night.',
     probability: 0.1,
     triggerCondition: (state) => getOfficeSize(state) === 'small' && !hasSeenEvent(state, 'it-closet'),
     choices: [
