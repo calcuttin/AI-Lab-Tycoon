@@ -22,7 +22,8 @@ def fetch(asset):
  files=[]
  if kind=='material':
   for channel in ['Diffuse','nor_gl','Rough']:
-   item=metadata[channel][resolution]['jpg']; files.append((pathlib.Path(item['url']).name,item))
+   key='col_1' if channel=='Diffuse' and 'Diffuse' not in metadata and 'col_1' in metadata else channel
+   item=metadata[key][resolution]['jpg']; files.append((pathlib.Path(item['url']).name,item))
  elif kind=='hdri':
   item=metadata['hdri'][resolution]['hdr']; files.append((pathlib.Path(item['url']).name,item))
  else:

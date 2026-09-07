@@ -3,36 +3,102 @@
     "file": "public/textures/office/garage_floor-diff.jpg",
     "source": "https://polyhaven.com/a/garage_floor",
     "license": "CC0-1.0",
-    "bytes": 71518
+    "bytes": 271140
   },
   {
     "file": "public/textures/office/garage_floor-nor_gl.jpg",
     "source": "https://polyhaven.com/a/garage_floor",
     "license": "CC0-1.0",
-    "bytes": 30768
+    "bytes": 139022
   },
   {
     "file": "public/textures/office/garage_floor-rough.jpg",
     "source": "https://polyhaven.com/a/garage_floor",
     "license": "CC0-1.0",
-    "bytes": 35505
+    "bytes": 169960
   },
   {
     "file": "public/textures/office/painted_plaster_wall-diff.jpg",
     "source": "https://polyhaven.com/a/painted_plaster_wall",
     "license": "CC0-1.0",
-    "bytes": 56464
+    "bytes": 313204
   },
   {
     "file": "public/textures/office/painted_plaster_wall-nor_gl.jpg",
     "source": "https://polyhaven.com/a/painted_plaster_wall",
     "license": "CC0-1.0",
-    "bytes": 60575
+    "bytes": 339439
   },
   {
     "file": "public/textures/office/painted_plaster_wall-rough.jpg",
     "source": "https://polyhaven.com/a/painted_plaster_wall",
     "license": "CC0-1.0",
-    "bytes": 20218
+    "bytes": 84476
+  },
+  {
+    "file": "public/textures/office/wood_table_worn-diff.jpg",
+    "source": "https://polyhaven.com/a/wood_table_worn",
+    "license": "CC0-1.0",
+    "bytes": 290807
+  },
+  {
+    "file": "public/textures/office/wood_table_worn-nor_gl.jpg",
+    "source": "https://polyhaven.com/a/wood_table_worn",
+    "license": "CC0-1.0",
+    "bytes": 47818
+  },
+  {
+    "file": "public/textures/office/wood_table_worn-rough.jpg",
+    "source": "https://polyhaven.com/a/wood_table_worn",
+    "license": "CC0-1.0",
+    "bytes": 66665
+  },
+  {
+    "file": "public/textures/office/fabric_pattern_07-nor_gl.jpg",
+    "source": "https://polyhaven.com/a/fabric_pattern_07",
+    "license": "CC0-1.0",
+    "bytes": 106230
+  },
+  {
+    "file": "public/textures/office/fabric_pattern_07-rough.jpg",
+    "source": "https://polyhaven.com/a/fabric_pattern_07",
+    "license": "CC0-1.0",
+    "bytes": 121191
+  },
+  {
+    "file": "public/textures/office/brown_leather-diff.jpg",
+    "source": "https://polyhaven.com/a/brown_leather",
+    "license": "CC0-1.0",
+    "bytes": 322659
+  },
+  {
+    "file": "public/textures/office/brown_leather-nor_gl.jpg",
+    "source": "https://polyhaven.com/a/brown_leather",
+    "license": "CC0-1.0",
+    "bytes": 79930
+  },
+  {
+    "file": "public/textures/office/brown_leather-rough.jpg",
+    "source": "https://polyhaven.com/a/brown_leather",
+    "license": "CC0-1.0",
+    "bytes": 164185
+  },
+  {
+    "file": "public/textures/office/wood_floor-diff.jpg",
+    "source": "https://polyhaven.com/a/wood_floor",
+    "license": "CC0-1.0",
+    "bytes": 254749
+  },
+  {
+    "file": "public/textures/office/wood_floor-nor_gl.jpg",
+    "source": "https://polyhaven.com/a/wood_floor",
+    "license": "CC0-1.0",
+    "bytes": 11809
+  },
+  {
+    "file": "public/textures/office/wood_floor-rough.jpg",
+    "source": "https://polyhaven.com/a/wood_floor",
+    "license": "CC0-1.0",
+    "bytes": 39143
   }
 ]

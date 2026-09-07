@@ -1,0 +1,42 @@
+{
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "duration": 36,
+  "frames": 864,
+  "chapters": [
+    {
+      "name": "THE PENINSULA",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "name": "THE CAMPUS",
+      "start": 6,
+      "end": 12
+    },
+    {
+      "name": "THE NEXT BIG THING",
+      "start": 12,
+      "end": 18
+    },
+    {
+      "name": "THE NEIGHBORHOOD",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "name": "YOUR HEADQUARTERS",
+      "start": 24,
+      "end": 30
+    },
+    {
+      "name": "THE FIRST COMMIT",
+      "start": 30,
+      "end": 36
+    }
+  ],
+  "engine": "Blender EEVEE + Cycles garage proof",
+  "materialPass": "Scanned pavement and wood; layered architectural glass; irregular dry-season terrain",
+  "source": "art/material-study/valley-realism.blend"
+}

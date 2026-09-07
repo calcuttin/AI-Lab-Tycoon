@@ -52,3 +52,5 @@ The playable office props are independently reproducible with `scripts/film/buil
 ## Credits
 
 Original architecture, props, camera work, animation, and synthesized music by this project. Selected scanned materials, HDR environment, furniture, and foliage: [Poly Haven](https://polyhaven.com), CC0. Exact source URLs, authors and file hashes: `../garage-proof/asset-manifest.json`. Web texture derivatives: `../../public/textures/office/credits.json`.
+
+The current material refinement and its reproduction steps are documented in `../material-study/README.md`. That pass preserves this edit and the approved Cycles garage chapter.

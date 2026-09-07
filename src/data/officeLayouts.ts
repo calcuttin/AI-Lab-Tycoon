@@ -298,8 +298,8 @@ export const upgradeOptions: UpgradeOption[] = [
 export const officeLayouts: OfficeLayout[] = [
   {
     id: 'hacker_den',
-    name: 'Hacker Den',
-    description: 'A cramped garage/basement setup. The classic startup origin story.',
+    name: 'Founder Garage',
+    description: 'A detached Bay Area garage: concrete floor, borrowed desks, and a very optimistic burn rate.',
     backgroundStyle: 'hacker',
     baseCapacity: 4,
     baseRent: 500,
@@ -312,8 +312,8 @@ export const officeLayouts: OfficeLayout[] = [
   },
   {
     id: 'small',
-    name: 'Small Office',
-    description: 'A proper office space in a shared building. Room to grow.',
+    name: 'Incubator House',
+    description: 'A converted Peninsula house. The living room is engineering; the kitchen is your employee benefit.',
     backgroundStyle: 'office',
     baseCapacity: 8,
     baseRent: 1500,
@@ -328,8 +328,8 @@ export const officeLayouts: OfficeLayout[] = [
   },
   {
     id: 'medium',
-    name: 'Medium Office',
-    description: 'A full floor in a tech building. Starting to look legit.',
+    name: 'Startup Office',
+    description: 'Your first commercial office floor, with meeting rooms and a server room that no longer shares the pantry.',
     backgroundStyle: 'modern',
     baseCapacity: 15,
     baseRent: 5000,
@@ -348,8 +348,8 @@ export const officeLayouts: OfficeLayout[] = [
   },
   {
     id: 'large',
-    name: 'Large Office',
-    description: 'Multiple floors in a premium building. VC-approved aesthetics.',
+    name: 'Company Headquarters',
+    description: 'A dedicated headquarters with engineering wings, executive offices, and VC-approved glass.',
     backgroundStyle: 'premium',
     baseCapacity: 30,
     baseRent: 15000,
@@ -372,7 +372,7 @@ export const officeLayouts: OfficeLayout[] = [
   {
     id: 'campus',
     name: 'Tech Campus',
-    description: 'Your own campus with multiple buildings. You made it.',
+    description: 'A landscaped technology campus. Every building has a mission statement; some even have customers.',
     backgroundStyle: 'campus',
     baseCapacity: 50,
     baseRent: 50000,

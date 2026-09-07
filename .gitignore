@@ -41,3 +41,12 @@ art/valley-film/frames/
 art/valley-film/shot-*.png
 art/game-assets/*.blend*
 art/valley-film/valley-master.mp4
+
+# Physical material studies and local render comparisons.
+art/material-study/assets/
+art/material-study/*.blend*
+art/material-study/*.png
+art/material-study/frames/
+
+art/material-study/*.mp4
+art/material-study/encoded/
