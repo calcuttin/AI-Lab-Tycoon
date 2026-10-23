@@ -10,6 +10,8 @@ Built with React, TypeScript, Zustand, Three.js, and Tailwind CSS. Runs entirely
 
 A charcoal-and-sage management interface surrounds a live 3D office. Hire staff, assign projects, furnish the garage, and watch the company evolve from a dubious incubator to a campus. The UI keeps the HBO *Silicon Valley* premise through mentor dialogue, startup satire, and the original story events.
 
+The founder garage now opens as a detailed illustrated workspace with clickable furnishing areas, subtle atmosphere and a switch back to the 3D layout. The named story cast has original photographic portraits. See [the garage and cast notes](docs/GARAGE_ART.md).
+
 See [the UI and 3D system notes](docs/UI_SYSTEM.md) for the component architecture, asset library, and validation steps.
 
 ---
@@ -17,7 +19,11 @@ See [the UI and 3D system notes](docs/UI_SYSTEM.md) for the component architectu
 ## Features
 
 ### Cinematic Silicon Valley Intro
-An original **36-second Blender opening film** travels through peninsula traffic, the fictional Hollow campus, speculative glass towers, the neighborhood, and the founder’s garage and workbench. Six real camera setups, moving commuters, a construction crane, scanned surfaces, and original satirical signage bring the miniature Valley to life. Includes an original synthesized score, pause, chapter navigation, skip, replay, and reduced-motion support.
+The default **36-second cinematic still-image opening** uses realistic generated artwork, slow camera moves, crossfades, original music and satirical chapter titles. The six scenes are the freeway, campus, glass headquarters, neighborhood, garage and workbench. Every building tier also has its own expansion artwork. See [the still intro notes](docs/INTRO_STILLS.md).
+
+The **12-second isometric animated opening** is retained under “Watch isometric film,” with its miniature Valley, growing companies, traffic and cranes. See [the isometric production notes](art/isometric-intro/README.md) and [all preserved iterations](docs/INTRO_ITERATIONS.md).
+
+The original **36-second Blender opening film** remains available through “Watch original film” and travels through peninsula traffic, the fictional Hollow campus, speculative glass towers, the neighborhood, and the founder’s garage and workbench. Six real camera setups, moving commuters, a construction crane, scanned surfaces, and original satirical signage bring the miniature Valley to life. Includes an original synthesized score, pause, chapter navigation, skip, replay, and reduced-motion support.
 
 The playable office now uses a compact Blender prop pack, scanned concrete/plaster surfaces, environment reflections, evening task lighting, animated screens, staff gestures, foliage, coffee steam, and a rotating fan. Use the camera tour or select an office area and focus the camera to inspect the details. Production instructions: [Full film](art/valley-film/README.md).
 

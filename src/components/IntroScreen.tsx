@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { StillIntroPlayer } from "../intro/cinematic/StillIntroPlayer";
+import StillIntroStage from "../intro/cinematic/StillIntroStage";
 import { RenderedIntroPlayer } from "../intro/cinematic/RenderedIntroPlayer";
 import {
   FILM_DURATION,
@@ -12,6 +14,7 @@ import {
   saveIntroSettings,
 } from "../intro/settings";
 import Icon from "./ui/Icon";
+import LocationArtwork from "./LocationArtwork";
 
 interface IntroScreenProps {
   onNewGame: () => void;
@@ -27,7 +30,11 @@ export default function IntroScreen({
   onIntroFinished,
 }: IntroScreenProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const engineRef = useRef<RenderedIntroPlayer | null>(null);
+  const engineRef = useRef<RenderedIntroPlayer | StillIntroPlayer | null>(null);
+  const timeRef = useRef(0);
+  const explicitReplay = useRef(false);
+  const [replayCount, setReplayCount] = useState(0);
+  const [medium, setMedium] = useState<"isometric" | "stills" | "video">("stills");
   const phaseRef = useRef<"playing" | "menu">("playing");
   const [phase, setPhase] = useState<"playing" | "menu">("playing");
   const [ready, setReady] = useState(false);
@@ -39,7 +46,9 @@ export default function IntroScreen({
   );
   const [muted, setMuted] = useState(() => loadIntroSettings().introMuted);
   const [elapsed, setElapsed] = useState(0);
-  const frame = getFilmFrame(elapsed);
+  const duration = medium === "isometric" ? 12 : FILM_DURATION;
+  const timelineScale = FILM_DURATION / duration;
+  const frame = getFilmFrame(elapsed * timelineScale);
 
   const enterMenu = useCallback(() => {
     if (phaseRef.current === "menu") return;
@@ -54,41 +63,47 @@ export default function IntroScreen({
   }, [enterMenu]);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
     const settings = loadIntroSettings();
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const engine = new RenderedIntroPlayer(video, {
+    const replayRequested = explicitReplay.current;
+    explicitReplay.current = false;
+    if (!forcePlay && !replayRequested && (settings.skipIntro || reducedMotion)) {
+      setReady(true);
+      enterMenu();
+      return;
+    }
+    const callbacks = {
       onComplete: enterMenu,
-      onTick: setElapsed,
+      onTick: (time: number) => { timeRef.current = time; setElapsed(time); },
       onReady: () => setReady(true),
       onAutoplayBlocked: () => setPaused(true),
       onError: () => { setFailed(true); setReady(true); enterMenu(); },
-      onPlayback: (playing) => {
+      onPlayback: (playing: boolean) => {
         if (playing) setPaused(false);
         if (playing && phaseRef.current === 'playing') {
-          getIntroAudio().start(loadIntroSettings().introMuted, video.currentTime);
+          getIntroAudio().start(loadIntroSettings().introMuted, timeRef.current);
         } else getIntroAudio().stop();
       },
-    });
+    };
+    const video = videoRef.current;
+    if (medium !== "stills" && !video) return;
+    const engine = medium !== "stills"
+      ? new RenderedIntroPlayer(video!, callbacks)
+      : new StillIntroPlayer(callbacks);
     engineRef.current = engine;
-    if (!forcePlay && (settings.skipIntro || reducedMotion)) {
-      // Keep the poster still; reduced-motion users need not decode the film.
-      setReady(true);
-      enterMenu();
-    } else engine.start(0);
+    engine.start(0);
     return () => {
       engine.destroy();
       engineRef.current = null;
       getIntroAudio().stop();
     };
-  }, [forcePlay, enterMenu]);
+  }, [forcePlay, enterMenu, medium, replayCount]);
 
   const togglePause = useCallback(() => {
     if (!ready || phaseRef.current !== "playing") return;
     if (paused) {
       engineRef.current?.start();
-      getIntroAudio().start(muted, videoRef.current?.currentTime ?? 0);
+      getIntroAudio().start(muted, timeRef.current);
     } else {
       engineRef.current?.pauseAt();
       getIntroAudio().stop();
@@ -121,7 +136,7 @@ export default function IntroScreen({
     setMuted(next);
     saveIntroSettings({ introMuted: next });
     if (next) getIntroAudio().stop();
-    else if (phase === "playing" && !paused) getIntroAudio().start(false, videoRef.current?.currentTime ?? 0);
+    else if (phase === "playing" && !paused) getIntroAudio().start(false, timeRef.current);
   };
   const startGame = (action: () => void) => {
     saveIntroSettings({ skipIntro: skipIntroNextTime, introMuted: muted });
@@ -133,30 +148,37 @@ export default function IntroScreen({
     engineRef.current?.pauseAt(time);
     if (!paused) engineRef.current?.start(time);
   };
-  const replay = () => {
+  const replay = (nextMedium: "isometric" | "stills" | "video" = medium) => {
     phaseRef.current = "playing";
     setPhase("playing");
     setPaused(false);
-    engineRef.current?.start(0);
-    getIntroAudio().start(muted, videoRef.current?.currentTime ?? 0);
+    setFailed(false);
+    setReady(false);
+    timeRef.current = 0;
+    setElapsed(0);
+    explicitReplay.current = true;
+    setMedium(nextMedium);
+    setReplayCount((count) => count + 1);
   };
 
   return (
     <div
       className={`valley-film ${phase === "menu" ? "valley-film--menu" : ""}`}
     >
-      <video
+      {medium !== "stills" && phase === "playing" && <video
         ref={videoRef}
         className="valley-film__canvas valley-film__video"
-        src="/intro/realism/valley-intro.mp4"
-        poster="/intro/realism/valley-intro-poster.jpg"
+        src={medium === "isometric" ? "/intro/realism/isometric-intro.mp4" : "/intro/realism/valley-intro.mp4"}
+        poster={medium === "isometric" ? "/intro/realism/isometric-intro-poster.jpg" : "/intro/realism/valley-intro-poster.jpg"}
         muted
         playsInline
-        preload="metadata"
-        aria-label="Original animated Silicon Valley film: freeway commuters, the Hollow campus, speculative glass towers, a suburban garage, and the founder’s workbench."
-      />
+        preload="none"
+        aria-label={medium === "isometric" ? "Isometric Silicon Valley miniature: growing startup buildings, busy streets, cranes, and the founder garage." : "Original animated Silicon Valley film: freeway commuters, the Hollow campus, speculative glass towers, a suburban garage, and the founder’s workbench."}
+      />}
+      {medium === "stills" && phase === "playing" && <StillIntroStage time={elapsed} />}
+      {phase === "menu" && <LocationArtwork hero className="valley-film__location" />}
       <div className="valley-film__grade" />
-      {phase === "playing" && (
+      {phase === "playing" && medium === "video" && (
         <div
           className="valley-film__curtain"
           style={{ opacity: frame.curtain }}
@@ -186,10 +208,14 @@ export default function IntroScreen({
       )}
       {phase === "playing" ? (
         <>
-          <div className="valley-film__chapter" key={frame.shotIndex}>
+          <div className={`valley-film__chapter ${medium === "isometric" ? "valley-film__chapter--isometric" : ""}`} key={medium === "isometric" ? "isometric" : frame.shotIndex}>
             <span className="valley-film__eyebrow">{frame.shot.place}</span>
-            <h1>{frame.shot.title}</h1>
-            <p>{frame.shot.caption}</p>
+            {(medium !== "isometric" || elapsed >= 9) && (
+              <>
+                <h1>{medium === "isometric" ? "AI LAB TYCOON." : frame.shot.title}</h1>
+                <p>{medium === "isometric" ? "Big ideas. Small runway." : frame.shot.caption}</p>
+              </>
+            )}
           </div>
           <footer className="valley-film__transport">
             <div className="valley-film__transport-row">
@@ -205,7 +231,7 @@ export default function IntroScreen({
                 </button>
                 <span className="valley-film__time">
                   00:{String(Math.floor(elapsed)).padStart(2, "0")} / 00:
-                  {FILM_DURATION}
+                  {duration}
                 </span>
               </div>
               <button
@@ -220,7 +246,7 @@ export default function IntroScreen({
                 <button
                   key={shot.start}
                   disabled={!ready}
-                  onClick={() => seek(shot.start + 0.6)}
+                  onClick={() => seek(shot.start / timelineScale + 0.6 / timelineScale)}
                   aria-label={`Jump to ${shot.place.split(" / ")[1].toLowerCase()}`}
                   aria-current={index === frame.shotIndex ? "step" : undefined}
                 >
@@ -251,7 +277,7 @@ export default function IntroScreen({
           </p>
           {failed && (
             <p className="valley-film__fallback" role="status">
-              The film couldn’t load on this device. Your company is ready to
+              The intro couldn’t load on this device. Your company is ready to
               play.
             </p>
           )}
@@ -270,10 +296,18 @@ export default function IntroScreen({
             >
               Found a startup <span>↗</span>
             </button>
-            {!failed && ready && (
-              <button className="film-control" onClick={replay}>
-                Replay film
-              </button>
+            {ready && (
+              <>
+                <button className="film-control" onClick={() => replay("stills")}>
+                  Replay intro
+                </button>
+                <button className="film-control" onClick={() => replay("isometric")}>
+                  Watch isometric film
+                </button>
+                <button className="film-control" onClick={() => replay("video")}>
+                  Watch original film
+                </button>
+              </>
             )}
           </div>
           <label className="valley-film__preference">

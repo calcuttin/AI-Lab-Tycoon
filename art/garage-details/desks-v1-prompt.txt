@@ -1,0 +1,9 @@
+Use case: photorealistic-natural
+Asset type: dedicated landscape 16:9 desk inspection photograph for a startup garage game.
+Input image 1 is a reference for the exact garage environment, its center-left desktop monitor workstation, materials, and light.
+Primary request: ONE high-realism cinematic photograph of the center-left monitor workstation in this garage, seen as a medium closeup from a comfortable inspection angle. Include the whole workstation rather than an isolated laptop closeup.
+Subject and objects: a worn laminate desk, unbranded black desktop monitor showing small plausible code, a tactile keyboard and mouse, a laptop at the side, a used notebook with the handwritten margin text "FIX. SHIP. REPEAT.", a ceramic mug, realistic cables running below the desk, and a worn gray office chair partially in the foreground. Arrange objects credibly as a working founder's desk.
+Scene/backdrop: the original reference garage's patched neutral plaster wall and high window, warm wood and modest practical workshop materials.
+Lighting/mood: same warm California late-afternoon light as reference, natural side illumination and believable shadows, premium restrained cinematic photography, realistic texture.
+Composition/framing: landscape 16:9 full-bleed, medium closeup with the entire work surface, monitor, chair edge, and some below-desk cable routing visible; comfortable human inspection angle and readable depth of field. Maintain architectural and workstation continuity with the reference.
+Constraints: no people, actual brands, UI overlays, captions, title typography, collage, borders, or watermark. The only prominent readable text is the notebook margin's "FIX. SHIP. REPEAT."; code can be tiny and approximate.

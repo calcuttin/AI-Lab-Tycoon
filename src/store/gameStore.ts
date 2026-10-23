@@ -35,6 +35,7 @@ export {
 
 export interface Employee {
   id: string;
+  portraitId?: string; // Optional for compatibility with existing saves.
   name: string;
   role: 'researcher' | 'engineer' | 'designer' | 'manager' | 'intern';
   skills: {

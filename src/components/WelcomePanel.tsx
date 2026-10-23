@@ -1,12 +1,10 @@
 import { Modal, Button } from "./ui/Primitives";
-import Icon from "./ui/Icon";
+import LocationArtwork from "./LocationArtwork";
 export default function WelcomePanel({ onClose }: { onClose: () => void }) {
   return (
     <Modal title="Welcome to the incubator." onClose={onClose}>
       <div className="modal-body welcome-body">
-        <span className="welcome-symbol">
-          <Icon name="office" size={38} />
-        </span>
+        <LocationArtwork className="welcome-location" />
         <span className="eyebrow">SILICON VALLEY. QUESTIONABLE DECISIONS.</span>
         <h3>
           You have $100,000.

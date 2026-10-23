@@ -1,0 +1,7 @@
+Use case: photorealistic-natural.
+Asset type: square character portrait for AI Lab Tycoon; must work inside a circular crop.
+Subject: Russ Hanneman, a completely original fictional 47-year-old flashy billionaire investor, not a likeness of any actor or real person. White man with short sun-streaked sandy hair, light stubble rather than a full beard, amber-tinted glasses pushed up onto his forehead. He wears a rust suede jacket over a white tee. Huge confident grin; loud, ostentatious, and comic without costume-level exaggeration.
+Style: cinematic editorial photograph, natural skin and fabric realism, realistic facial proportions and subtle imperfections.
+Scene and lighting: softly blurred warm penthouse interior with a hint of a luxury car through glass, golden California late-afternoon sidelight, muted rust, sage and charcoal palette.
+Composition: square head-and-shoulders portrait, face centered, generous safe margins around hair, ears and shoulders for a round avatar crop, clear readable expression.
+Constraints: one photograph, original fictional character design, no text, no logos, no watermark, no collage, no border, no UI.

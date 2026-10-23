@@ -1,0 +1,7 @@
+Use case: photorealistic-natural.
+Asset type: square character portrait for AI Lab Tycoon; must work inside a circular crop.
+Subject: Erik Bachmann, a completely original fictional 45-year-old startup mentor and incubator owner, not a likeness of any actor or real person. Warm olive skin, close-cropped salt-and-pepper curls, short beard, round tortoiseshell glasses. He wears a faded dark green overshirt over a muted ochre tee. Slightly smug, amused expression; charismatic and overconfident, with understated comic personality.
+Style: cinematic editorial photograph, natural skin and fabric realism, realistic facial proportions and subtle imperfections.
+Scene and lighting: softly blurred modest garage office background, warm California afternoon sidelight, muted sage and charcoal palette.
+Composition: square head-and-shoulders portrait, face centered, generous safe margins around hair, ears and shoulders for a round avatar crop, clear readable expression.
+Constraints: one photograph, original fictional character design, no text, no logos, no watermark, no collage, no border, no UI.

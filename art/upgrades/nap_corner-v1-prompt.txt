@@ -1,0 +1,6 @@
+Use case: photorealistic-natural
+Asset type: landscape 16:9 upgrade inspection photograph for a Bay Area startup satire game.
+Subject: A cozy startup office powernap corner with two well-used beanbags, folded soft throws, a low side table and a warm floor lamp. A modest tucked-away retreat with generous practical spacing.
+Style: high-realism natural cinematic interior photography, warm California afternoon light, detailed credible materials, sensible object spacing, premium restrained color and tangible everyday textures.
+Composition: one full-bleed landscape photograph, comfortable human inspection viewpoint, entire usable area visible, coherent realistic architecture.
+Constraints: no people, logos, readable text, signage, captions, UI, collage, borders, or watermark.

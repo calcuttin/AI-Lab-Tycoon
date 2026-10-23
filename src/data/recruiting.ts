@@ -1,3 +1,4 @@
+import { chooseStaffPortraitId } from "./staffPortraits";
 import type { Employee } from "../store/gameStore";
 
 let employeeCounter = 0;
@@ -30,7 +31,7 @@ const generateRandomName = () => {
   return `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
 };
 
-export const generateRandomEmployee = (): Employee => {
+export const generateRandomEmployee = (existingStaff: readonly Employee[] = []): Employee => {
   const roles: Employee["role"][] = [
     "researcher",
     "engineer",
@@ -62,6 +63,7 @@ export const generateRandomEmployee = (): Employee => {
   return {
     id: `emp-${Date.now()}-${employeeCounter}-${Math.random().toString(36).substr(2, 9)}`,
     name: generateRandomName(),
+    portraitId: chooseStaffPortraitId(existingStaff),
     role,
     skills: baseSkills,
     salary,

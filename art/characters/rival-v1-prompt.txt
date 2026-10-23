@@ -1,0 +1,7 @@
+Use case: photorealistic-natural.
+Asset type: square character portrait for AI Lab Tycoon; must work inside a circular crop.
+Subject: Gavin Belson, a completely original fictional 51-year-old Big Tech CEO rival, not a likeness of any actor or real person. White man with a full head of thick silver-blond hair swept back, clean-shaven, deep California tan. He wears an expensive navy cashmere crewneck. Faintly contemptuous, narcissistic half-smile; polished, superior, and quietly menacing.
+Style: cinematic editorial photograph, natural skin and fabric realism, realistic facial proportions and subtle imperfections.
+Scene and lighting: softly blurred sleek glass corporate office with distant peninsula hills, cooler late-afternoon sidelight, muted sage, charcoal and steel palette.
+Composition: square head-and-shoulders portrait, face centered, generous safe margins around hair, ears and shoulders for a round avatar crop, clear readable expression.
+Constraints: one photograph, original fictional character design, no text, no logos, no watermark, no collage, no border, no UI.

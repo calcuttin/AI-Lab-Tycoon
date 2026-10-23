@@ -1,0 +1,38 @@
+[
+  {
+    "index": 1,
+    "title": "Campus street \u2014 Existing set \u00b7 EEVEE",
+    "src": "street-before.png",
+    "href": "street-before.png",
+    "output": "street-before.png",
+    "route": "Blender",
+    "prompt": "Matched camera comparison of existing and refined scene."
+  },
+  {
+    "index": 2,
+    "title": "Campus street \u2014 Refined set \u00b7 Cycles",
+    "src": "street-after.png",
+    "href": "street-after.png",
+    "output": "street-after.png",
+    "route": "Blender",
+    "prompt": "Matched camera comparison of existing and refined scene."
+  },
+  {
+    "index": 3,
+    "title": "Founder garage \u2014 Existing set \u00b7 EEVEE",
+    "src": "garage-before.png",
+    "href": "garage-before.png",
+    "output": "garage-before.png",
+    "route": "Blender",
+    "prompt": "Matched camera comparison of existing and refined scene."
+  },
+  {
+    "index": 4,
+    "title": "Founder garage \u2014 Refined set \u00b7 Cycles",
+    "src": "garage-after.png",
+    "href": "garage-after.png",
+    "output": "garage-after.png",
+    "route": "Blender",
+    "prompt": "Matched camera comparison of existing and refined scene."
+  }
+]

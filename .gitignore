@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.tools/
 dist
 dist-ssr
 *.local
@@ -50,6 +51,27 @@ art/material-study/frames/
 
 art/material-study/*.mp4
 art/material-study/encoded/
+
+# Isolated Cycles realism comparisons; retain recipes and review metadata.
+art/realism-test/*.blend*
+art/realism-test/*.png
+art/realism-test/review-board.html
+
+# Unreal cinematic source caches and rendered intermediates.
+art/unreal-garage/Source/
+art/unreal-garage/ValleyGarage/Content/
+art/unreal-garage/ValleyGarage/Saved/
+art/unreal-garage/ValleyGarage/Intermediate/
+art/unreal-garage/ValleyGarage/DerivedDataCache/
+art/unreal-garage/frames/
+art/unreal-garage/*-error.txt
+
+art/unreal-garage/preview/
+
+# Rebuildable isometric cinematic intermediates.
+art/isometric-intro/*.blend*
+art/isometric-intro/frames/
+art/isometric-intro/preview.png
 
 # Local credentials
 .env

@@ -1,0 +1,364 @@
+{
+  "pool-all-nighter": {
+    "original": "art/events/pool-all-nighter-v1.png",
+    "prompt": "art/events/pool-all-nighter-v1-prompt.txt",
+    "web": [
+      "public/images/events/pool-all-nighter-640.jpg",
+      "public/images/events/pool-all-nighter-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "garage-mural": {
+    "original": "art/events/garage-mural-v1.png",
+    "prompt": "art/events/garage-mural-v1-prompt.txt",
+    "web": [
+      "public/images/events/garage-mural-640.jpg",
+      "public/images/events/garage-mural-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "incubator-tenants": {
+    "original": "art/events/incubator-tenants-v1.png",
+    "prompt": "art/events/incubator-tenants-v1-prompt.txt",
+    "web": [
+      "public/images/events/incubator-tenants-640.jpg",
+      "public/images/events/incubator-tenants-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "vc-funding": {
+    "original": "art/events/vc-funding-v1.png",
+    "prompt": "art/events/vc-funding-v1-prompt.txt",
+    "web": [
+      "public/images/events/vc-funding-640.jpg",
+      "public/images/events/vc-funding-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "open-source": {
+    "original": "art/events/open-source-v1.png",
+    "prompt": "art/events/open-source-v1-prompt.txt",
+    "web": [
+      "public/images/events/open-source-640.jpg",
+      "public/images/events/open-source-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "safety-scandal": {
+    "original": "art/events/safety-scandal-v1.png",
+    "prompt": "art/events/safety-scandal-v1-prompt.txt",
+    "web": [
+      "public/images/events/safety-scandal-640.jpg",
+      "public/images/events/safety-scandal-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "talent-war": {
+    "original": "art/events/talent-war-v1.png",
+    "prompt": "art/events/talent-war-v1-prompt.txt",
+    "web": [
+      "public/images/events/talent-war-640.jpg",
+      "public/images/events/talent-war-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "viral-demo": {
+    "original": "art/events/viral-demo-v1.png",
+    "prompt": "art/events/viral-demo-v1-prompt.txt",
+    "web": [
+      "public/images/events/viral-demo-640.jpg",
+      "public/images/events/viral-demo-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "tech-conference": {
+    "original": "art/events/tech-conference-v1.png",
+    "prompt": "art/events/tech-conference-v1-prompt.txt",
+    "web": [
+      "public/images/events/tech-conference-640.jpg",
+      "public/images/events/tech-conference-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "acquisition-offer": {
+    "original": "art/events/acquisition-offer-v1.png",
+    "prompt": "art/events/acquisition-offer-v1-prompt.txt",
+    "web": [
+      "public/images/events/acquisition-offer-640.jpg",
+      "public/images/events/acquisition-offer-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "server-crash": {
+    "original": "art/events/server-crash-v1.png",
+    "prompt": "art/events/server-crash-v1-prompt.txt",
+    "web": [
+      "public/images/events/server-crash-640.jpg",
+      "public/images/events/server-crash-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "coffee-crisis": {
+    "original": "art/events/coffee-crisis-v1.png",
+    "prompt": "art/events/coffee-crisis-v1-prompt.txt",
+    "web": [
+      "public/images/events/coffee-crisis-640.jpg",
+      "public/images/events/coffee-crisis-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "patent-troll": {
+    "original": "art/events/patent-troll-v1.png",
+    "prompt": "art/events/patent-troll-v1-prompt.txt",
+    "web": [
+      "public/images/events/patent-troll-640.jpg",
+      "public/images/events/patent-troll-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "dinesh-vs-gilfoyle": {
+    "original": "art/events/dinesh-vs-gilfoyle-v1.png",
+    "prompt": "art/events/dinesh-vs-gilfoyle-v1-prompt.txt",
+    "web": [
+      "public/images/events/dinesh-vs-gilfoyle-640.jpg",
+      "public/images/events/dinesh-vs-gilfoyle-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "three-comma-club": {
+    "original": "art/events/three-comma-club-v1.png",
+    "prompt": "art/events/three-comma-club-v1-prompt.txt",
+    "web": [
+      "public/images/events/three-comma-club-640.jpg",
+      "public/images/events/three-comma-club-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "erik-idea": {
+    "original": "art/events/erik-idea-v1.png",
+    "prompt": "art/events/erik-idea-v1-prompt.txt",
+    "web": [
+      "public/images/events/erik-idea-640.jpg",
+      "public/images/events/erik-idea-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "jareds-breakdown": {
+    "original": "art/events/jareds-breakdown-v1.png",
+    "prompt": "art/events/jareds-breakdown-v1-prompt.txt",
+    "web": [
+      "public/images/events/jareds-breakdown-640.jpg",
+      "public/images/events/jareds-breakdown-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "employee-burnout": {
+    "original": "art/events/employee-burnout-v1.png",
+    "prompt": "art/events/employee-burnout-v1-prompt.txt",
+    "web": [
+      "public/images/events/employee-burnout-640.jpg",
+      "public/images/events/employee-burnout-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "media-interview": {
+    "original": "art/events/media-interview-v1.png",
+    "prompt": "art/events/media-interview-v1-prompt.txt",
+    "web": [
+      "public/images/events/media-interview-640.jpg",
+      "public/images/events/media-interview-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "demo-day": {
+    "original": "art/events/demo-day-v1.png",
+    "prompt": "art/events/demo-day-v1-prompt.txt",
+    "web": [
+      "public/images/events/demo-day-640.jpg",
+      "public/images/events/demo-day-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "data-leak": {
+    "original": "art/events/data-leak-v1.png",
+    "prompt": "art/events/data-leak-v1-prompt.txt",
+    "web": [
+      "public/images/events/data-leak-640.jpg",
+      "public/images/events/data-leak-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "first-lease": {
+    "original": "art/events/first-lease-v1.png",
+    "prompt": "art/events/first-lease-v1-prompt.txt",
+    "web": [
+      "public/images/events/first-lease-640.jpg",
+      "public/images/events/first-lease-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "campus-launch": {
+    "original": "art/events/campus-launch-v1.png",
+    "prompt": "art/events/campus-launch-v1-prompt.txt",
+    "web": [
+      "public/images/events/campus-launch-640.jpg",
+      "public/images/events/campus-launch-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "hostel-rager": {
+    "original": "art/events/hostel-rager-v1.png",
+    "prompt": "art/events/hostel-rager-v1-prompt.txt",
+    "web": [
+      "public/images/events/hostel-rager-640.jpg",
+      "public/images/events/hostel-rager-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "r"
+  },
+  "always-on-cam": {
+    "original": "art/events/always-on-cam-v1.png",
+    "prompt": "art/events/always-on-cam-v1-prompt.txt",
+    "web": [
+      "public/images/events/always-on-cam-640.jpg",
+      "public/images/events/always-on-cam-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "r"
+  },
+  "pitch-bong": {
+    "original": "art/events/pitch-bong-v1.png",
+    "prompt": "art/events/pitch-bong-v1-prompt.txt",
+    "web": [
+      "public/images/events/pitch-bong-640.jpg",
+      "public/images/events/pitch-bong-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "r"
+  },
+  "hot-tub-board": {
+    "original": "art/events/hot-tub-board-v1.png",
+    "prompt": "art/events/hot-tub-board-v1-prompt.txt",
+    "web": [
+      "public/images/events/hot-tub-board-640.jpg",
+      "public/images/events/hot-tub-board-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "r"
+  },
+  "dinesh-video-mom": {
+    "original": "art/events/dinesh-video-mom-v1.png",
+    "prompt": "art/events/dinesh-video-mom-v1-prompt.txt",
+    "web": [
+      "public/images/events/dinesh-video-mom-640.jpg",
+      "public/images/events/dinesh-video-mom-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "r"
+  },
+  "adult-bandwidth": {
+    "original": "art/events/adult-bandwidth-v1.png",
+    "prompt": "art/events/adult-bandwidth-v1-prompt.txt",
+    "web": [
+      "public/images/events/adult-bandwidth-640.jpg",
+      "public/images/events/adult-bandwidth-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "r"
+  },
+  "see-food-demo": {
+    "original": "art/events/see-food-demo-v1.png",
+    "prompt": "art/events/see-food-demo-v1-prompt.txt",
+    "web": [
+      "public/images/events/see-food-demo-640.jpg",
+      "public/images/events/see-food-demo-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "pg-13"
+  },
+  "living-room-whiteboard": {
+    "original": "art/events/living-room-whiteboard-v1.png",
+    "prompt": "art/events/living-room-whiteboard-v1-prompt.txt",
+    "web": [
+      "public/images/events/living-room-whiteboard-640.jpg",
+      "public/images/events/living-room-whiteboard-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "pg-13"
+  },
+  "kegerator-culture": {
+    "original": "art/events/kegerator-culture-v1.png",
+    "prompt": "art/events/kegerator-culture-v1-prompt.txt",
+    "web": [
+      "public/images/events/kegerator-culture-640.jpg",
+      "public/images/events/kegerator-culture-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "pg-13"
+  },
+  "fridge-crime": {
+    "original": "art/events/fridge-crime-v1.png",
+    "prompt": "art/events/fridge-crime-v1-prompt.txt",
+    "web": [
+      "public/images/events/fridge-crime-640.jpg",
+      "public/images/events/fridge-crime-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "r"
+  },
+  "equity-for-couch": {
+    "original": "art/events/equity-for-couch-v1.png",
+    "prompt": "art/events/equity-for-couch-v1-prompt.txt",
+    "web": [
+      "public/images/events/equity-for-couch-640.jpg",
+      "public/images/events/equity-for-couch-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "pg-13"
+  },
+  "intern-rating-model": {
+    "original": "art/events/intern-rating-model-v1.png",
+    "prompt": "art/events/intern-rating-model-v1-prompt.txt",
+    "web": [
+      "public/images/events/intern-rating-model-640.jpg",
+      "public/images/events/intern-rating-model-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-09",
+    "rating": "r"
+  }
+}

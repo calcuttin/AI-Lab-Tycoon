@@ -1,3 +1,6 @@
+import UpgradeArtwork from "./UpgradeArtwork";
+import UpgradePreview from "./UpgradePreview";
+import UpgradeInspection from "./UpgradeInspection";
 import { lazy, Suspense, useState } from "react";
 import { useGameStore, calculateUpgradeBonuses } from "../store/gameStore";
 import {
@@ -7,6 +10,9 @@ import {
   officeLayouts,
   type UpgradeSlotType,
 } from "../data/officeLayouts";
+import IllustratedGarage from "./IllustratedGarage";
+import CharacterPortrait from "./CharacterPortrait";
+import LocationArtwork from "./LocationArtwork";
 import { getFurnishingAreas } from "../data/officeRelocation";
 import { Button, Badge, Modal, PageHeader } from "./ui/Primitives";
 import Icon, { type IconName } from "./ui/Icon";
@@ -28,6 +34,9 @@ export default function OfficeView({
 }: {
   navigate?: (view: View) => void;
 }) {
+  const [illustrated, setIllustrated] = useState(true);
+  const paused = useGameStore((s) => s.isPaused);
+  const speed = useGameStore((s) => s.gameSpeed);
   const office = useGameStore((s) => s.office);
   const employees = useGameStore((s) => s.employees);
   const money = useGameStore((s) => s.money);
@@ -37,6 +46,7 @@ export default function OfficeView({
   const days = useGameStore((s) => s.daysPlayed);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [expand, setExpand] = useState(false);
+  const [previewId, setPreviewId] = useState<string | null>(null);
   const layout = getLayoutById(office.size)!;
   const bonuses = calculateUpgradeBonuses(office.installedUpgrades || []);
   const areas = getFurnishingAreas(office.size, office.installedUpgrades);
@@ -149,7 +159,19 @@ export default function OfficeView({
               seats
             </span>
           </div>
-          <Suspense
+          {office.size === "hacker_den" && (
+            <div className="garage-view-switch" role="group" aria-label="Office presentation">
+              <button type="button" aria-pressed={illustrated} onClick={() => setIllustrated(true)}>Garage view</button>
+              <button type="button" aria-pressed={!illustrated} onClick={() => setIllustrated(false)}>3D layout</button>
+              <span>Select a work area to inspect or furnish it</span>
+            </div>
+          )}
+          {office.size === "hacker_den" && illustrated ? (
+            <IllustratedGarage selectedSlot={selected?.id ?? null} onSelect={setSelectedId}
+              upgrades={office.installedUpgrades} paused={paused} speed={speed} working={working} staff={employees.length} />
+          ) : office.size !== "hacker_den" && selected && installed ? (
+            <UpgradeInspection key={selected.id} installed={installed} areaName={selected.name} onClose={() => setSelectedId(null)} />
+          ) : <Suspense
             fallback={
               <div className="office-scene scene-loading">
                 Opening the garage doors…
@@ -160,7 +182,7 @@ export default function OfficeView({
               selectedSlot={selected?.id ?? null}
               onSelect={setSelectedId}
             />
-          </Suspense>
+          </Suspense>}
           <div className="office-footnote">
             <span>
               <span className="status-dot" />
@@ -171,7 +193,7 @@ export default function OfficeView({
           <div className="area-picker">
             <div className="area-picker-heading">
               <span className="eyebrow">OFFICE AREAS</span>
-              <small>Select an area to furnish or upgrade</small>
+              <button type="button" className="ui-button" onClick={() => setPreviewId("basic_desks")}>Browse all upgrades</button>
             </div>
             <div className="area-buttons">
               {areas.map((slot) => {
@@ -227,6 +249,10 @@ export default function OfficeView({
                 </p>
                 {upgrade && installed ? (
                   <>
+                    <button type="button" className="upgrade-photo-button" aria-label={`Inspect ${upgrade.name}`} onClick={() => setPreviewId(upgrade.id)}>
+                      <UpgradeArtwork upgradeId={upgrade.id} thumbnail />
+                      <span>Inspect furnishing ↗</span>
+                    </button>
                     <Badge tone="green">
                       Installed · Level {installed.level} / {upgrade.maxLevel}
                     </Badge>
@@ -273,7 +299,10 @@ export default function OfficeView({
                 ) : (
                   <div className="upgrade-list">
                     {upgrades.map((option) => (
-                      <div className="upgrade-option" key={option.id}>
+                      <div className="upgrade-option upgrade-option--illustrated" key={option.id}>
+                        <button type="button" className="upgrade-photo-button" aria-label={`Preview ${option.name}`} onClick={() => setPreviewId(option.id)}>
+                          <UpgradeArtwork upgradeId={option.id} thumbnail /><span>Take a closer look ↗</span>
+                        </button>
                         <div>
                           <strong>{option.name}</strong>
                           <small>{option.description}</small>
@@ -366,7 +395,7 @@ export default function OfficeView({
               </section>
               <section className="mentor-card">
                 <div className="mentor-heading">
-                  <span className="mentor-avatar">EB</span>
+                  <CharacterPortrait id="erlich" name="Erik Bachmann" />
                   <div>
                     Erik Bachmann
                     <small>Incubator owner · 10% stakeholder</small>
@@ -391,6 +420,7 @@ export default function OfficeView({
           )}
           {next && (
             <section className="expansion-card">
+              <LocationArtwork size={next.id} className="expansion-location" />
               <span className="eyebrow">THINK OUTSIDE THE GARAGE</span>
               <h3>Room for a bigger ego.</h3>
               <p>
@@ -412,9 +442,11 @@ export default function OfficeView({
           Day {days + 1} of changing the world <Icon name="arrow" size={16} />
         </span>
       </div>
+      {previewId && <UpgradePreview initialId={previewId} onClose={() => setPreviewId(null)} />}
       {expand && next && (
         <Modal title={`Move to ${next.name}`} onClose={() => setExpand(false)}>
           <div className="modal-body">
+            <LocationArtwork size={next.id} className="lease-location" />
             <p>{next.description}</p>
             <div className="bonus-list">
               <div>

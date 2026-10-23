@@ -1,3 +1,4 @@
+import EmployeePortrait from "./EmployeePortrait";
 import { useState } from "react";
 import {
   useGameStore,
@@ -29,13 +30,7 @@ function Skills({ employee }: { employee: Employee }) {
 function Identity({ employee }: { employee: Employee }) {
   return (
     <div className="employee-identity">
-      <span className="employee-avatar">
-        {employee.name
-          .split(" ")
-          .map((n) => n[0])
-          .slice(0, 2)
-          .join("")}
-      </span>
+      <EmployeePortrait employee={employee} className="character-portrait--employee" />
       <div>
         <h3>{getCharacter(employee.id)?.name ?? employee.name}</h3>
         <small>{employee.role}</small>
@@ -75,7 +70,7 @@ export default function EmployeesPanel() {
           <Button
             icon="plus"
             variant="primary"
-            onClick={() => setCandidate(generateRandomEmployee())}
+            onClick={() => setCandidate(generateRandomEmployee([...employees, ...(candidate ? [candidate] : [])]))}
           >
             Find talent
           </Button>
@@ -157,7 +152,7 @@ export default function EmployeesPanel() {
           <Button
             variant="primary"
             icon="plus"
-            onClick={() => setCandidate(generateRandomEmployee())}
+            onClick={() => setCandidate(generateRandomEmployee([...employees, ...(candidate ? [candidate] : [])]))}
           >
             Meet a candidate
           </Button>
@@ -199,7 +194,7 @@ export default function EmployeesPanel() {
               <p>You need more cash to cover the signing cost.</p>
             )}
             <div className="modal-actions">
-              <Button onClick={() => setCandidate(generateRandomEmployee())}>
+              <Button onClick={() => setCandidate(generateRandomEmployee([...employees, ...(candidate ? [candidate] : [])]))}>
                 Next candidate
               </Button>
               <Button

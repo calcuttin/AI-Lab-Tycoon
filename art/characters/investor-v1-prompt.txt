@@ -1,0 +1,8 @@
+Use case: photorealistic-natural
+Asset type: square editorial cinematic investor character portrait for AI Lab Tycoon, suitable for a circular avatar crop.
+Primary request: Create exactly one original fictional pragmatic investor character portrait, internally called Monica Hall. The character is wholly original and must not resemble an actor or existing television character.
+Subject: Fictional woman around 40 of East Asian appearance, dark chin-length bob tucked behind one ear. Understated charcoal blazer over an ivory knit top. Alert, composed expression with a slightly skeptical raised eyebrow, looking toward the camera.
+Composition: Square image, head and shoulders, centered face with generous margin around the head and shoulders for a circular crop. Natural proportions and a relaxed professional pose.
+Style: Premium natural editorial photograph, cinematic but credible, detailed believable skin with natural fine lines and small imperfections, real blazer fabric and knit texture.
+Scene and lighting: Softly blurred ordinary office background in muted sage and charcoal, warm California late-afternoon sidelight, gentle natural shadows, photographic material realism consistent with an intimate California startup documentary.
+Constraints: One person only, no text, no logos, no collage, no watermark, no border, no illustration or CGI look, no beauty-filter skin, no famous-person likeness.

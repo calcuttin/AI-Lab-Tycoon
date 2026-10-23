@@ -29,7 +29,21 @@ vi.mock("../intro/cinematic/RenderedIntroPlayer", () => ({
       if (mocks.fail) options.onError();
       else options.onReady();
       mocks.skip.mockImplementation(options.onComplete);
-      mocks.pauseAt.mockImplementation(options.onTick);
+      mocks.pauseAt.mockImplementation((time?: number) => { if (time !== undefined) options.onTick(time); });
+    }
+    start = mocks.start;
+    pauseAt = mocks.pauseAt;
+    destroy = mocks.destroy;
+    skipToEnd = mocks.skip;
+  },
+}));
+vi.mock("../intro/cinematic/StillIntroPlayer", () => ({
+  StillIntroPlayer: class {
+    constructor(options: { onComplete: () => void; onTick: (time: number) => void; onReady: () => void; onError: () => void }) {
+      if (mocks.fail) options.onError();
+      else options.onReady();
+      mocks.skip.mockImplementation(options.onComplete);
+      mocks.pauseAt.mockImplementation((time?: number) => { if (time !== undefined) options.onTick(time); });
     }
     start = mocks.start;
     pauseAt = mocks.pauseAt;
@@ -88,7 +102,8 @@ describe("cinematic intro controls", () => {
     expect(complete).toHaveBeenCalledTimes(1);
     expect(host.textContent).toContain("Found a startup");
     act(() => root.render(null));
-    expect(mocks.destroy).toHaveBeenCalledTimes(1);
+    expect(mocks.destroy).not.toHaveBeenCalled();
+    expect(host.querySelector("video")).toBeNull();
   });
   it("explicit replay overrides skip preference and supports pause, seek and resume", async () => {
     localStorage.setItem(
@@ -131,7 +146,7 @@ describe("cinematic intro controls", () => {
     );
     expect(complete).toHaveBeenCalledTimes(1);
   });
-  it("offers the game if the video cannot load", async () => {
+  it("offers the game if the opening image cannot load", async () => {
     mocks.fail = true;
     vi.spyOn(console, "error").mockImplementation(() => {});
     await render();
@@ -140,4 +155,41 @@ describe("cinematic intro controls", () => {
     );
     expect(host.textContent).toContain("Found a startup");
   });
+  it("defaults to stills and retains both earlier film iterations", async () => {
+    await render();
+    expect(host.querySelector("video")).toBeNull();
+    expect(host.querySelectorAll(".still-intro img")).toHaveLength(6);
+    act(() => button("Skip intro ↗").click());
+    act(() => button("Watch isometric film").click());
+    expect(host.querySelector("video")?.getAttribute("src")).toContain("isometric-intro.mp4");
+    act(() => button("Skip intro ↗").click());
+    act(() => button("Watch original film").click());
+    expect(host.querySelector("video")?.getAttribute("src")).toContain("valley-intro.mp4");
+    expect(mocks.destroy).toHaveBeenCalledTimes(2);
+    act(() => button("Skip intro ↗").click());
+    act(() => button("Replay intro").click());
+    expect(host.querySelector("video")).toBeNull();
+    expect(host.querySelectorAll(".still-intro img")).toHaveLength(6);
+  });
+  it("can explicitly choose stills after skipping the initial load", async () => {
+    localStorage.setItem("aiLabTycoon_settings", JSON.stringify({ skipIntro: true }));
+    await render();
+    expect(mocks.start).not.toHaveBeenCalled();
+    act(() => button("Replay intro").click());
+    expect(mocks.start).toHaveBeenCalledWith(0);
+    expect(host.querySelector("video")).toBeNull();
+  });
+
+  it("retries a failed intro with a fresh player", async () => {
+    mocks.fail = true;
+    await render();
+    expect(host.querySelector('[role="status"]')).not.toBeNull();
+    mocks.fail = false;
+    act(() => button("Replay intro").click());
+    expect(host.querySelector('[role="status"]')).toBeNull();
+    expect(host.querySelector("video")).toBeNull();
+    expect(host.querySelectorAll(".still-intro img")).toHaveLength(6);
+    expect(mocks.destroy).toHaveBeenCalledOnce();
+  });
+
 });

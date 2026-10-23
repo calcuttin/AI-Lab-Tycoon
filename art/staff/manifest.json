@@ -1,0 +1,1002 @@
+{
+  "staff-01": {
+    "original": "art/staff/staff-01-v1.png",
+    "prompt": "art/staff/staff-01-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-01.jpg",
+      "public/images/staff/staff-01-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-02": {
+    "original": "art/staff/staff-02-v1.png",
+    "prompt": "art/staff/staff-02-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-02.jpg",
+      "public/images/staff/staff-02-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-03": {
+    "original": "art/staff/staff-03-v1.png",
+    "prompt": "art/staff/staff-03-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-03.jpg",
+      "public/images/staff/staff-03-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-04": {
+    "original": "art/staff/staff-04-v1.png",
+    "prompt": "art/staff/staff-04-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-04.jpg",
+      "public/images/staff/staff-04-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-05": {
+    "original": "art/staff/staff-05-v1.png",
+    "prompt": "art/staff/staff-05-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-05.jpg",
+      "public/images/staff/staff-05-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-06": {
+    "original": "art/staff/staff-06-v1.png",
+    "prompt": "art/staff/staff-06-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-06.jpg",
+      "public/images/staff/staff-06-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-07": {
+    "original": "art/staff/staff-07-v1.png",
+    "prompt": "art/staff/staff-07-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-07.jpg",
+      "public/images/staff/staff-07-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-08": {
+    "original": "art/staff/staff-08-v1.png",
+    "prompt": "art/staff/staff-08-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-08.jpg",
+      "public/images/staff/staff-08-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-09": {
+    "original": "art/staff/staff-09-v1.png",
+    "prompt": "art/staff/staff-09-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-09.jpg",
+      "public/images/staff/staff-09-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-10": {
+    "original": "art/staff/staff-10-v1.png",
+    "prompt": "art/staff/staff-10-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-10.jpg",
+      "public/images/staff/staff-10-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-11": {
+    "original": "art/staff/staff-11-v1.png",
+    "prompt": "art/staff/staff-11-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-11.jpg",
+      "public/images/staff/staff-11-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-12": {
+    "original": "art/staff/staff-12-v1.png",
+    "prompt": "art/staff/staff-12-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-12.jpg",
+      "public/images/staff/staff-12-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-13": {
+    "original": "art/staff/staff-13-v1.png",
+    "prompt": "art/staff/staff-13-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-13.jpg",
+      "public/images/staff/staff-13-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-14": {
+    "original": "art/staff/staff-14-v1.png",
+    "prompt": "art/staff/staff-14-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-14.jpg",
+      "public/images/staff/staff-14-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-15": {
+    "original": "art/staff/staff-15-v1.png",
+    "prompt": "art/staff/staff-15-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-15.jpg",
+      "public/images/staff/staff-15-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-16": {
+    "original": "art/staff/staff-16-v1.png",
+    "prompt": "art/staff/staff-16-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-16.jpg",
+      "public/images/staff/staff-16-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-17": {
+    "original": "art/staff/staff-17-v1.png",
+    "prompt": "art/staff/staff-17-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-17.jpg",
+      "public/images/staff/staff-17-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-18": {
+    "original": "art/staff/staff-18-v1.png",
+    "prompt": "art/staff/staff-18-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-18.jpg",
+      "public/images/staff/staff-18-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-19": {
+    "original": "art/staff/staff-19-v1.png",
+    "prompt": "art/staff/staff-19-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-19.jpg",
+      "public/images/staff/staff-19-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-20": {
+    "original": "art/staff/staff-20-v1.png",
+    "prompt": "art/staff/staff-20-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-20.jpg",
+      "public/images/staff/staff-20-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-21": {
+    "original": "art/staff/staff-21-v1.png",
+    "prompt": "art/staff/staff-21-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-21.jpg",
+      "public/images/staff/staff-21-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-22": {
+    "original": "art/staff/staff-22-v1.png",
+    "prompt": "art/staff/staff-22-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-22.jpg",
+      "public/images/staff/staff-22-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-23": {
+    "original": "art/staff/staff-23-v1.png",
+    "prompt": "art/staff/staff-23-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-23.jpg",
+      "public/images/staff/staff-23-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-24": {
+    "original": "art/staff/staff-24-v1.png",
+    "prompt": "art/staff/staff-24-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-24.jpg",
+      "public/images/staff/staff-24-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-25": {
+    "original": "art/staff/staff-25-v1.png",
+    "prompt": "art/staff/staff-25-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-25.jpg",
+      "public/images/staff/staff-25-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-26": {
+    "original": "art/staff/staff-26-v1.png",
+    "prompt": "art/staff/staff-26-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-26.jpg",
+      "public/images/staff/staff-26-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-27": {
+    "original": "art/staff/staff-27-v1.png",
+    "prompt": "art/staff/staff-27-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-27.jpg",
+      "public/images/staff/staff-27-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-28": {
+    "original": "art/staff/staff-28-v1.png",
+    "prompt": "art/staff/staff-28-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-28.jpg",
+      "public/images/staff/staff-28-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-29": {
+    "original": "art/staff/staff-29-v1.png",
+    "prompt": "art/staff/staff-29-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-29.jpg",
+      "public/images/staff/staff-29-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-30": {
+    "original": "art/staff/staff-30-v1.png",
+    "prompt": "art/staff/staff-30-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-30.jpg",
+      "public/images/staff/staff-30-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-31": {
+    "original": "art/staff/staff-31-v1.png",
+    "prompt": "art/staff/staff-31-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-31.jpg",
+      "public/images/staff/staff-31-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-32": {
+    "original": "art/staff/staff-32-v1.png",
+    "prompt": "art/staff/staff-32-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-32.jpg",
+      "public/images/staff/staff-32-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-33": {
+    "original": "art/staff/staff-33-v1.png",
+    "prompt": "art/staff/staff-33-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-33.jpg",
+      "public/images/staff/staff-33-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-34": {
+    "original": "art/staff/staff-34-v1.png",
+    "prompt": "art/staff/staff-34-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-34.jpg",
+      "public/images/staff/staff-34-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-35": {
+    "original": "art/staff/staff-35-v1.png",
+    "prompt": "art/staff/staff-35-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-35.jpg",
+      "public/images/staff/staff-35-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-36": {
+    "original": "art/staff/staff-36-v1.png",
+    "prompt": "art/staff/staff-36-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-36.jpg",
+      "public/images/staff/staff-36-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-37": {
+    "original": "art/staff/staff-37-v1.png",
+    "prompt": "art/staff/staff-37-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-37.jpg",
+      "public/images/staff/staff-37-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-38": {
+    "original": "art/staff/staff-38-v1.png",
+    "prompt": "art/staff/staff-38-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-38.jpg",
+      "public/images/staff/staff-38-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-39": {
+    "original": "art/staff/staff-39-v1.png",
+    "prompt": "art/staff/staff-39-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-39.jpg",
+      "public/images/staff/staff-39-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-40": {
+    "original": "art/staff/staff-40-v1.png",
+    "prompt": "art/staff/staff-40-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-40.jpg",
+      "public/images/staff/staff-40-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-41": {
+    "original": "art/staff/staff-41-v1.png",
+    "prompt": "art/staff/staff-41-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-41.jpg",
+      "public/images/staff/staff-41-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-42": {
+    "original": "art/staff/staff-42-v1.png",
+    "prompt": "art/staff/staff-42-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-42.jpg",
+      "public/images/staff/staff-42-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-43": {
+    "original": "art/staff/staff-43-v1.png",
+    "prompt": "art/staff/staff-43-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-43.jpg",
+      "public/images/staff/staff-43-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-44": {
+    "original": "art/staff/staff-44-v1.png",
+    "prompt": "art/staff/staff-44-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-44.jpg",
+      "public/images/staff/staff-44-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-45": {
+    "original": "art/staff/staff-45-v1.png",
+    "prompt": "art/staff/staff-45-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-45.jpg",
+      "public/images/staff/staff-45-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-46": {
+    "original": "art/staff/staff-46-v1.png",
+    "prompt": "art/staff/staff-46-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-46.jpg",
+      "public/images/staff/staff-46-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-47": {
+    "original": "art/staff/staff-47-v1.png",
+    "prompt": "art/staff/staff-47-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-47.jpg",
+      "public/images/staff/staff-47-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-48": {
+    "original": "art/staff/staff-48-v1.png",
+    "prompt": "art/staff/staff-48-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-48.jpg",
+      "public/images/staff/staff-48-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-49": {
+    "original": "art/staff/staff-49-v1.png",
+    "prompt": "art/staff/staff-49-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-49.jpg",
+      "public/images/staff/staff-49-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-50": {
+    "original": "art/staff/staff-50-v1.png",
+    "prompt": "art/staff/staff-50-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-50.jpg",
+      "public/images/staff/staff-50-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-51": {
+    "original": "art/staff/staff-51-v1.png",
+    "prompt": "art/staff/staff-51-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-51.jpg",
+      "public/images/staff/staff-51-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-52": {
+    "original": "art/staff/staff-52-v1.png",
+    "prompt": "art/staff/staff-52-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-52.jpg",
+      "public/images/staff/staff-52-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-53": {
+    "original": "art/staff/staff-53-v1.png",
+    "prompt": "art/staff/staff-53-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-53.jpg",
+      "public/images/staff/staff-53-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-54": {
+    "original": "art/staff/staff-54-v1.png",
+    "prompt": "art/staff/staff-54-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-54.jpg",
+      "public/images/staff/staff-54-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-55": {
+    "original": "art/staff/staff-55-v1.png",
+    "prompt": "art/staff/staff-55-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-55.jpg",
+      "public/images/staff/staff-55-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-56": {
+    "original": "art/staff/staff-56-v1.png",
+    "prompt": "art/staff/staff-56-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-56.jpg",
+      "public/images/staff/staff-56-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-57": {
+    "original": "art/staff/staff-57-v1.png",
+    "prompt": "art/staff/staff-57-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-57.jpg",
+      "public/images/staff/staff-57-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-58": {
+    "original": "art/staff/staff-58-v1.png",
+    "prompt": "art/staff/staff-58-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-58.jpg",
+      "public/images/staff/staff-58-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-59": {
+    "original": "art/staff/staff-59-v1.png",
+    "prompt": "art/staff/staff-59-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-59.jpg",
+      "public/images/staff/staff-59-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-60": {
+    "original": "art/staff/staff-60-v1.png",
+    "prompt": "art/staff/staff-60-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-60.jpg",
+      "public/images/staff/staff-60-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-61": {
+    "original": "art/staff/staff-61-v1.png",
+    "prompt": "art/staff/staff-61-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-61.jpg",
+      "public/images/staff/staff-61-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-62": {
+    "original": "art/staff/staff-62-v1.png",
+    "prompt": "art/staff/staff-62-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-62.jpg",
+      "public/images/staff/staff-62-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-63": {
+    "original": "art/staff/staff-63-v1.png",
+    "prompt": "art/staff/staff-63-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-63.jpg",
+      "public/images/staff/staff-63-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-64": {
+    "original": "art/staff/staff-64-v1.png",
+    "prompt": "art/staff/staff-64-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-64.jpg",
+      "public/images/staff/staff-64-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-65": {
+    "original": "art/staff/staff-65-v1.png",
+    "prompt": "art/staff/staff-65-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-65.jpg",
+      "public/images/staff/staff-65-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-66": {
+    "original": "art/staff/staff-66-v1.png",
+    "prompt": "art/staff/staff-66-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-66.jpg",
+      "public/images/staff/staff-66-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-67": {
+    "original": "art/staff/staff-67-v1.png",
+    "prompt": "art/staff/staff-67-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-67.jpg",
+      "public/images/staff/staff-67-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-68": {
+    "original": "art/staff/staff-68-v1.png",
+    "prompt": "art/staff/staff-68-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-68.jpg",
+      "public/images/staff/staff-68-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-69": {
+    "original": "art/staff/staff-69-v1.png",
+    "prompt": "art/staff/staff-69-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-69.jpg",
+      "public/images/staff/staff-69-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-70": {
+    "original": "art/staff/staff-70-v1.png",
+    "prompt": "art/staff/staff-70-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-70.jpg",
+      "public/images/staff/staff-70-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-71": {
+    "original": "art/staff/staff-71-v1.png",
+    "prompt": "art/staff/staff-71-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-71.jpg",
+      "public/images/staff/staff-71-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-72": {
+    "original": "art/staff/staff-72-v1.png",
+    "prompt": "art/staff/staff-72-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-72.jpg",
+      "public/images/staff/staff-72-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-73": {
+    "original": "art/staff/staff-73-v1.png",
+    "prompt": "art/staff/staff-73-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-73.jpg",
+      "public/images/staff/staff-73-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-74": {
+    "original": "art/staff/staff-74-v1.png",
+    "prompt": "art/staff/staff-74-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-74.jpg",
+      "public/images/staff/staff-74-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-75": {
+    "original": "art/staff/staff-75-v1.png",
+    "prompt": "art/staff/staff-75-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-75.jpg",
+      "public/images/staff/staff-75-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-76": {
+    "original": "art/staff/staff-76-v1.png",
+    "prompt": "art/staff/staff-76-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-76.jpg",
+      "public/images/staff/staff-76-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-77": {
+    "original": "art/staff/staff-77-v1.png",
+    "prompt": "art/staff/staff-77-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-77.jpg",
+      "public/images/staff/staff-77-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-78": {
+    "original": "art/staff/staff-78-v1.png",
+    "prompt": "art/staff/staff-78-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-78.jpg",
+      "public/images/staff/staff-78-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-79": {
+    "original": "art/staff/staff-79-v1.png",
+    "prompt": "art/staff/staff-79-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-79.jpg",
+      "public/images/staff/staff-79-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-80": {
+    "original": "art/staff/staff-80-v1.png",
+    "prompt": "art/staff/staff-80-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-80.jpg",
+      "public/images/staff/staff-80-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-81": {
+    "original": "art/staff/staff-81-v1.png",
+    "prompt": "art/staff/staff-81-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-81.jpg",
+      "public/images/staff/staff-81-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-82": {
+    "original": "art/staff/staff-82-v1.png",
+    "prompt": "art/staff/staff-82-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-82.jpg",
+      "public/images/staff/staff-82-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-83": {
+    "original": "art/staff/staff-83-v1.png",
+    "prompt": "art/staff/staff-83-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-83.jpg",
+      "public/images/staff/staff-83-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-84": {
+    "original": "art/staff/staff-84-v1.png",
+    "prompt": "art/staff/staff-84-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-84.jpg",
+      "public/images/staff/staff-84-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-85": {
+    "original": "art/staff/staff-85-v1.png",
+    "prompt": "art/staff/staff-85-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-85.jpg",
+      "public/images/staff/staff-85-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-86": {
+    "original": "art/staff/staff-86-v1.png",
+    "prompt": "art/staff/staff-86-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-86.jpg",
+      "public/images/staff/staff-86-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-87": {
+    "original": "art/staff/staff-87-v1.png",
+    "prompt": "art/staff/staff-87-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-87.jpg",
+      "public/images/staff/staff-87-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-88": {
+    "original": "art/staff/staff-88-v1.png",
+    "prompt": "art/staff/staff-88-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-88.jpg",
+      "public/images/staff/staff-88-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-89": {
+    "original": "art/staff/staff-89-v1.png",
+    "prompt": "art/staff/staff-89-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-89.jpg",
+      "public/images/staff/staff-89-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-90": {
+    "original": "art/staff/staff-90-v1.png",
+    "prompt": "art/staff/staff-90-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-90.jpg",
+      "public/images/staff/staff-90-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-91": {
+    "original": "art/staff/staff-91-v1.png",
+    "prompt": "art/staff/staff-91-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-91.jpg",
+      "public/images/staff/staff-91-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-92": {
+    "original": "art/staff/staff-92-v1.png",
+    "prompt": "art/staff/staff-92-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-92.jpg",
+      "public/images/staff/staff-92-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-93": {
+    "original": "art/staff/staff-93-v1.png",
+    "prompt": "art/staff/staff-93-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-93.jpg",
+      "public/images/staff/staff-93-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-94": {
+    "original": "art/staff/staff-94-v1.png",
+    "prompt": "art/staff/staff-94-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-94.jpg",
+      "public/images/staff/staff-94-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-95": {
+    "original": "art/staff/staff-95-v1.png",
+    "prompt": "art/staff/staff-95-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-95.jpg",
+      "public/images/staff/staff-95-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-96": {
+    "original": "art/staff/staff-96-v1.png",
+    "prompt": "art/staff/staff-96-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-96.jpg",
+      "public/images/staff/staff-96-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-97": {
+    "original": "art/staff/staff-97-v1.png",
+    "prompt": "art/staff/staff-97-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-97.jpg",
+      "public/images/staff/staff-97-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-98": {
+    "original": "art/staff/staff-98-v1.png",
+    "prompt": "art/staff/staff-98-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-98.jpg",
+      "public/images/staff/staff-98-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-99": {
+    "original": "art/staff/staff-99-v1.png",
+    "prompt": "art/staff/staff-99-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-99.jpg",
+      "public/images/staff/staff-99-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "staff-100": {
+    "original": "art/staff/staff-100-v1.png",
+    "prompt": "art/staff/staff-100-v1-prompt.txt",
+    "web": [
+      "public/images/staff/staff-100.jpg",
+      "public/images/staff/staff-100-640.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  }
+}

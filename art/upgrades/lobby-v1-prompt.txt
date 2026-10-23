@@ -1,0 +1,6 @@
+Use case: photorealistic-natural
+Asset type: landscape 16:9 upgrade inspection photograph for a Bay Area startup satire game.
+Subject: A grand technology headquarters lobby with architectural glass, natural stone, a reception desk and comfortable visitor seating. Generous clear walking paths and refined but believable California corporate architecture.
+Style: high-realism natural cinematic interior photography, warm California afternoon light, detailed credible materials, sensible object spacing, premium restrained color and tangible everyday textures.
+Composition: one full-bleed landscape photograph, comfortable human inspection viewpoint, entire usable area visible, coherent realistic architecture.
+Constraints: no people, logos, readable text, signage, captions, UI, collage, borders, or watermark.

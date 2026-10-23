@@ -1,0 +1,80 @@
+{
+  "default": "cinematic-stills",
+  "preservedLocally": [
+    {
+      "path": "public/intro/realism/valley-intro.mp4",
+      "bytes": 29717589,
+      "sha256": "dad18c3f8384ebd53a00c7555fe2c99ae6e920d51e4edf6c89ab68eb51e58431"
+    },
+    {
+      "path": "public/intro/realism/isometric-intro.mp4",
+      "bytes": 11077700,
+      "sha256": "b9a1f5ca427ac0459f2932a8a27fa82c7b79ff8eed4e6d594b8049946595d784"
+    },
+    {
+      "path": "public/intro/realism/unreal-garage.mp4",
+      "bytes": 2954666,
+      "sha256": "be14791076af168890375b2c8d73d91cc8ca4e748951858cfacf52513bd3acb5"
+    },
+    {
+      "path": "art/concepts/campus-image-v1.png",
+      "bytes": 3120927,
+      "sha256": "ca2a8fc6f6ca83f7581486d1d3cbdec2ae54d255565e9a6259ffddb20f1df25c"
+    },
+    {
+      "path": "art/concepts/garage-image-v1.png",
+      "bytes": 2325841,
+      "sha256": "0b08a62190d792d50cca912fa55459157f818b6ec63b4abddf10f198578f969c"
+    },
+    {
+      "path": "art/concepts/headquarters-image-v1.png",
+      "bytes": 2811876,
+      "sha256": "93f55309004cd4e669e587644fa52ceb59d00b9474e85396ba127423281aa49e"
+    },
+    {
+      "path": "art/concepts/house-image-v1.png",
+      "bytes": 2405560,
+      "sha256": "70b552dc88a96deac4bfaf7b324deed3675c29c30fc2fc816fb88dc7401604de"
+    },
+    {
+      "path": "art/concepts/neighborhood-image-v1.png",
+      "bytes": 3087972,
+      "sha256": "380a07995965f4701fd60903797fe6b75c9679950ae8ccbbb97fb6371cabf7fd"
+    },
+    {
+      "path": "art/concepts/office-image-v1.png",
+      "bytes": 2398167,
+      "sha256": "42a32673804effd704380a4e481d1d41e82902bd596d93a213f94ae60f4ee17b"
+    },
+    {
+      "path": "art/concepts/peninsula-image-v1.png",
+      "bytes": 2756629,
+      "sha256": "455728a7ab380ad68cca00b9b8ae2dcee8a26c24831474115c082f3dbe116548"
+    },
+    {
+      "path": "art/concepts/workbench-image-v1.png",
+      "bytes": 2010597,
+      "sha256": "d3126bc0858b91719258a3b54c0a90130400b80bbc20f075ff54c25267ebe133"
+    },
+    {
+      "path": "art/valley-film/valley-film.blend",
+      "bytes": 87061716,
+      "sha256": "9600a9ea10b7e3f0357109e8579385a28ba86cba0ebe006ff33e517e9c470483"
+    },
+    {
+      "path": "art/isometric-intro/isometric-intro.blend",
+      "bytes": 12824837,
+      "sha256": "076aca212096c248e18e64e7f16abac58c88a912c40e8edfc114298c86fb99d9"
+    },
+    {
+      "path": "art/realism-test/garage.blend",
+      "bytes": 90748797,
+      "sha256": "74815930c3d46d9045434b7314367c4c5616afa37356c6d18708385cacf4ebca"
+    },
+    {
+      "path": "art/unreal-garage/ValleyGarage/ValleyGarage.uproject",
+      "bytes": 280,
+      "sha256": "6447a12f039ee0d2405cad1a6780d7e65ce16e1b268fec767bb6956450b433f1"
+    }
+  ]
+}

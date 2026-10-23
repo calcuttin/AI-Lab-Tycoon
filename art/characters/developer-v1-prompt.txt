@@ -1,0 +1,7 @@
+Use case: photorealistic-natural.
+Asset type: square character portrait for AI Lab Tycoon; must work inside a circular crop.
+Subject: Dinesh Chugtai, a completely original fictional 30-year-old lead developer, not a likeness of any actor or real person. South Asian man with medium-brown skin, clean-shaven, short textured black hair with a tight fade, small round metal glasses. He wears a faded indigo henley. Slightly smug, competitive expression with a hint of insecurity; talented engineer who needs to be the best in the room.
+Style: cinematic editorial photograph, natural skin and fabric realism, realistic facial proportions and subtle imperfections.
+Scene and lighting: softly blurred garage coding corner with a dual-monitor desk behind him, warm California afternoon sidelight, muted sage and charcoal palette.
+Composition: square head-and-shoulders portrait, face centered, generous safe margins around hair, ears and shoulders for a round avatar crop, clear readable expression.
+Constraints: one photograph, original fictional character design, no text, no logos, no watermark, no collage, no border, no UI.

@@ -1,4 +1,7 @@
+import CharacterPortrait from "./CharacterPortrait";
+import EventArtwork from "./EventArtwork";
 import { useGameStore } from "../store/gameStore";
+import { eventArtwork } from "../data/eventArtwork";
 import { getCharacter } from "../data/characters";
 import { Modal, Badge } from "./ui/Primitives";
 
@@ -20,15 +23,10 @@ export default function EventModal() {
     <Modal title={event.title} onClose={() => undefined} dismissible={false}>
       <div className="modal-body">
         <Badge tone="amber">THE VALLEY HAS ENTERED THE CHAT</Badge>
+        {eventArtwork[event.id] && <EventArtwork eventId={event.id} />}
         {character && (
           <div className="mentor-heading" style={{ margin: "20px 0" }}>
-            <span className="mentor-avatar">
-              {character.name
-                .split(" ")
-                .map((n) => n[0])
-                .slice(0, 2)
-                .join("")}
-            </span>
+            <CharacterPortrait id={character.id} name={character.name} className="character-portrait--story" />
             <div>
               {character.name}
               <small>{character.role}</small>

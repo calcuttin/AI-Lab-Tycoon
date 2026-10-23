@@ -1,0 +1,6 @@
+Use case: photorealistic-natural
+Asset type: landscape 16:9 upgrade inspection photograph for a Bay Area startup satire game.
+Subject: A modest startup office exercise corner with neatly racked dumbbells, one stationary exercise bike, an exercise mat and a small bench. Believable compact layout with clear safe movement space.
+Style: high-realism natural cinematic interior photography, warm California afternoon light, detailed credible materials, sensible object spacing, premium restrained color and tangible everyday textures.
+Composition: one full-bleed landscape photograph, comfortable human inspection viewpoint, entire usable area visible, coherent realistic architecture.
+Constraints: no people, logos, readable text, signage, captions, UI, collage, borders, or watermark.

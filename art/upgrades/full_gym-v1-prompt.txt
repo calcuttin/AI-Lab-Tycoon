@@ -1,0 +1,6 @@
+Use case: photorealistic-natural
+Asset type: landscape 16:9 upgrade inspection photograph for a Bay Area startup satire game.
+Subject: A complete office fitness center with cardio machines, a neatly arranged free-weight zone, exercise benches, and discreet shower-room entrances in the background. Clear circulation aisles and generous realistic spacing.
+Style: high-realism natural cinematic interior photography, warm California afternoon light, detailed credible materials, sensible object spacing, premium restrained color and tangible everyday textures.
+Composition: one full-bleed landscape photograph, comfortable human inspection viewpoint, entire usable area visible, coherent realistic architecture.
+Constraints: no people, logos, readable text, signage, captions, UI, collage, borders, or watermark.
