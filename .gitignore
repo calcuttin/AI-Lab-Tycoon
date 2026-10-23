@@ -50,3 +50,8 @@ art/material-study/frames/
 
 art/material-study/*.mp4
 art/material-study/encoded/
+
+# Local credentials
+.env
+.env.*
+!.env.example
