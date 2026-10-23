@@ -1,0 +1,205 @@
+{
+  "prefix": "Square 1:1 photoreal editorial head-and-shoulders portrait with baked-in Bay Area startup interiors, matching Codex staff 01-50.",
+  "people": [
+    {
+      "id": "staff-51",
+      "subject": "24-year-old White man, greasy dark hair that needs a cut, dark under-eye circles, faded black zip hoodie with a broken pull, wry half-smile like the build finally passed"
+    },
+    {
+      "id": "staff-52",
+      "subject": "31-year-old Black woman, short twist-out, oversized rust hoodie, small gold hoop, deadpan 'I told you so' expression"
+    },
+    {
+      "id": "staff-53",
+      "subject": "27-year-old East Asian man, messy bangs, wrinkled navy-and-ochre plaid over a white tee, smug merge-request smirk"
+    },
+    {
+      "id": "staff-54",
+      "subject": "38-year-old Latina woman, messy bun, black over-ear headphones around her neck, faded charcoal thermal henley, tired but game grin"
+    },
+    {
+      "id": "staff-55",
+      "subject": "22-year-old South Asian intern, tight fade, round metal glasses, blank charcoal tee a size too big, eager caffeinated eyes"
+    },
+    {
+      "id": "staff-56",
+      "subject": "45-year-old White man, thinning hair, pilled gray zip fleece, calm 'I survived 2008 and this standup' face"
+    },
+    {
+      "id": "staff-57",
+      "subject": "29-year-old Middle Eastern woman in a charcoal hijab, thrifted denim jacket over a black tee, sharp amused look"
+    },
+    {
+      "id": "staff-58",
+      "subject": "33-year-old mixed-race man, messy bun, open flannel over a navy tee, small nose ring, caffeinated grin"
+    },
+    {
+      "id": "staff-59",
+      "subject": "26-year-old East Asian woman, copper-dyed ends on black hair, black hoodie, dry almost-laugh"
+    },
+    {
+      "id": "staff-60",
+      "subject": "41-year-old Black man, shaved head, thick black glasses, rumpled camp-collar shirt in muted rust, warm smirk"
+    },
+    {
+      "id": "staff-61",
+      "subject": "23-year-old White woman, slouchy charcoal beanie, huge oatmeal hoodie, no makeup, 'it compiles' relief"
+    },
+    {
+      "id": "staff-62",
+      "subject": "36-year-old South Asian man, full beard, navy cycling cap, merino navy base layer, outdoor-commute flush"
+    },
+    {
+      "id": "staff-63",
+      "subject": "28-year-old White man, short mullet, thrifted mustard bowling shirt, chaotic delighted energy"
+    },
+    {
+      "id": "staff-64",
+      "subject": "52-year-old East Asian woman, silver streaks in a practical cut, navy quilted vest over a tee, unimpressed senior-engineer look"
+    },
+    {
+      "id": "staff-65",
+      "subject": "30-year-old Latino man, mustache, faded blue mechanic-style work shirt, garage-coder energy, slight grease smudge on collar"
+    },
+    {
+      "id": "staff-66",
+      "subject": "25-year-old Black woman, box braids, navy track jacket with a gold stripe and no logos, competitive spark"
+    },
+    {
+      "id": "staff-67",
+      "subject": "34-year-old White woman, round glasses, oatmeal cardigan with a small hole at the cuff, gentle production-incident panic"
+    },
+    {
+      "id": "staff-68",
+      "subject": "27-year-old Southeast Asian man, undercut, black leather jacket over a hoodie, late-night deploy stare"
+    },
+    {
+      "id": "staff-69",
+      "subject": "48-year-old White man, shaggy salt-and-pepper hair, faded blank black band-tee silhouette, three-day stubble, 'shipping since dial-up' calm"
+    },
+    {
+      "id": "staff-70",
+      "subject": "32-year-old South Asian woman, pixie cut, oversized wrinkled ivory button-down, dry humor in the eyes"
+    },
+    {
+      "id": "staff-71",
+      "subject": "21-year-old intern, White woman with blue-black dyed hair, septum ring, black hoodie, defiant intern energy"
+    },
+    {
+      "id": "staff-72",
+      "subject": "39-year-old Latina woman, glasses pushed onto her head, gray zip fleece, 'standup in five' hurry"
+    },
+    {
+      "id": "staff-73",
+      "subject": "44-year-old Black woman, locs tied back, rumpled oatmeal linen shirt, composed and done with nonsense"
+    },
+    {
+      "id": "staff-74",
+      "subject": "26-year-old White man, ginger, navy hoodie over a collared shirt, nervous hopeful smile"
+    },
+    {
+      "id": "staff-75",
+      "subject": "35-year-old East Asian man, buzzcut, navy running jacket, rest-day engineer energy"
+    },
+    {
+      "id": "staff-76",
+      "subject": "29-year-old Polynesian man, beard, muted rust camp shirt, big generous smile"
+    },
+    {
+      "id": "staff-77",
+      "subject": "31-year-old White person with an undercut, denim jacket over a black tee, dry queer-coder stare, no costume"
+    },
+    {
+      "id": "staff-78",
+      "subject": "40-year-old Middle Eastern man, salt-and-pepper beard, pilled black turtleneck, quietly intense"
+    },
+    {
+      "id": "staff-79",
+      "subject": "24-year-old Latina woman, big curly halo, navy tee with a simple cream chest stripe and no logos, game-night grin"
+    },
+    {
+      "id": "staff-80",
+      "subject": "37-year-old South Asian woman, low bun, charcoal shawl-cardigan, quiet competence"
+    },
+    {
+      "id": "staff-81",
+      "subject": "28-year-old White man, faded navy trucker hat, sun-pinked nose, navy windbreaker, bike-commute hair"
+    },
+    {
+      "id": "staff-82",
+      "subject": "33-year-old East Asian woman, blunt bangs, knit oatmeal vest over a tee, deadpan"
+    },
+    {
+      "id": "staff-83",
+      "subject": "46-year-old Black man, gray at the temples, faded untucked navy polo, weekend-on-call look"
+    },
+    {
+      "id": "staff-84",
+      "subject": "22-year-old intern, East Asian man, messy top knot, indigo work shirt, paint-pen mark on the pocket, no readable text"
+    },
+    {
+      "id": "staff-85",
+      "subject": "50-year-old White woman, short silver hair, open flannel over a tee, 'I wrote kernels and now this' amusement"
+    },
+    {
+      "id": "staff-86",
+      "subject": "27-year-old Latino man, dense curls, small gold chain, black tee, 2am-deploy tired smile"
+    },
+    {
+      "id": "staff-87",
+      "subject": "34-year-old East African woman, shaved sides with a short top, mustard sweatshirt, confident"
+    },
+    {
+      "id": "staff-88",
+      "subject": "25-year-old White woman, messy red hair, thermal under an open blue flannel, caffeinated"
+    },
+    {
+      "id": "staff-89",
+      "subject": "42-year-old East Asian man, round glasses, rumpled unbuttoned oxford, exhausted staff-engineer kindness"
+    },
+    {
+      "id": "staff-90",
+      "subject": "30-year-old Native woman, long dark hair over one shoulder, worn denim shirt, original fictional face, quiet half-smile, no costume or jewelry stereotypes"
+    },
+    {
+      "id": "staff-91",
+      "subject": "23-year-old South Asian man, thick black glasses, navy hoodie, all-nighter pallor, hopeful"
+    },
+    {
+      "id": "staff-92",
+      "subject": "38-year-old White woman, grown-out bob, navy quilted jacket, wry side-eye"
+    },
+    {
+      "id": "staff-93",
+      "subject": "29-year-old Black man, high-top fade, navy warmup jacket no logos, easy confidence"
+    },
+    {
+      "id": "staff-94",
+      "subject": "36-year-old Latina woman, glasses, hoodie over a collared shirt, product-manager-who-still-codes look"
+    },
+    {
+      "id": "staff-95",
+      "subject": "47-year-old White man, balding, loud rust camp shirt, unreasonably confident grin"
+    },
+    {
+      "id": "staff-96",
+      "subject": "26-year-old East Asian person, wolf cut, oversized thrifted blazer over a tee, anti-corporate cool"
+    },
+    {
+      "id": "staff-97",
+      "subject": "32-year-old Middle Eastern woman, short curls, black moto jacket over a tee, sharp smile"
+    },
+    {
+      "id": "staff-98",
+      "subject": "41-year-old South Asian man in a navy turban, gray henley, warm composed expression"
+    },
+    {
+      "id": "staff-99",
+      "subject": "24-year-old White man, messy hair, stained gray hoodie, energy-drink coder, sheepish grin"
+    },
+    {
+      "id": "staff-100",
+      "subject": "35-year-old mixed-race woman, high afro puff, indigo work jacket, confident 'I own this incident' look"
+    }
+  ]
+}

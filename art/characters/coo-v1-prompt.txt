@@ -1,0 +1,7 @@
+Use case: photorealistic-natural.
+Asset type: square character portrait for AI Lab Tycoon; must work inside a circular crop.
+Subject: Donald "OJ" Jared, a completely original fictional 34-year-old startup COO, not a likeness of any actor or real person. Filipino-American man with warm medium-olive skin, neatly parted short black hair with a slight cowlick, thin gold-wire glasses. He wears a slightly oversized oatmeal oxford shirt, top button fastened. Intensely earnest, almost tearfully supportive expression; loyal, anxious, and overly sincere comic personality.
+Style: cinematic editorial photograph, natural skin and fabric realism, realistic facial proportions and subtle imperfections.
+Scene and lighting: softly blurred modest garage office with a tidy spreadsheet-covered laptop in the background, warm California afternoon sidelight, muted sage and charcoal palette.
+Composition: square head-and-shoulders portrait, face centered, generous safe margins around hair, ears and shoulders for a round avatar crop, clear readable expression.
+Constraints: one photograph, original fictional character design, no text, no logos, no watermark, no collage, no border, no UI.

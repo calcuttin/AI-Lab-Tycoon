@@ -1,3 +1,4 @@
+import CharacterPortrait from "./CharacterPortrait";
 import { useEffect } from "react";
 import { useGameStore } from "../store/gameStore";
 import { getCharacter } from "../data/characters";
@@ -29,13 +30,7 @@ export default function StoryNotification() {
         {character && milestone.characterDialogue && (
           <div className="mentor-card" style={{ margin: "20px 0" }}>
             <div className="mentor-heading">
-              <span className="mentor-avatar">
-                {character.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .slice(0, 2)
-                  .join("")}
-              </span>
+              <CharacterPortrait id={character.id} name={character.name} className="character-portrait--story" />
               <div>
                 {character.name}
                 <small>{character.role}</small>

@@ -22,6 +22,7 @@ const hasSeenEvent = (state: EventGameState, id: string) => state.eventHistory.i
 const isEarlyStage = (state: EventGameState) => getOfficeSize(state) === 'hacker_den';
 const isMidStage = (state: EventGameState) => ['small', 'medium'].includes(getOfficeSize(state));
 const isLateStage = (state: EventGameState) => ['large', 'campus'].includes(getOfficeSize(state));
+const isHostel = (state: EventGameState) => ['hacker_den', 'small'].includes(getOfficeSize(state));
 
 export interface GameEvent {
   id: string;
@@ -46,6 +47,436 @@ export interface GameEvent {
 }
 
 export const gameEvents: GameEvent[] = [
+  {
+    id: 'pool-all-nighter',
+    title: 'Poolside All-Nighter',
+    description:
+      "The team was supposed to ship tonight. Instead they moved the stand-up into the incubator pool. Laptops are on pool floats. Someone is pair-programming from a flamingo. Jared brought towels and a risk assessment.",
+    probability: 0.12,
+    triggerCondition: (state) =>
+      (isEarlyStage(state) || isMidStage(state)) && getEmployeeCount(state) >= 3,
+    choices: [
+      {
+        id: 'join',
+        label: 'Get In The Pool',
+        description: 'Culture is a feature',
+        effects: { boostMorale: 20, researchPoints: -2 },
+      },
+      {
+        id: 'haul',
+        label: 'Haul Them Inside',
+        description: 'The build still has to pass',
+        effects: { researchPoints: 4, boostMorale: -10 },
+      },
+      {
+        id: 'pizza',
+        label: 'Order Pizza To The Deep End',
+        description: 'Enable the incident',
+        effects: { money: -400, boostMorale: 12 },
+      },
+    ],
+  },
+  {
+    id: 'garage-mural',
+    title: 'The Garage Mural Debacle',
+    description:
+      "Erik hired a street artist to 'signal vision' on the garage door. The mural is a heroic engineer as a warrior shaking hands with Lady Liberty. The HOA is in the driveway. Dinesh is convinced the warrior looks exactly like him, and not in a good way.",
+    probability: 0.1,
+    triggerCondition: (state) => isEarlyStage(state) && !hasSeenEvent(state, 'garage-mural'),
+    choices: [
+      {
+        id: 'paint',
+        label: 'Paint Over It Tonight',
+        description: 'HOA peace is cheaper than a rebrand',
+        effects: { money: -2500, reputation: 5 },
+      },
+      {
+        id: 'lean-in',
+        label: 'Make It The Company Logo',
+        description: 'Erik is already printing stickers',
+        effects: { reputation: -10, money: -800 },
+      },
+      {
+        id: 'blame-artist',
+        label: 'Blame The Artist',
+        description: 'Classic incubator move',
+        effects: { reputation: -5 },
+      },
+    ],
+  },
+  {
+    id: 'incubator-tenants',
+    title: "Erik's Other Tenants",
+    description:
+      "Erik rented the remaining bedrooms to a juice-cleanse founder and a DJ who tests drop bass at 11 a.m. Your engineers cannot hear the build server. The juicer is using your Ethernet.",
+    probability: 0.1,
+    triggerCondition: (state) =>
+      isEarlyStage(state) && getEmployeeCount(state) >= 2 && !hasSeenEvent(state, 'incubator-tenants'),
+    choices: [
+      {
+        id: 'buyout',
+        label: 'Buy Out Their Leases',
+        description: 'Peace is a line item',
+        effects: { money: -6000, boostMorale: 15 },
+      },
+      {
+        id: 'noise-code',
+        label: 'Institute Quiet Hours',
+        description: "Jared will laminate a schedule",
+        effects: { reputation: 5 },
+      },
+      {
+        id: 'endure',
+        label: 'Code Through The Drop',
+        description: 'This is the grindset',
+        effects: { boostMorale: -12, researchPoints: -2 },
+      },
+    ],
+  },
+  {
+    id: 'hostel-rager',
+    title: "Erik's Networking Mixer",
+    description:
+      "Erik called it a mixer. It is a rager. Beer pong is using your whiteboard markers as balls. Two engineers are making out on the only clean couch. Someone is shirtless on the ping-pong table pitching a DAO. Jared is holding a dustpan like a shield.",
+    probability: 0.11,
+    triggerCondition: (state) => isHostel(state) && getEmployeeCount(state) >= 3,
+    choices: [
+      {
+        id: 'shut-it-down',
+        label: 'Kill The Music',
+        description: 'Become the adult in the room',
+        effects: { boostMorale: -15, reputation: 5 },
+      },
+      {
+        id: 'lean-in',
+        label: 'Charge Cover At The Door',
+        description: 'If you cannot beat culture, invoice it',
+        effects: { money: 800, reputation: -8, researchPoints: -3 },
+      },
+      {
+        id: 'hide',
+        label: 'Code In The Closet',
+        description: 'The build still has to pass',
+        effects: { researchPoints: 2, boostMorale: -5 },
+      },
+    ],
+  },
+  {
+    id: 'always-on-cam',
+    title: 'The Webcam Was Live',
+    description:
+      "An intern left a webcam streaming to a public URL. The internet now has Gilfoyle in a towel, Dinesh refreshing a dating app, and Jared whispering affirmations to a houseplant. Tech Twitter is being unkind.",
+    probability: 0.09,
+    triggerCondition: (state) =>
+      isHostel(state) && getEmployeeCount(state) >= 2 && !hasSeenEvent(state, 'always-on-cam'),
+    choices: [
+      {
+        id: 'unplug',
+        label: 'Yank The Cable',
+        description: 'Then write a very sincere post',
+        effects: { reputation: -10 },
+      },
+      {
+        id: 'clip-it',
+        label: 'Lean Into The Bits',
+        description: 'Humiliation is distribution',
+        effects: { reputation: 8, boostMorale: -12 },
+      },
+      {
+        id: 'blame-intern',
+        label: 'Fire The Intern Energy',
+        description: 'Someone has to be the lesson',
+        effects: { fireEmployee: true, reputation: -5 },
+      },
+    ],
+  },
+  {
+    id: 'pitch-bong',
+    title: 'Monica Walked In',
+    description:
+      "Monica came for a product check-in. The coffee table is a bong, a pizza box, and your pitch deck with a beer ring on slide three. Gilfoyle says this is 'optimal creative conditions.' She does not look convinced.",
+    probability: 0.09,
+    triggerCondition: (state) =>
+      isHostel(state) && getReputation(state) >= 10 && !hasSeenEvent(state, 'pitch-bong'),
+    choices: [
+      {
+        id: 'air-out',
+        label: 'Open Every Window',
+        description: 'Pretend it was the neighbors',
+        effects: { reputation: -8 },
+      },
+      {
+        id: 'own-it',
+        label: 'Call It Founder Wellness',
+        description: 'The Valley invented this excuse',
+        effects: { reputation: -15, boostMorale: 10 },
+      },
+      {
+        id: 'jared-talks',
+        label: 'Let Jared Explain',
+        description: 'He has a laminated incident report',
+        effects: { reputation: 5, money: -500 },
+      },
+    ],
+  },
+  {
+    id: 'hot-tub-board',
+    title: 'Board Meeting In The Jacuzzi',
+    description:
+      "Russ wants to 'take this offline' in the cracked backyard jacuzzi. He is already in it. Champagne is in the filter. He says real billionaires do not wear shirts to cap-table talks.",
+    probability: 0.08,
+    triggerCondition: (state) =>
+      isHostel(state) && getMoney(state) >= 40000 && !hasSeenEvent(state, 'hot-tub-board'),
+    choices: [
+      {
+        id: 'get-in',
+        label: 'Get In The Water',
+        description: 'Doors that go like this, jets that go like that',
+        effects: { money: 15000, reputation: -12, boostMorale: 8 },
+      },
+      {
+        id: 'towel',
+        label: 'Sit On The Deck Fully Dressed',
+        description: 'Keep some dignity',
+        effects: { reputation: 6 },
+      },
+      {
+        id: 'reschedule',
+        label: 'Reschedule For A Table',
+        description: 'Russ will call you a coward',
+        effects: { reputation: -5, researchPoints: 3 },
+      },
+    ],
+  },
+  {
+    id: 'dinesh-video-mom',
+    title: "Dinesh's Mom Is On Zoom",
+    description:
+      "Dinesh is promising his mother he works at a respectable company. Behind him, a roommate in boxers is shotgunning a beer and someone just walked through frame in a towel asking who ate the biryani.",
+    probability: 0.1,
+    triggerCondition: (state) => isHostel(state) && getEmployeeCount(state) >= 3,
+    choices: [
+      {
+        id: 'clear-frame',
+        label: 'Herd Everyone Out Of Frame',
+        description: 'Protect the bit',
+        effects: { boostMorale: -6, reputation: 4 },
+      },
+      {
+        id: 'say-hi',
+        label: 'Wave To His Mom',
+        description: 'She already saw the towel',
+        effects: { boostMorale: 12, reputation: -6 },
+      },
+      {
+        id: 'mute',
+        label: 'Hit Mute And Keep Coding',
+        description: "Dinesh's problem",
+        effects: { researchPoints: 2, boostMorale: -8 },
+      },
+    ],
+  },
+  {
+    id: 'adult-bandwidth',
+    title: 'The Bandwidth Bill From Hell',
+    description:
+      "The Wi-Fi is dying because a tenant is running an adult livestream out of the back bedroom. Ring light under the door. Your GPU is rendering someone else's 'brand.' Legal would like a word you cannot afford.",
+    probability: 0.08,
+    triggerCondition: (state) =>
+      isHostel(state) && getEmployeeCount(state) >= 2 && !hasSeenEvent(state, 'adult-bandwidth'),
+    choices: [
+      {
+        id: 'cut-ethernet',
+        label: 'Cut The Ethernet',
+        description: 'And change the password',
+        effects: { boostMorale: -5, reputation: 4 },
+      },
+      {
+        id: 'charge-rent',
+        label: 'Invoice Them For Compute',
+        description: 'Sin taxes, but make it SaaS',
+        effects: { money: 3500, reputation: -14 },
+      },
+      {
+        id: 'ignore',
+        label: 'Put On Headphones',
+        description: 'You heard nothing',
+        effects: { reputation: -8, money: -2000 },
+      },
+    ],
+  },
+  {
+    id: 'see-food-demo',
+    title: 'It Only Sees Hot Dogs',
+    description:
+      "An intern trained a food classifier on one weekend and a dare. At dinner it identifies everything — salad, biryani, Jared's sad soup — as a hot dog. Erik wants to pivot the whole company into 'food tech.'",
+    probability: 0.09,
+    triggerCondition: (state) =>
+      isHostel(state) && getEmployeeCount(state) >= 2 && !hasSeenEvent(state, 'see-food-demo'),
+    choices: [
+      {
+        id: 'kill-it',
+        label: 'Delete The Model',
+        description: 'This is not the product',
+        effects: { reputation: 5 },
+      },
+      {
+        id: 'demo',
+        label: 'Show Investors Anyway',
+        description: 'It is technically computer vision',
+        effects: { money: 8000, reputation: -10 },
+      },
+      {
+        id: 'open-source',
+        label: 'Dump It On GitHub',
+        description: 'Let it be someone else\'s meme',
+        effects: { reputation: 12, researchPoints: 2 },
+      },
+    ],
+  },
+  {
+    id: 'living-room-whiteboard',
+    title: 'The Living Room Is Math Now',
+    description:
+      "Gilfoyle covered every wall, window, and the back of the TV in compression proofs. The HOA thinks you started a cult. Dinesh added a competing formula in red. Nobody can find the light switch.",
+    probability: 0.1,
+    triggerCondition: (state) =>
+      isHostel(state) && getCompletedResearchCount(state) >= 1 && !hasSeenEvent(state, 'living-room-whiteboard'),
+    choices: [
+      {
+        id: 'photograph',
+        label: 'Photograph It For The Deck',
+        description: 'Looks like you have IP',
+        effects: { reputation: 8, researchPoints: 4 },
+      },
+      {
+        id: 'paint',
+        label: 'Prime The Walls',
+        description: 'Get the deposit back someday',
+        effects: { money: -1200, boostMorale: 6 },
+      },
+      {
+        id: 'leave-it',
+        label: 'Live Inside The Proof',
+        description: 'This is the grindset',
+        effects: { researchPoints: 6, boostMorale: -8 },
+      },
+    ],
+  },
+  {
+    id: 'kegerator-culture',
+    title: 'Standup Is At The Kegerator',
+    description:
+      "Erik installed a kegerator where the coffee machine was. Attendance at morning standup has never been higher. Velocity has never been lower. Someone filed a ticket titled 'IPA regression.'",
+    probability: 0.1,
+    triggerCondition: (state) => isHostel(state) && getEmployeeCount(state) >= 3,
+    choices: [
+      {
+        id: 'keep-it',
+        label: 'Make It Official Culture',
+        description: 'Free beer is a hiring tool',
+        effects: { boostMorale: 18, researchPoints: -3, money: -600 },
+      },
+      {
+        id: 'coffee-back',
+        label: 'Bring Back Coffee',
+        description: 'Be the villain',
+        effects: { boostMorale: -10, researchPoints: 4 },
+      },
+      {
+        id: 'after-hours',
+        label: 'Keg After Six Only',
+        description: "Jared will make a sign",
+        effects: { reputation: 4, money: -200 },
+      },
+    ],
+  },
+  {
+    id: 'fridge-crime',
+    title: 'The Fridge Is A Crime Scene',
+    description:
+      "The incubator fridge contains: three-week takeout, a longevity founder's labeled blood bag, oat milk with a personality, and something sentient in tupperware. OSHA would like a word. OSHA does not have this address.",
+    probability: 0.09,
+    triggerCondition: (state) => isHostel(state) && getEmployeeCount(state) >= 2,
+    choices: [
+      {
+        id: 'purge',
+        label: 'Hazmat The Whole Shelf',
+        description: 'Jared already bought gloves',
+        effects: { money: -150, boostMorale: 10 },
+      },
+      {
+        id: 'rules',
+        label: 'Assign Named Shelves',
+        description: 'A doomed bureaucracy',
+        effects: { reputation: 3 },
+      },
+      {
+        id: 'ignore',
+        label: 'Eat Out Forever',
+        description: 'The real burn rate',
+        effects: { money: -400, boostMorale: -6 },
+      },
+    ],
+  },
+  {
+    id: 'equity-for-couch',
+    title: 'Erik Wants Equity For The Couch',
+    description:
+      "Erik has decided that letting you crash at the incubator is 'seed plus housing plus mentorship.' He wants 8% and a reserved parking pad for a car he does not own. He mentioned a vision quest.",
+    probability: 0.08,
+    triggerCondition: (state) =>
+      isHostel(state) && !hasSeenEvent(state, 'equity-for-couch'),
+    choices: [
+      {
+        id: 'negotiate',
+        label: 'Talk Him Down To Beer',
+        description: 'Pay in kegerator privileges',
+        effects: { money: -400, reputation: 6 },
+      },
+      {
+        id: 'give-slice',
+        label: 'Give Him Two Percent',
+        description: 'Cheaper than a lease',
+        effects: { reputation: -8, boostMorale: 5 },
+      },
+      {
+        id: 'sleep-garage',
+        label: 'Move Into The Garage',
+        description: 'Independence, plus raccoons',
+        effects: { boostMorale: -10, researchPoints: 3 },
+      },
+    ],
+  },
+  {
+    id: 'intern-rating-model',
+    title: 'The Intern Trained A Creep Model',
+    description:
+      "An intern scraped photos and trained a 'hot or not' ranker on company GPUs. It is sleazy, it is already in a group chat, and Monica will smell it from Sand Hill. Dinesh is pretending he never opened the notebook.",
+    probability: 0.08,
+    triggerCondition: (state) =>
+      isHostel(state) && getEmployeeCount(state) >= 3 && !hasSeenEvent(state, 'intern-rating-model'),
+    choices: [
+      {
+        id: 'delete',
+        label: 'Wipe The Drives',
+        description: 'And the group chat',
+        effects: { reputation: 8, fireEmployee: true },
+      },
+      {
+        id: 'reframe',
+        label: 'Call It A Fairness Audit',
+        description: 'It will not save you',
+        effects: { reputation: -20, money: -3000 },
+      },
+      {
+        id: 'confess',
+        label: 'Tell Monica First',
+        description: 'Pain now, company later',
+        effects: { reputation: -6, money: -500 },
+      },
+    ],
+  },
   {
     id: 'vc-funding',
     title: 'Russ Hanneman Wants to Invest',

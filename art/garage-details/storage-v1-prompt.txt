@@ -1,0 +1,9 @@
+Use case: photorealistic-natural.
+Asset type: landscape 16:9 full-bleed garage storage inspection photograph for AI Lab Tycoon.
+Input image 1: reference defining the exact existing garage's identity, material realism, shelving, lighting and setting. Create a NEW closer camera view of this same garage's LEFT metal storage shelving, not a literal crop of the reference.
+Primary request: natural photographic medium close-up of the left storage shelving with worn galvanized metal uprights, folded cardboard boxes, loose practical cables, spare keyboards and small tools. A portion of the bicycle enters at the foreground edge, and a houseplant sits on the upper shelf.
+Scene: same off-white patched plaster garage wall, modest lived-in startup storage, grounded true object scale, sensible shelf construction and believable object arrangement.
+Lighting and materials: warm California afternoon side light matching the reference, subtle shadows, tangible cardboard fibers, scratched galvanized metal, convincing photographic textures and natural imperfections.
+Text (verbatim): one small cardboard box has a handwritten black-marker label "IMPORTANT CABLES".
+Composition: tighter camera than the garage overview, with shelf contents clearly readable at inspection scale, natural lens perspective and depth.
+Constraints: exactly one landscape 16:9 photograph, preserve the original setting's identity; no people, no UI, no collage, no logos, no watermark, no borders, no illustration or CGI appearance.

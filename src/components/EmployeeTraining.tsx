@@ -1,3 +1,4 @@
+import EmployeePortrait from "./EmployeePortrait";
 import { useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 import type { Employee } from '../store/gameStore';
@@ -90,9 +91,7 @@ export default function EmployeeTraining() {
                     boxShadow: 'none',
                   }}
                 >
-                  <div style={{ fontSize: 12, fontWeight: 'bold', color: '#fff', marginBottom: 2 }}>
-                    {emp.name.toUpperCase()}
-                  </div>
+                  <span className="staff-choice-identity"><EmployeePortrait employee={emp} /><strong style={{ fontSize: 12 }}>{emp.name.toUpperCase()}</strong></span>
                   <div style={{ fontSize: 10, color: '#a7b39d' }}>{emp.role}</div>
                 </button>
               ))}

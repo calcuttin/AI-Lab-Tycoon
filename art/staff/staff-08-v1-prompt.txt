@@ -1,0 +1,6 @@
+Use case: photorealistic-natural
+Asset type: square 1:1 original fictional staff avatar portrait.
+Subject: An original fictional white man in his early forties, with wavy sandy hair, a short beard, muted burgundy flannel unbuttoned over a plain tee, and a slightly tired amused expression.
+Style: photoreal editorial head-and-shoulders portrait of an approachable Bay Area startup employee, warm window daylight, softly blurred modest startup workspace, eye-level 85mm lens feel, authentic skin and fabric texture, understated Silicon Valley satire cast energy.
+Composition: one adult person, centered head, full hair and shoulders safely inside frame with generous avatar circle crop margins.
+Constraints: distinct original face, no celebrity likeness, brands, text, UI, borders, watermark, or extra people. Appearance is not assigned to a job role.

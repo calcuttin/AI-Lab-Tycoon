@@ -1,3 +1,4 @@
+import EmployeePortrait from "./EmployeePortrait";
 import { useState } from "react";
 import { useGameStore, type Project } from "../store/gameStore";
 import { projectTypes } from "../data/projectTypes";
@@ -282,7 +283,7 @@ export default function ProjectsPanel() {
                         )
                       }
                     >
-                      <strong>{e.name}</strong>
+                      <span className="staff-choice-identity"><EmployeePortrait employee={e} /><strong>{e.name}</strong></span>
                       <small>
                         {e.role} · Development {e.skills.development} · Research{" "}
                         {e.skills.research}

@@ -1,0 +1,11 @@
+{
+  "duration": 12,
+  "fps": 24,
+  "frames": 288,
+  "width": 1600,
+  "height": 900,
+  "bytes": 11077700,
+  "video": "public/intro/realism/isometric-intro.mp4",
+  "reference": "https://www.yuco.com/works/silicon-valley",
+  "description": "Original fictional isometric city, rising companies, commuters, cranes and founder garage."
+}

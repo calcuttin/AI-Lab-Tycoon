@@ -2029,3 +2029,183 @@ button svg {
   .valley-film__chapter { bottom: 150px; }
   .valley-film__chapter h1 { font-size: clamp(26px, 7vw, 40px); }
 }
+
+
+/* Photographic location art shares the same light and material palette. */
+.location-artwork {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #27342e;
+}
+.valley-film__location {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-position: 58% center;
+  pointer-events: none;
+}
+.welcome-location,
+.lease-location {
+  border-radius: 10px;
+  margin-bottom: 24px;
+  max-height: 260px;
+}
+.expansion-location {
+  border-radius: 7px;
+  margin-bottom: 18px;
+}
+@media (max-width: 640px) {
+  .valley-film__location { object-position: 62% center; }
+  .welcome-location, .lease-location { max-height: 190px; margin-bottom: 18px; }
+}
+
+
+.still-intro, .still-intro img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+.still-intro img {
+  object-fit: cover;
+  object-position: center;
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .still-intro img { transform: none !important; will-change: auto; }
+}
+
+.valley-film__chapter--isometric h1 {
+  font-size: clamp(34px, 6vw, 88px);
+  letter-spacing: -.065em;
+  color: #e1f0ba;
+}
+
+
+.character-portrait {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 1px solid #a5b88755;
+  background: linear-gradient(145deg, #4c5740, #242c24);
+  color: #dfebc9;
+  font-size: 15px;
+  font-weight: 600;
+}
+.character-portrait img { width: 100%; height: 100%; object-fit: cover; }
+.character-portrait--story { width: 88px; height: 88px; border-radius: 16px; }
+.garage-view-switch { display: flex; gap: 5px; align-items: center; padding: 0 18px 14px; flex-wrap: wrap; }
+.garage-view-switch button { border: 1px solid #46513e; background: #252f24; color: #b6c2aa; padding: 8px 12px; border-radius: 6px; font: inherit; font-size: 11px; cursor: pointer; }
+.garage-view-switch button[aria-pressed="true"] { background: #bed68e; color: #25301d; border-color: #bed68e; }
+.garage-view-switch span { margin-left: auto; color: #a3ad99; font-size: 10px; }
+.illustrated-garage { background: #1d251d; }
+.garage-status { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 18px; border-top: 1px solid #46513e; font-size: 10px; color: #c6d3b8; }
+.garage-stage { position: relative; aspect-ratio: 16 / 9; isolation: isolate; background: #303b2b; }
+.garage-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.garage-image-fallback { margin: 0; padding: 15px; color: #e5eddc; font-size: 12px; }
+.garage-effect { pointer-events: none; animation-duration: var(--garage-cycle); animation-iteration-count: infinite; animation-timing-function: ease-in-out; animation-play-state: paused; }
+.illustrated-garage[data-running="true"] .garage-effect { animation-play-state: running; }
+.garage-sunlight { position: absolute; inset: 0; background: linear-gradient(115deg, #ffe8b01a, transparent 48%); mix-blend-mode: soft-light; animation-name: garage-light; }
+.garage-screen { position: absolute; left: 44%; top: 39%; width: 9%; height: 7%; background: #b4f1da; opacity: .06; mix-blend-mode: screen; animation-name: garage-monitor; }
+.garage-steam { position: absolute; left: 50.7%; top: 45%; width: 2%; height: 5%; pointer-events: none; }
+.garage-steam i { position: absolute; left: 35%; bottom: 0; width: 25%; height: 70%; border-left: 1px solid #fffae999; border-radius: 50%; filter: blur(.6px); animation-name: garage-coffee; }
+.garage-steam i:nth-child(2) { left: 65%; animation-delay: -2s; }
+.garage-steam i:nth-child(3) { left: 5%; animation-delay: -4s; }
+.garage-hotspot { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 7px; padding: 5px 9px 5px 5px; border: 1px solid #d0dfb488; border-radius: 24px; background: #18221de8; color: #f0f5e8; box-shadow: 0 3px 14px #0005; cursor: pointer; text-align: left; min-height: 44px; font: inherit; z-index: 2; }
+.garage-hotspot-number { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid #cadcad77; border-radius: 50%; font-size: 11px; color: #d8ebad; }
+.garage-hotspot-copy { font-size: 10px; font-weight: 600; white-space: nowrap; }
+.garage-hotspot-copy small { display: block; font-size: 8px; font-weight: 400; color: #c3cdb9; margin-top: 3px; }
+.garage-hotspot:hover, .garage-hotspot[aria-pressed="true"] { background: #33452bec; border-color: #d8ef9c; }
+.garage-hotspot:focus-visible, .garage-view-switch button:focus-visible { outline: 3px solid #ecffc2; outline-offset: 3px; }
+.garage-caption { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; font-size: 11px; color: #e0e6d5; }
+.garage-caption small { font-size: 9px; color: #adbba0; }
+@keyframes garage-light { 0%, 100% { opacity: .45; } 50% { opacity: .85; } }
+@keyframes garage-monitor { 0%, 100% { opacity: .025; } 50% { opacity: .10; } }
+@keyframes garage-coffee { 0% { opacity: 0; transform: translateY(0) scale(.6); } 35% { opacity: .55; } 100% { opacity: 0; transform: translateY(-12px) scale(1.4); } }
+@media (max-width: 600px) {
+  .garage-view-switch span { width: 100%; margin: 5px 0 0; }
+  .garage-hotspot { padding: 5px; min-width: 44px; justify-content: center; }
+  .garage-hotspot-copy { display: none; }
+  .garage-hotspot[aria-pressed="true"] .garage-hotspot-number { background: #c6dc91; color: #24301d; }
+  .garage-caption { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .character-portrait--story { width: 68px; height: 68px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .garage-effect { animation: none !important; }
+  .garage-steam { display: none; }
+}
+
+
+.garage-inspection { background: #20291f; border-top: 1px solid #43503b; }
+.garage-inspection-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px 0; }
+.garage-inspection-header .ui-button { font-size: 11px; }
+.garage-inspection-title { padding: 20px 20px 18px; }
+.garage-inspection-title h3 { margin: 0 0 7px; font-size: clamp(22px, 3vw, 32px); letter-spacing: -.035em; color: #edf0df; }
+.garage-inspection-title h3:focus { outline: none; }
+.garage-inspection-title p { margin: 0; color: #b5c1a7; font-size: 12px; line-height: 1.6; }
+.garage-inspection-photo { aspect-ratio: 16/9; background: #303a29; overflow: hidden; }
+.garage-inspection-photo img { width: 100%; height: 100%; display: block; object-fit: cover; animation: garage-inspect-in .25s ease-out both; }
+.garage-inspection-fallback { display: grid; place-items: center; height: 100%; padding: 24px; font-size: 13px; color: #d6e2c4; }
+.garage-inspection-inventory { display: grid; gap: 8px; padding: 18px 20px; }
+.garage-inspection-inventory strong { font-size: 14px; color: #d9e9bd; font-weight: 500; }
+.garage-inspection-inventory small { color: #aab79d; font-size: 11px; line-height: 1.6; }
+.garage-inspection-nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 20px; }
+.garage-inspection-nav button { padding: 10px 15px; min-height: 44px; background: #283321; color: #c8d6b9; border: 1px solid #516044; border-radius: 7px; font: inherit; font-size: 12px; cursor: pointer; }
+.garage-inspection-nav button[aria-pressed="true"] { background: #c6db9a; color: #25341b; border-color: #c6db9a; }
+.garage-inspection-nav button:focus-visible { outline: 3px solid #e2f6bd; outline-offset: 3px; }
+@keyframes garage-inspect-in { from { opacity: .3; transform: scale(1.015); } to { opacity: 1; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .garage-inspection-photo img { animation: none; } }
+@media (max-width: 500px) { .garage-inspection-header { padding: 12px 12px 0; } .garage-inspection-header .eyebrow { font-size: 8px; } .garage-inspection-title { padding: 16px 14px; } .garage-inspection-inventory { padding: 16px 14px; } .garage-inspection-nav { padding: 0 14px 16px; gap: 6px; } .garage-inspection-nav button { flex: 1; padding: 10px 8px; } }
+
+/* Photographic furnishing catalog and installed-upgrade inspection. */
+.upgrade-artwork { width:100%; aspect-ratio:16/9; overflow:hidden; background:#20271f; }
+.upgrade-artwork img { display:block; width:100%; height:100%; object-fit:cover; }
+.upgrade-artwork .garage-inspection-fallback { height:100%; min-height:0; padding:20px; font-size:13px; }
+.event-artwork { margin: 16px 0 4px; border-radius: 12px; }
+.event-study { margin-top:40px; scroll-margin-top:24px; }
+.event-study h2 { margin:12px 0; }
+.event-study-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:18px; margin-top:20px; }
+.event-study-card { overflow:hidden; border:1px solid var(--line); border-radius:14px; background:var(--panel); text-align:left; }
+.event-study-card p { margin:0; padding:14px 18px; color:var(--muted); font-size:13px; }
+.upgrade-photo-button { display:block; padding:0; overflow:hidden; border:1px solid var(--line); border-radius:10px; background:var(--panel); color:inherit; text-align:left; width:100%; cursor:pointer; }
+.upgrade-photo-button > span { display:block; padding:12px 14px; font-size:13px; }
+.upgrade-photo-button small { display:block; margin-top:6px; color:var(--muted); font-size:12px; }
+.upgrade-photo-button:focus-visible { outline:2px solid #c9dfa0; outline-offset:3px; }
+.upgrade-photo-button:hover { border-color:#9cad78; }
+.upgrade-photo-button img { transition:transform 220ms ease; }
+.upgrade-photo-button:hover img { transform:scale(1.025); }
+.upgrade-option--illustrated { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; }
+.upgrade-option--illustrated > .upgrade-photo-button { grid-column:1/-1; }
+.ui-modal:has(.upgrade-preview) { width:min(960px,calc(100vw - 32px)); max-width:960px; }
+.upgrade-preview-picker { padding:16px 24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+.upgrade-preview-picker label { color:var(--muted); font-size:13px; }
+.upgrade-preview-picker select { min-height:44px; flex:1; min-width:180px; max-width:100%; border:1px solid var(--line); border-radius:8px; padding:8px 12px; background:#20271f; color:#eff2e9; font:inherit; }
+.upgrade-preview-copy { padding:24px; }
+.upgrade-preview-copy h3 { font-size:26px; margin:10px 0; }
+.upgrade-preview-copy p { color:var(--muted); }
+.upgrade-preview-copy > small { display:block; margin-top:18px; color:var(--muted); line-height:1.6; }
+.upgrade-preview-facts { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+.upgrade-study { margin-top:40px; }
+.upgrade-study h2 { margin:12px 0; }
+.upgrade-study-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:18px; margin-top:20px; }
+@media(prefers-reduced-motion:reduce) { .upgrade-photo-button img { transition:none; } .upgrade-photo-button:hover img { transform:none; } }
+
+/* Original staff cast shared across hiring, projects, and training. */
+.character-portrait--employee { width:88px; height:88px; border-radius:16px; }
+.staff-choice-identity { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.staff-choice-identity > strong { min-width:0; overflow-wrap:anywhere; }
+.staff-study { margin-top:40px; scroll-margin-top:24px; }
+.staff-study h2 { margin:12px 0; }
+.staff-study-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); gap:20px; margin-top:22px; }
+.staff-study-card { overflow:hidden; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+.character-portrait--cast { display:block; width:100%; height:auto; aspect-ratio:1; border:0; border-radius:0; }
+.staff-study-card p { margin:0; padding:14px 18px; color:var(--muted); font-size:13px; }
+@media(max-width:500px) { .character-portrait--employee { width:72px; height:72px; } }

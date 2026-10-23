@@ -1,0 +1,25 @@
+{
+  "description": "Matched framing studies: released scene against Cycles lighting and additional set detail. Not a replacement of the released movie.",
+  "shots": [
+    {
+      "shot": "garage",
+      "before": "garage-before.png",
+      "after": "garage-after.png",
+      "engine": "Cycles",
+      "samples": 160,
+      "width": 1600,
+      "height": 1000,
+      "renderSeconds": 10.9
+    },
+    {
+      "shot": "street",
+      "before": "street-before.png",
+      "after": "street-after.png",
+      "engine": "Cycles",
+      "samples": 160,
+      "width": 1600,
+      "height": 1000,
+      "renderSeconds": 12.3
+    }
+  ]
+}

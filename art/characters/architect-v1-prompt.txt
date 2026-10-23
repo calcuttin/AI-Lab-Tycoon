@@ -1,0 +1,9 @@
+Use case: photorealistic-natural
+Asset type: square character portrait for a startup satire game's original core cast.
+Primary request: ONE original fictional character portrait of a cynical systems architect, age 35, with deep brown skin, long dark locs tied back, a short neat beard, understated black rectangular glasses, and a washed charcoal tee. This is an original character, not an actor likeness.
+Expression and character: dry, unimpressed expression and subtly humorous deadpan; a talented exhausted engineer.
+Style/medium: premium editorial cinematic photograph, natural skin and fabric detail, realistic anatomy, restrained filmic color.
+Scene/backdrop: softly blurred garage server corner with restrained amber and green equipment lights.
+Lighting/mood: warm California sidelight; muted sage and charcoal tones, visually consistent with a naturally lit humble California startup garage.
+Composition/framing: square head-and-shoulders portrait, face centered, generous safe margin around head and shoulders for a circle crop.
+Constraints: no text, logos, collage, watermark, celebrity likeness, or extra people.

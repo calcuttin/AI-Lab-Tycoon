@@ -64,4 +64,14 @@ describe('rendered film lifecycle', () => {
     video.dispatchEvent(new Event('ended'));
     expect(callbacks.onComplete).toHaveBeenCalledOnce();
   });
+  it('clamps chapter navigation to the actual twelve-second isometric movie', () => {
+    Object.defineProperty(video, 'duration', { configurable: true, value: 12 });
+    player.start(2.2);
+    expect(video.currentTime).toBe(2.2);
+    player.pauseAt(30);
+    expect(video.currentTime).toBeCloseTo(11.96);
+    player.skipToEnd();
+    expect(callbacks.onComplete).toHaveBeenCalledOnce();
+  });
+
 });

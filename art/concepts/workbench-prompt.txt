@@ -1,0 +1,9 @@
+Use case: photorealistic-natural
+Asset type: final cinematic intro still for a satirical startup game.
+Input image 1 is a setting, materials, and lighting reference, not an edit target. Generate a NEW camera angle intimately close to the founder's workbench inside this same garage.
+Primary request: ONE high-realism, 16:9 landscape, full-bleed cinematic photograph. An open unbranded laptop showing plausible tiny code-editor text, a battered notebook with handwritten "SHIP IT.", a coffee ring, worn wood-effect desk laminate, tactile keyboard keys, and a carefully routed power cable. Silicon Valley satire lives quietly in these humble objects.
+Scene/backdrop: the same modest California garage as the reference, warm exposed wood and neutral plaster, garage architecture softly out of focus behind the workstation; late-afternoon California sunlight from the left. Preserve the natural, tangible atmosphere and architectural continuity of the reference.
+Composition/framing: intimate 50mm lens desk closeup, shallow-but-readable depth of field, three-quarter view. Focal laptop and notebook center-right. Lower-left foreground remains less busy and visually quiet, suitable for a later title overlay. Render the photograph edge to edge with no border.
+Lighting/mood: warm raking afternoon sunlight, realistic shadow falloff, filmic restraint, hopeful practical craftsmanship; believable scratches, paper fibers, keyboard wear, and coffee staining. Photographic realism, no illustrated or glossy CGI appearance.
+Text (verbatim): only prominent text is the notebook handwriting "SHIP IT.". The small code need not be exact.
+Constraints: no people, logos, extra slogans, collage, UI overlay, title lettering, watermark, or caption. Do not print the intro line "Make something worth the hype." into the photograph.

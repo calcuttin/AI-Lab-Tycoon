@@ -1,0 +1,8 @@
+Use case: photorealistic-natural
+Asset type: landscape 16:9 garage coffee and break corner inspection illustration for AI Lab Tycoon.
+Primary request: Create one natural photographic close view of a modest improvised coffee corner at the right side of the startup garage in the reference image.
+Input images: Image 1 is the scene and materials reference. Match this same warm, humble California garage: patched off-white plaster, ordinary worn furniture, natural late-afternoon light, tangible small imperfections. Reframe into an imaginative close view of its coffee area.
+Scene: An inexpensive ordinary drip coffee brewer on a worn small utility table, several mismatched ceramic mugs, a plain jar of coffee grounds, a refillable water jug, scattered coffee stains and small ring marks. A small handwritten paper shopping list taped naturally to the wall reads exactly "COFFEE > RUNWAY". A background sliver of a borrowed office desk establishes the startup garage setting.
+Composition: Landscape 16:9 full-bleed close environmental photograph; the table, brewer, mugs and handwritten list are the main subjects. Believable scale and practical spatial arrangement.
+Lighting and materials: Warm late-afternoon California sidelight and gentle natural shadows, worn tabletop edges, subtle plastic scuffs on the brewer, ceramic glaze, paper fibers, patched off-white plaster. Natural premium photographic realism with candid affordable human atmosphere.
+Constraints: No people, no brands or logos, no shiny luxury espresso machine, no UI, no collage, no watermark, no border, no advertising polish. Text only on the physical shopping list as specified.

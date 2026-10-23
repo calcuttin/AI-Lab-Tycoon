@@ -1,0 +1,182 @@
+{
+  "dev_workstations": {
+    "original": "art/upgrades/dev_workstations-v1.png",
+    "prompt": "art/upgrades/dev_workstations-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/dev_workstations-640.jpg",
+      "public/images/upgrades/dev_workstations-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "standing_desks": {
+    "original": "art/upgrades/standing_desks-v1.png",
+    "prompt": "art/upgrades/standing_desks-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/standing_desks-640.jpg",
+      "public/images/upgrades/standing_desks-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "pod_workstations": {
+    "original": "art/upgrades/pod_workstations-v1.png",
+    "prompt": "art/upgrades/pod_workstations-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/pod_workstations-640.jpg",
+      "public/images/upgrades/pod_workstations-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "server_closet": {
+    "original": "art/upgrades/server_closet-v1.png",
+    "prompt": "art/upgrades/server_closet-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/server_closet-640.jpg",
+      "public/images/upgrades/server_closet-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "server_room": {
+    "original": "art/upgrades/server_room-v1.png",
+    "prompt": "art/upgrades/server_room-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/server_room-640.jpg",
+      "public/images/upgrades/server_room-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "meeting_booth": {
+    "original": "art/upgrades/meeting_booth-v1.png",
+    "prompt": "art/upgrades/meeting_booth-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/meeting_booth-640.jpg",
+      "public/images/upgrades/meeting_booth-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "nap_corner": {
+    "original": "art/upgrades/nap_corner-v1.png",
+    "prompt": "art/upgrades/nap_corner-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/nap_corner-640.jpg",
+      "public/images/upgrades/nap_corner-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "meditation_space": {
+    "original": "art/upgrades/meditation_space-v1.png",
+    "prompt": "art/upgrades/meditation_space-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/meditation_space-640.jpg",
+      "public/images/upgrades/meditation_space-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "gym_corner": {
+    "original": "art/upgrades/gym_corner-v1.png",
+    "prompt": "art/upgrades/gym_corner-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/gym_corner-640.jpg",
+      "public/images/upgrades/gym_corner-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "snack_bar": {
+    "original": "art/upgrades/snack_bar-v1.png",
+    "prompt": "art/upgrades/snack_bar-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/snack_bar-640.jpg",
+      "public/images/upgrades/snack_bar-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "game_corner": {
+    "original": "art/upgrades/game_corner-v1.png",
+    "prompt": "art/upgrades/game_corner-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/game_corner-640.jpg",
+      "public/images/upgrades/game_corner-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "conference_room": {
+    "original": "art/upgrades/conference_room-v1.png",
+    "prompt": "art/upgrades/conference_room-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/conference_room-640.jpg",
+      "public/images/upgrades/conference_room-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "it_closet": {
+    "original": "art/upgrades/it_closet-v1.png",
+    "prompt": "art/upgrades/it_closet-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/it_closet-640.jpg",
+      "public/images/upgrades/it_closet-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "full_gym": {
+    "original": "art/upgrades/full_gym-v1.png",
+    "prompt": "art/upgrades/full_gym-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/full_gym-640.jpg",
+      "public/images/upgrades/full_gym-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "exec_office": {
+    "original": "art/upgrades/exec_office-v1.png",
+    "prompt": "art/upgrades/exec_office-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/exec_office-640.jpg",
+      "public/images/upgrades/exec_office-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "lobby": {
+    "original": "art/upgrades/lobby-v1.png",
+    "prompt": "art/upgrades/lobby-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/lobby-640.jpg",
+      "public/images/upgrades/lobby-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "full_kitchen": {
+    "original": "art/upgrades/full_kitchen-v1.png",
+    "prompt": "art/upgrades/full_kitchen-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/full_kitchen-640.jpg",
+      "public/images/upgrades/full_kitchen-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  },
+  "reception_desk": {
+    "original": "art/upgrades/reception_desk-v1.png",
+    "prompt": "art/upgrades/reception_desk-v1-prompt.txt",
+    "web": [
+      "public/images/upgrades/reception_desk-640.jpg",
+      "public/images/upgrades/reception_desk-1600.jpg"
+    ],
+    "tool": "built-in image generation",
+    "date": "2026-09-08"
+  }
+}

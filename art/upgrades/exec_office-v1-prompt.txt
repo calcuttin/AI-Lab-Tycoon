@@ -1,0 +1,6 @@
+Use case: photorealistic-natural
+Asset type: landscape 16:9 upgrade inspection photograph for a Bay Area startup satire game.
+Subject: A Bay Area executive corner office with a substantial but restrained desk, two guest chairs, warm wood details and wide windows overlooking nearby California trees and urban buildings. Believable working office with sensible furniture spacing.
+Style: high-realism natural cinematic interior photography, warm California afternoon light, detailed credible materials, sensible object spacing, premium restrained color and tangible everyday textures.
+Composition: one full-bleed landscape photograph, comfortable human inspection viewpoint, entire usable area visible, coherent realistic architecture.
+Constraints: no people, logos, readable text, signage, captions, UI, collage, borders, or watermark.

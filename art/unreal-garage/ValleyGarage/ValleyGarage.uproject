@@ -1,0 +1,1 @@
+{"FileVersion":3,"EngineAssociation":"5.8","Category":"Film","Description":"Original Silicon Valley satire garage cinematic","Plugins":[{"Name":"PythonScriptPlugin","Enabled":true},{"Name":"EditorScriptingUtilities","Enabled":true},{"Name":"MovieRenderPipeline","Enabled":true}]}

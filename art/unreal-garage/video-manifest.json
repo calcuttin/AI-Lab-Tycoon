@@ -1,0 +1,10 @@
+{
+  "engine": "Unreal Engine 5.8.2",
+  "lighting": "Lumen",
+  "durationSeconds": 6,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "bytes": 2954666,
+  "video": "public/intro/realism/unreal-garage.mp4"
+}
